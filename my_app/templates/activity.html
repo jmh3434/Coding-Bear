@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    {% include 'googlefont.html' %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+    {% load humanize %}
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/success">
+            <i class="bi bi-lightning-charge"></i>
+            Quotable
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/success">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile/{{user.id}}">My Quotes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/activity">Activity</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <a class="navbar-text mr-4" href="/settings/{{user.id}}" role="button">{{ user.first_name }}
+                    {{user.last_name}}</a>
+                <a class="btn btn-outline-secondary" href="/logout" role="button">Logout</a>
+            </span>
+        </div>
+    </nav>
+    <div id="wrap">
+        {% for user_quote in user_quotes.all reversed %}
+        <div id='posts' class="">
+            <h5><img src="{{user_quote.user.image_url}}" alt="correct_image"
+                    style="height:auto;width:40px;border-radius:100%;border:1px solid #333;margin-right:2px;">
+                <a href="/profile/{{user_quote.user.id}}">{{user_quote.user.first_name}}
+                    {{user_quote.user.last_name}}</a> favorited a quote
+                {{user_quote.updated_at|naturaltime}}
+            </h5>
+            <p class="text-capitalize"><b>Genre:</b> {{user_quote.quote.movie.genre}}</p>
+            <p>
+                <i>{{user_quote.quote.movie.title}}</i> –
+                "{{user_quote.quote.quote}}" created by
+                <a href="/profile/{{user_quote.quote.poster.id}}">{{user_quote.quote.poster.first_name}}</a>
+            </p>
+            <div>
+                <img src="{{user_quote.quote.movie.image_url}}" alt="correct_image" style="height:100px;">
+            </div>
+            <div class='one_post'>
+                <form action="/add_comment/{{user_quote.quote.id}}" method=POST>
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input type="text" name='comment' id="comment" class="form-control input-sm"
+                            placeholder="Add a comment ...">
+                        <div class="input-group-append">
+                            <button id="submit-comment" type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+                {% for comment in user_quote.quote.quote_comments.all reversed %}
+                <p><a href="/profile/{{comment.poster.id}}">{{comment.poster.first_name}}</a> commented:
+                    "{{comment.comment}}" - {{comment.created_at|naturaltime}}
+                    {% if comment.poster.id == signed_in_user.id %}
+                    <a href="/delete_comment/{{comment.id}}" style="color:rgb(131, 72, 72)"> Delete</a>
+                    {% endif %}
+                </p>
+                {% endfor%}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

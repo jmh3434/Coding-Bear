@@ -1,0 +1,78 @@
+.icon-car {
+    background-image: url("/my_app/static/icon.png");
+    background-position: center center;
+}
+.picture1 {
+	background-image:url('terminalmac.jpeg');
+ }
+
+ #myDIV {
+	height:300px;
+	background-color: #FFFFFF;
+	display: flex;
+	justify-content: space-evenly;
+  }
+ 
+#wrap {
+	margin: 0px auto;
+	width: auto;
+	padding: 0px 25px 25px;
+}
+
+datalist {
+	width: 400px;
+	text-align-last: center;
+}
+
+input::-webkit-calendar-picker-indicator {
+	display: none;
+}
+
+@media(max-width: 480px) {
+	#posts {
+		background-color: #EAECEF;
+		padding: 12px;
+		margin-top: 20px;
+		;
+		border-radius: 25px;
+	}
+	.one_post {
+		background-color: #cbcbcb;
+		padding: 20px;
+		margin: 10px;
+		min-height: 100px;
+		border-radius: 25px;
+	}
+}
+
+@media(min-width: 481px) {
+	#posts {
+		background-color: #EAECEF;
+		padding: 25px;
+		margin: 25px;
+		border-radius: 25px;
+	}
+	.one_post {
+		background-color: #cbcbcb;
+		padding: 25px;
+		margin: 25px;
+		min-height: 100px;
+		border-radius: 25px;
+	}
+}
+
+@media(min-width: 1024px) {
+	#posts {
+		background-color: #EAECEF;
+		padding: 25px;
+		margin: 25px;
+		border-radius: 25px;
+	}
+	.one_post {
+		background-color: #cbcbcb;
+		padding: 25px;
+		margin: 25px;
+		min-height: 100px;
+		border-radius: 25px;
+	}
+}

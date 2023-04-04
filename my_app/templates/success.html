@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    
+    {% include 'googlefont.html' %}
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+
+</head>
+
+<body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/success">
+            <i class="icon-car"></i>
+            Free Coding Academy
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/success">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile/{{user.id}}">About Me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/activity">Activity</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <a class="navbar-text mr-4" href="/settings/{{user.id}}" role="button"> {{user.first_name}} {{ user.last_name }}</a>
+                <a class="btn btn-outline-secondary" href="/logout" role="button">Logout</a>
+                
+            </span>
+            
+            
+        </div>
+    </nav>
+    <!-- navbar -->
+
+    {% if messages %}
+    <div class="alert alert-primary m-0" role="alert">
+        {% for message in messages %}
+        {{message}}
+        <br>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container mt-n3 mb-n3">
+            
+            <div class="row">
+                <div class="col">
+
+                    <h1>Welcome to Free Coding Academy</h1>
+                    <a href="https://patreon.com/freecodingacademy" target="_blank" style="color:black">
+                        <small>
+                            <center><p style="padding:8px;">Buy me a coffee on Patreon :)</p></center>
+                        <center> Please consider supporting so that I can continue providing free tutorials and tutoring sessions online!</center>
+                        </small>
+                        
+                       
+                    </a>
+                </div>
+            </div>
+            
+        
+        </div>
+    </div>
+
+   
+
+    <div class="container">
+        <div class="row m-2 p-2">
+            
+
+            <!-- <div class="col-sm p-3 m-2" style="border:2px solid #d5d5d5; border-radius: 25px;"> -->
+            <!-- <div class="col-sm p-3 m-2"> -->
+                <!-- <h2>Terminal</h2> -->
+                <div class="col-sm-3">
+                    <a href="/terminal">
+                        <center><img style="width:90%;" class="center-block" src="/static/swift-lang.png"></center>
+                    </a>
+                    <a href="/terminal" style="color:black">
+                        <center><h5 style="padding:8px;">Swift</h5></center>
+                    </a>
+                    
+                    
+                    
+                </div>
+                <div class="col-sm-3">
+                    
+                    
+                    <a href="/swiftui">
+                        <center><img style="width:90%;" class="center-block" src="/static/swift.png"></center>
+                    </a>
+                    <a href="/swiftui" style="color:black">
+                        <center><h5 style="padding:8px;">Swift UI</h5></center>
+                    </a>
+                    
+                </div>
+                <div class="col-sm-3">
+                    
+                    
+                    <a href="/terminal">
+                        <center><img style="width:90%;" class="center-block" src="/static/macterminal.jpeg"></center>
+                    </a>
+                    <a href="/terminal" style="color:black">
+                        <center><h5 style="padding:8px;">Terminal</h5></center>
+                    </a>
+                    
+                </div>
+                <div class="col-sm-3">
+                    
+                    
+                    <a href="/terminal">
+                        <center><img style="width:90%;" class="center-block" src="/static/github.jpg"></center>
+                    </a>
+                    <a href="/terminal" style="color:black">
+                        <center><h5 style="padding:8px;">GitHub</h5></center>
+                    </a>
+                    
+                </div>
+        
+                
+               
+
+               
+            </div>
+            
+            <div class="row m-2 p-2">
+                <div class="col-sm-3">
+                    <a href="/terminal">
+                        <center><img style="width:90%;" class="center-block" src="/static/algorithms.png"></center>
+                    </a>
+                    <a href="/terminal" style="color:black">
+                        <center><h5 style="padding:8px;">Algorithms</h5></center>
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="/terminal">
+                        <center><img style="width:90%;" class="center-block" src="/static/ds.png"></center>
+                    </a>
+                    <a href="/terminal" style="color:black">
+                        <center><h5 style="padding:8px;">Data Structures</h5></center>
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="/terminal">
+                        <center><img style="width:90%;" class="center-block" src="/static/databases.png"></center>
+                    </a>
+                    <a href="/terminal" style="color:black">
+                        <center><h5 style="padding:8px;">Databases</h5></center>
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="/terminal">
+                        <center><img style="width:90%;" class="center-block" src="/static/architecture.png"></center>
+                    </a>
+                    <a href="/terminal" style="color:black">
+                        <center><h5 style="padding:8px;">Architecture</h5></center>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row m-2 p-2">
+                <div class="col-sm-3">
+                    <a href="/terminal">
+                        <center><img style="width:90%;" class="center-block" src="/static/html.png"></center>
+                    </a>
+                    <a href="/terminal" style="color:black">
+                        <center><h5 style="padding:8px;">HTML 5</h5></center>
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="/terminal">
+                        <center><img style="width:90%;" class="center-block" src="/static/css.png"></center>
+                    </a>
+                    <a href="/terminal" style="color:black">
+                        <center><h5 style="padding:8px;">CSS</h5></center>
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="/terminal">
+                        <center><img style="width:90%;" class="center-block" src="/static/js.png"></center>
+                    </a>
+                    <a href="/terminal" style="color:black">
+                        <center><h5 style="padding:8px;">Javascript</h5></center>
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="/terminal">
+                        <center><img style="width:90%;" class="center-block" src="/static/python.png"></center>
+                    </a>
+                    <a href="/terminal" style="color:black">
+                        <center><h5 style="padding:8px;">Python</h5></center>
+                    </a>
+                </div>
+            </div>
+            
+            
+            
+            
+
+        </div>
+        
+
+    </div>
+<!-- Calendly badge widget begin -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+<script type="text/javascript">window.onload = function() { Calendly.initBadgeWidget({ url: 'https://calendly.com/jmh3434/code', text: 'Schedule 30 Minute Coding Session', color: '#0069ff', textColor: '#ffffff', branding: undefined }); }</script>
+<!-- Calendly badge widget end -->
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>

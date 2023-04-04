@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    {% include 'googlefont.html' %}
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+
+<body>
+
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/success">
+            <i class="bi bi-lightning-charge"></i>
+            Quotable
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/success">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile/{{signed_in_user.id}}">My Quotes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/activity">Activity</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <a class="navbar-text mr-4" href="/settings/{{signed_in_user.id}}" role="button"> {{ signed_in_user.first_name }}
+                    {{signed_in_user.last_name}}</a>
+                <a class="btn btn-outline-secondary" href="/logout" role="button">Logout</a>
+            </span>
+    
+        </div>
+    </nav>
+
+    <!-- navbar -->
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="jumbotron pt-4 pb-1 mt-3 text-center">
+
+                    <div class="container">
+
+                        <img src="{{signed_in_user.image_url}}" alt="correct_image"
+                            style="height:100px;width:100px;border-radius:100%;border:1px solid #333;">
+                        <p style="margin-bottom: 4px;" class="lead text-muted">{{signed_in_user.first_name}} {{signed_in_user.last_name}}</p>
+                        <h2>Update Profile</h2>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form action="/settings/{{signed_in_user.id}}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        Email: <input type="text" name="email" class="form-control" value={{signed_in_user.email}}>
+                    </div>
+                    <div class="form-group">
+                        First Name: <input type="text" name="first_name" class="form-control" value={{signed_in_user.first_name}}>
+                    </div>
+                    <div class="form-group">
+                        Last Name: <input type="text" name="last_name" class="form-control" value={{signed_in_user.last_name}}>
+                    </div>
+                    <div class="form-group">
+                        Image URL: <input type="texdt" name="image" class="form-control" value={{signed_in_user.image_url}}>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>

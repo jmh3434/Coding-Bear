@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    {% include 'googlefont.html' %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'quiz.css'%}">
+    <title>Free Coding Academy</title>
+
+    <script>
+        $(document).ready(function () {
+
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+
+            // injectContent('1');
+
+            // fetch('content.html')
+            //     .then(response => response.text())
+            //     .then(html => {
+            //         document.querySelector('#content').innerHTML = html;
+            //         alert(response);
+            //     });
+
+           
+
+
+        });
+
+        
+
+
+
+
+
+
+
+    </script>
+</head>
+
+<body>
+
+    
+    
+
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/success">
+            Free Coding Academy
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/success">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile/{{user.id}}">My Quotes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/activity">Activity</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <a class="navbar-text mr-4" href="/settings/{{user.id}}" role="button"> {{ user.first_name }}
+                    {{user.last_name}}</a>
+                <a class="btn btn-outline-secondary" href="/logout" role="button">Logout</a>
+            </span>
+        </div>
+    </nav>
+    <!-- navbar -->
+
+    <!-- sidebar -->
+    <!-- <button type="button" id="sidebarCollapse" class="btn text-white">
+        <i class="fas fa-align-left"></i>
+        <span>Toggle Sidebar</span>
+    </button> -->
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+
+        <nav id="sidebar">
+            <!-- <div class="sidebar-header">
+                    <h3>Bootstrap Sidebar</h3>
+                </div> -->
+
+            <p></p>
+            <ul class="list-unstyled components">
+
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="collapse">1. Welcome</a>
+                    <ul class="collapse list-unstyled show" id="homeSubmenu">
+                        <li>
+                            <!-- <a href="/">Home 1</a> -->
+                            <a class="nav-link" href="#" onclick="injectContent('1')">1.1 - What is Swift?</a>
+                        </li>
+                        <li>
+                            <!-- <a href="#">Home 2</a> -->
+                            <a class="nav-link" href="#" onclick="injectContent('2')">1.2 - Type Inference and Type
+                                Annotations</a>
+                        </li>
+                        <li>
+                            <!-- <a href="#">Home 2</a> -->
+                            <a class="nav-link" href="#" onclick="injectContent('3')">1.3 - Type Inference and Type
+                                Annotations</a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <li class="active">
+                    <a href="#welcome" data-toggle="collapse" aria-expanded="false" class="collapse">2. The
+                        Basics</a>
+                    <ul class="collapse list-unstyled show" id="welcome">
+                        <li>
+                            <!-- <a href="/">Home 1</a> -->
+                            <a class="nav-link" href="#" onclick="injectContent('1')">2.1 Variables and Constants</a>
+                        </li>
+                        <li>
+                            <!-- <a href="#">Home 2</a> -->
+                            <a class="nav-link" href="#" onclick="injectContent('2')">2.2 Type Inference and Type
+                                Annotations</a>
+                        </li>
+                        <li>
+                            <!-- <a href="#">Home 2</a> -->
+                            <a class="nav-link" href="#" onclick="injectContent('3')">2.3 Type Inference and Type
+                                Annotations</a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <li class="active">
+                    <a href="#basicOps" data-toggle="collapse" aria-expanded="false" class="collapse">3. Basic Operators</a>
+                    <ul class="collapse list-unstyled show" id="basicOps">
+                        <li>
+                            <!-- <a href="/">Home 1</a> -->
+                            <a class="nav-link" href="#" onclick="injectContent('1')">3.1 - Arithmetic Operators</a>
+                        </li>
+                        <li>
+                            <!-- <a href="#">Home 2</a> -->
+                            <a class="nav-link" href="#" onclick="injectContent('2')">3.2 - Logical Operators</a>
+                        </li>
+                        <li>
+                            <!-- <a href="#">Home 2</a> -->
+                            <a class="nav-link" href="#" onclick="injectContent('3')">3.3 - Type Inference and Type
+                                Annotations</a>
+                        </li>
+                    </ul>
+                </li>
+                
+                
+                
+            </ul>
+
+
+        </nav>
+
+        <!-- Page Content  -->
+
+        <div class="container p-4">
+
+            <div class="content" id="contentArea">
+                <h1>Welcome!</h1>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem nemo porro ipsa, iure reiciendis officia. Consequatur temporibus suscipit recusandae laudantium! Est aspernatur modi, ad obcaecati corporis laborum maiores accusantium voluptate.</p>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem nemo porro ipsa, iure reiciendis officia. Consequatur temporibus suscipit recusandae laudantium! Est aspernatur modi, ad obcaecati corporis laborum maiores accusantium voluptate.</p>
+                
+            </div>
+
+        </div>
+
+
+           
+
+
+
+       
+
+    </div>
+
+    <!-- sidebar -->
+
+
+
+
+
+    <script>
+        function injectContent(page) {
+
+            const contentArea = document.getElementById('contentArea');
+
+            switch (page) {
+                case '1':
+                    $.get("{% static 'html/swift-programming/1.html' %}", function (html) { contentArea.innerHTML = html });
+                    break;
+                case '2':
+                    $.get("{% static 'html/swift-programming/2.html' %}", function (html) { contentArea.innerHTML = html });
+                    break;
+                case '3':
+                    break;
+                case 'contact':
+                    contentArea.innerHTML = `
+                            <h1>Contact</h1>
+                            <p>Get in touch with us through this page.</p>
+                        `;
+                    break;
+                default:
+                    contentArea.innerHTML = `
+                            <h1>Error</h1>
+                            <p>Oops! Something went wrong. Please try again.</p`
+            }
+        }
+    </script>
+
+
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

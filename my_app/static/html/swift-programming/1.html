@@ -1,0 +1,103 @@
+<h1 id='what-are-variables-and-constants'>Variables and Constants</h1>
+<p>Let’s start with a simple example. Check this out:</p>
+<pre><code>var age:Int = 42
+print(age)
+</code></pre>
+<p>What’s happening in the above code?</p>
+<ul>
+<li>On the first line, you declare a variable named age of type <code>Int</code>, and then you assign the value 42 to it.</li>
+<li>On the second line, you print out the value of the variable age with the print() function.</li>
+
+</ul>
+<p>As a result, the value 42 is printed out. Try it! Click Run in the sandbox above, and see what happens.</p>
+<p>In the above example, a variable age is declared and initialized. Before you can use a variable, you’ll first have to declare and initialize it.</p>
+<ul>
+<li><strong>Declaration</strong> is like saying: “Swift, pay attention! I’m announcing a new variable!”</li>
+<li><strong>Initialization</strong> is like saying: “Swift, that variable has an initial value of 42.”</li>
+
+</ul>
+<p>The syntax for declaring and initializing, as shown in the previous example, is as follows:</p>
+<ol>
+<li>var is the keyword to start a new variable declaration</li>
+<li>age is the name of the variable</li>
+<li>: separates the variable name and type</li>
+<li>Int is the type of the variable (a type annotation)</li>
+<li>= is used to assign a value to the variable</li>
+<li>42 is the value of the variable</li>
+
+</ol>
+<p>Can you also change a variable’s value? Yes! Like this:</p>
+<pre><code class='language-swift' lang='swift'>var age:Int = 42
+age = 999
+print(age)
+</code></pre>
+<p>Here’s what happens:</p>
+<ul>
+<li>First, you declare a variable age and assign it value 42</li>
+<li>Then, you change the value to 999, using the assignment operator =</li>
+<li>Finally, you print the value of age with print()</li>
+
+</ul>
+<p>Makes sense? Awesome!</p>
+<p>In Swift you can create variables with var and constants with let. The difference between a variable and a constant is that a variable can be changed once it’s set, and a constant cannot.</p>
+<p>You declare a constant with the let keyword, like this:</p>
+<p>let name:String = “Bob”
+print(name)</p>
+<p>See how the syntax is exactly the same as before, except for the let keyword?</p>
+<p>Keep in mind that you can’t change a constant after it has been initialized. This code will result in an error:</p>
+<pre><code class='language-swift' lang='swift'>let name:String = “Bob”
+name = “Alice”
+print(name)
+</code></pre>
+<p>The print() function is useful for quickly printing out the value of a variable to the Console or debug output window. It’ll show up in Xcode below the editor, or in the above Sandbox in the output window. This is often called “poor man’s debugging”, because it’s such a simple debugging tool.</p>
+<h2 id='variable-and-constant-types-in-swift'><strong>Variable and Constant Types in Swift</strong></h2>
+<p>Every variable and constant has a type. To find out how types work, let’s look at an analogy: shipping containers.</p>
+<p>Shipping containers have lots of different shapes and sizes. You can’t fit a house in a boat-sized shipping container, and it doesn’t make sense to put one small chair in a container that fits 500 flatscreen TVs.</p>
+<p>And it’s not just about size – some shipping containers are kept cool, and other containers are specially designed for shipping live animals. Every type of shipping container is different.</p>
+<p>Types in Swift are similar. Different variable types can store different kinds of information. You can’t assign a value of one type to a variable with a different type. And once a type has been set, you can’t change it.</p>
+<p>Let’s look at an example:</p>
+<p><code>let name:String = “Bob”</code></p>
+<p>This constant name has type String. You’re assigning it a value “Bob”, which is a string literal. It’s the literal value of the text “Bob”. It’s called a “string”, because it’s a string of characters, or just text.</p>
+<p>You can’t do this:</p>
+<p><code>let name:String = 101</code></p>
+<p>Why not? The value 101 is not a string, it’s an integer number! You can’t assign it to name, because that constant has type String. You can only assign strings to a constant with type String.</p>
+<p>Swift is a strong-typed programming language, which means that every variable needs to have a type, and that type cannot be changed after declaring it. It’s also type-safe, which means that the Swift programming language will help you avoid mistakes, such as assigning 42 to a variable of type String.</p>
+<p>You can work with lots of basic variable types in Swift, such as:</p>
+<ul>
+<li>Int for integer numbers, i.e. whole numbers without fractions like 42</li>
+<li>Double for decimal numbers, i.e. numbers with fractions like 3.1415</li>
+<li>String for text, i.e. strings of characters like “Alice”</li>
+<li>Bool for the boolean logic values true and false</li>
+
+</ul>
+<p>In iOS development, with the Cocoa Touch SDK, you can also work with many more types, like:</p>
+<ul>
+<li>UIButton for buttons</li>
+<li>UIViewController for view controllers</li>
+<li>UISwitch for an on-off switch</li>
+<li>CLLocationManager for receiving GPS coordinates</li>
+
+</ul>
+<p>Swift has many kinds of types, such as classes, structs, enums, protocols, extensions, generics and optionals. Each of these components have different attributes, syntax and properties, and you can use them to structure your code in different ways.</p>
+<p>Wait, what? Swift has different kinds of types!? Yup! A closure type like (Int) -&gt; Void is different than a simple primitive type, like Int. They’re both types, though! The Int type is a struct. A struct (or “structure”) is a flexible construct (or building block) for your code. We’ve got lots of other building blocks in Swift, and they help us organize our code in the right way. Don’t worry about it right now, all will become clear in time.</p>
+<h2 id='inferring-types-with-type-inference'><strong>Inferring Types with Type Inference</strong></h2>
+<p>In the previous chapters we’ve explicitly declared the type of variables, but you’re not required to do that. Swift can infer the type of a variable on its own, based on the context of your code.</p>
+<p>Here’s an example of an explicit type annotation:</p>
+<p><code>var score:Int = 0</code></p>
+<p>The above code has an explicit type annotation :Int. However, you can also just write this:</p>
+<p><code>var score = 0</code></p>
+<p>Because the type of 0 is Int, Swift has figured out – inferred – on its own that score has type Int too. Neat!</p>
+<p>A common mistake of beginner app developers is that they assume that score must have no type. Don’t make the same mistake! Practice with understanding the types of your variables, even when they’re inferred.</p>
+<p>Type inference is super useful, because it makes you more productive and often makes your code easier to read. You simply don’t have to write so many types explicitly, which saves time.</p>
+<p>Another advantage is that the Swift compiler, i.e. the program that turns your Swift code into ones and zeroes, can optimize the types of your variables without the need to explicitly change them.</p>
+<p>For instance, when the Swift compiler recognizes that you are only working with positive integers, it could hypothetically change the type of your variable from Int to UInt and potentially save some memory.</p>
+<p>Here’s another example:</p>
+<p><code>let value = 3 + 3.1415</code></p>
+<p>What is the type of value? We’re adding an integer to a decimal-point value, i.e. an Int and a Double. When the type of value is inferred to Int, you’d lose the fraction, so Swift will infer value to be of type Double.</p>
+<p>Type inference works for all types, so also for functions that return a value, expressions, or for closures. It’s exceptionally helpful for coding closures clearly!</p>
+<p>Want to know the type of an inferred variable or constant? In Xcode’s code editor, hold down the Option key while clicking on a variable. A gizmo pops up, providing you with the type of the variable.</p>
+<p>In a large codebase, i.e. above ~ 15.000 lines of code, type inference can increase the time it takes to compile your app. Swift occasionally chokes on trying to infer a type, too. When that happens, it can helps to declare some types explicitly with a type annotation.</p>
+<p>You can also use the type(of:) function, which tells you the type of the value at runtime. Like this:</p>
+<p>var score = 77
+print(type(of: score))</p>
+<p>Awesome! Now you know how to use var and let to declare variables and constants. You also learned what we use variables for, and how type inference works. Oh, and we talked about types too!</p>

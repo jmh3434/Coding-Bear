@@ -1,0 +1,85 @@
+<h1 id="sample-markdown">Sample Markdown</h1>
+<p>This is some basic, sample markdown.</p>
+<h2 id="second-heading">Second Heading</h2>
+<p>Swift is able to figure out what type of data a constant or variable holds based on what we assign to it. However, sometimes we don’t want to assign a value immediately, or sometimes we want to override Swift’s choice of type, and that’s where type annotations come in.</p>
+<p>So far we’ve been making constants and variables like this:</p>
+<pre><code><span class="hljs-keyword">let</span> <span class="hljs-attr">surname</span> = <span class="hljs-string">"Lasso"</span>
+var <span class="hljs-attr">score</span> = <span class="hljs-number">0</span>
+</code></pre><p>This uses <em>type inference</em>: Swift <em>infers</em> that <code>surname</code> is a string because we’re assigning text to it, and then infers that <code>score</code> is an integer because we’re assigning a whole number to it.</p>
+<p>Type annotations let us be explicit about what data types we want, and look like this:</p>
+<pre><code><span class="hljs-keyword">let</span> surname: <span class="hljs-built_in">String</span> = <span class="hljs-string">"Lasso"</span>
+<span class="hljs-keyword">var</span> score: Int = <span class="hljs-number">0</span>
+</code></pre><p>Now we’re being explicit: <code>surname</code> must be a string, and <code>score</code> must be an integer. That’s exactly what Swift’s type inference would have done anyway, but sometimes it isn’t – sometimes you will want to choose a different type.</p>
+<p>For example, maybe <code>score</code> is a decimal because the user can get half points, so you’d write this:</p>
+<pre><code><span class="hljs-keyword">var</span> score: <span class="hljs-built_in">Double</span> = <span class="hljs-number">0</span>
+</code></pre><p>Without the <code>: Double</code> part Swift would infer that to be an integer, but we’re overriding that and saying it’s definitely a decimal number.</p>
+<p>We’ve looked at a few types of data so far, and it’s important you know their names so you can use the right type annotation when needed.</p>
+<p><code>String</code> holds text:</p>
+<pre><code><span class="hljs-keyword">let</span> playerName: <span class="hljs-keyword">String</span> = <span class="hljs-string">"Roy"</span>
+</code></pre><p><code>Int</code> holds whole numbers:</p>
+<pre><code><span class="hljs-built_in">var</span> luckyNumb<span class="hljs-symbol">er:</span> <span class="hljs-built_in">Int</span> = <span class="hljs-number">13</span>
+</code></pre><p><code>Double</code> holds decimal numbers:</p>
+<pre><code><span class="hljs-keyword">let</span> <span class="hljs-built_in">pi</span>: Double = <span class="hljs-number">3.141</span>
+</code></pre><p><code>Bool</code> holds either true or false:</p>
+<pre><code><span class="hljs-keyword">var</span> isAuthenticated: <span class="hljs-keyword">Bool</span> = <span class="hljs-keyword">true</span>
+</code></pre><p><code>Array</code> holds lots of different values, all in the order you add them. This must be specialized, such as <code>[String]</code>:</p>
+<pre><code><span class="hljs-keyword">var</span> albums: [<span class="hljs-built_in">String</span>] = [<span class="hljs-string">"Red"</span>, <span class="hljs-string">"Fearless"</span>]
+</code></pre><p><code>Dictionary</code> holds lots of different values, where you get to decide how data should be accessed. This must be specialized, such as <code>[String: Int]</code>:</p>
+<pre><code><span class="hljs-keyword">var</span> user: [<span class="hljs-built_in">String</span>: <span class="hljs-built_in">String</span>] = [<span class="hljs-string">"id"</span>: <span class="hljs-string">"@twostraws"</span>]
+</code></pre><p><code>Set</code> holds lots of different values, but stores them in an order that’s optimized for checking what it contains. This must be specialized, such as <code>Set&lt;String&gt;</code>:</p>
+<pre><code><span class="hljs-keyword">var</span> books: <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">String</span>&gt; = <span class="hljs-built_in">Set</span>([<span class="hljs-string">"The Bluest Eye"</span>, <span class="hljs-string">"Foundation"</span>, <span class="hljs-string">"Girl, Woman, Other"</span>])
+</code></pre><p>Knowing all these types is important for times when you don’t want to provide initial values. For example, this creates an array of strings:</p>
+<pre><code><span class="hljs-keyword">var</span> soda: [<span class="hljs-built_in">String</span>] = [<span class="hljs-string">"Coke"</span>, <span class="hljs-string">"Pepsi"</span>, <span class="hljs-string">"Irn-Bru"</span>]
+</code></pre><p>Type annotation isn’t needed there, because Swift can see you’re assigning an array of strings. However, if you wanted to create an <em>empty</em> array of strings, you’d need to know the type:</p>
+<pre><code>var teams: [<span class="hljs-string">String</span>] = [<span class="hljs-string">String</span>](<span class="hljs-link"></span>)
+</code></pre><p>Again, the type annotation isn’t required, but you still need to know that an array of strings is written as <code>[String]</code> so that you can make the thing. Remember, you need to add the open and close parentheses when making empty arrays, dictionaries, and sets, because it’s where Swift allows us to customize the way they are created.</p>
+<p>Some people prefer to use type annotation, then assign an empty array to it like this:</p>
+<pre><code>var cities: <span class="hljs-string">[String]</span> = <span class="hljs-string">[]</span>
+</code></pre><p>I prefer to use type inference as much as possible, so I’d write this:</p>
+<pre><code>var clues = [<span class="hljs-string">String</span>](<span class="hljs-link"></span>)
+</code></pre><p>As well as all those, there are <em>enums</em>. Enums are a little different from the others because they let us create new types of our own, such as an enum containing days of the week, an enum containing which UI theme the user wants, or even an enum containing which screen is currently showing in our app.</p>
+<p>Values of an enum have the same type as the enum itself, so we could write something like this:</p>
+<pre><code><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">UIStyle</span> {</span>
+    <span class="hljs-keyword">case</span> light, dark, system
+}
+
+var style = UIStyle.light
+</code></pre><p>This is what allows Swift to remove the enum name for future assignments, so we can write <code>style = .dark</code> – it knows any new value for <code>style</code> must be some kind <code>UIStyle</code></p>
+<p>Now, there’s a very good chance you’ll be asking <em>when</em> you should use type annotations, so it might be helpful for you to know that I prefer to use type inference as much as possible, meaning that I assign a value to a constant or variable and Swift chooses the correct type automatically. Sometimes this means using something like <code>var score = 0.0</code> so that I get a <code>Double</code>.</p>
+<p>The most common exception to this is with constants I don’t have a value for yet. You see, Swift is really clever: you can create a constant that doesn’t have a value just yet, later on <em>provide</em> that value, and Swift will ensure we don’t accidentally use it until a value is present. It will also ensure that you only ever set the value once, so that it remains constant.</p>
+<p>For example:</p>
+<pre><code><span class="hljs-keyword">let</span> username: <span class="hljs-keyword">String</span>
+<span class="hljs-comment">// lots of complex logic</span>
+username = <span class="hljs-string">"@twostraws"</span>
+<span class="hljs-comment">// lots more complex logic</span>
+<span class="hljs-keyword">print</span>(username)
+</code></pre><p>That code is legal: we’re saying <code>username</code> will contain a string at some point, and we provide a value before using it. If the assignment line – <code>username = &quot;@twostraws&quot;</code> – was missing, then Swift would refuse to build our code because <code>username</code> wouldn’t have a value, and similarly if we tried to set a value to <code>username</code> a second time Swift would also complain.</p>
+<p>This kind of code <em>requires</em> a type annotation, because without an initial value being assigned Swift doesn’t know what kind of data <code>username</code> will contain.</p>
+<p>Regardless of whether you use type inference or type annotation, there is one golden rule: Swift must at all times know what data types your constants and variables contain. This is at the core of being a type-safe language, and stops us doing nonsense things like <code>5 + true</code> or similar.</p>
+<p><strong>Important:</strong> Although type annotation can let us override Swift’s type inference to a degree, our finished code must still be possible. For example, this is not allowed:</p>
+<pre><code><span class="hljs-keyword">let</span> score: <span class="hljs-built_in">Int</span> = <span class="hljs-string">"Zero"</span>
+</code></pre><p>Swift just can’t convert “Zero” to an integer for us, even with a type annotation requesting it, so the code just won’t build.</p>
+<ul>
+<li>Unordered lists, and:<ol>
+<li>One</li>
+<li>Two</li>
+<li>Three</li>
+</ol>
+</li>
+<li>More</li>
+</ul>
+<blockquote>
+<p>Blockquote</p>
+</blockquote>
+<p>And <strong>bold</strong>, <em>italics</em>, and even <em>italics and later <strong>bold</strong></em>. Even <del>strikethrough</del>. <a href="https://markdowntohtml.com">A link</a> to somewhere.</p>
+<p>And code highlighting:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> foo = <span class="hljs-string">'bar'</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">baz</span><span class="hljs-params">(s)</span> </span>{
+   <span class="hljs-keyword">return</span> foo + <span class="hljs-string">':'</span> + s;
+}
+</code></pre>
+<p>Or inline code like <code>var foo = &#39;bar&#39;;</code>.</p>
+<p>Or an image of bears</p>
+<p><img src="http://placebear.com/200/200" alt="bears"></p>
+<p>The end ...</p>
