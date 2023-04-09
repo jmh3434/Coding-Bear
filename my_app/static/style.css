@@ -76,3 +76,23 @@ input::-webkit-calendar-picker-indicator {
 		border-radius: 25px;
 	}
 }
+
+/* snake? */
+
+/* .col-sm-3 {
+    position: relative;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.col-sm-3:not(:last-child)::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border-bottom: 2px solid black;
+    margin: 0 auto;
+    transform: translateY(-50%);
+} */

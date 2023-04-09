@@ -23,14 +23,8 @@
                 $('#sidebar').toggleClass('active');
             });
 
-            // injectContent('1');
+            // injectContent('3');
 
-            // fetch('content.html')
-            //     .then(response => response.text())
-            //     .then(html => {
-            //         document.querySelector('#content').innerHTML = html;
-            //         alert(response);
-            //     });
 
            
 
@@ -180,6 +174,8 @@
 
         </div>
 
+        <a class="nav-link" href="#" onclick="injectContent('1')">Next</a>
+
 
            
 
@@ -196,6 +192,8 @@
 
 
     <script>
+        let currentPage = 1;
+        
         function injectContent(page) {
 
             const contentArea = document.getElementById('contentArea');
@@ -208,6 +206,7 @@
                     $.get("{% static 'html/swift-programming/2.html' %}", function (html) { contentArea.innerHTML = html });
                     break;
                 case '3':
+                    $.get("{% static 'html/swift-programming/3.html' %}", function (html) { contentArea.innerHTML = html });
                     break;
                 case 'contact':
                     contentArea.innerHTML = `
