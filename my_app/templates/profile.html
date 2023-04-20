@@ -22,7 +22,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/success">
             <i class="icon-car"></i>
-            Free Coding Academy
+            Coding Bear
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +35,7 @@
                 </li>
                 <li class="nav-item">
                     {% if user.id == signed_in_user.id %}
-                    <a class="nav-link active" href="/profile/{{signed_in_user.id}}">My Courses</a>
+                    <a class="nav-link active" href="/profile/{{signed_in_user.id}}">My Cave</a>
                     {% else %}
                     <a class="nav-link" href="/profile/{{signed_in_user.id}}">You not logged in</a>
                     {% endif %}
@@ -70,8 +70,9 @@
                         <p style="margin-bottom: 4px;">{{user.first_name}} {{user.last_name}}</p>
                         {% endif %}
 
-                        <h1>Movies and Quotes</h1>
-                        <p class="lead text-muted">{{user.user_quotes.count}} | Best Score: {{high_score}} </p>
+                        <h1>My Cave</h1>
+                        <p>This is where your courses are located.</p>
+                        <!-- <p class="lead text-muted">{{user.user_quotes.count}} | Best Score: {{high_score}} </p> -->
                     </div>
                 </section>
                 <div class="table-responsive p-3 m-0">

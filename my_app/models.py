@@ -77,7 +77,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=45)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255)
-    image_url = models.CharField(max_length=255,null=True)
+    image_url = models.CharField(default="/static/codingbearblack.png",max_length=255,null=True)
     high_score = models.IntegerField(default=0,null=True)
     objects = UserManager()
     #user_quotes
