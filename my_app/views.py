@@ -39,7 +39,8 @@ def logout(request):
 
 def success(request):
     if 'user_id' not in request.session:
-        return redirect('/')
+        # return redirect('/') # changed
+        return render(request, 'success.html')
     if 'used_quote_ids' not in request.session:
         request.session["used_quote_ids"] = []
         request.session["genre"] = "family"
@@ -238,7 +239,12 @@ def sample(request):
     return redirect(f'/profile/{poster.id}')
 
 
+
+
 def profile(request,id):
+    if 'user_id' not in request.session:
+        return redirect('/') 
+    
     user = User.objects.get(id=id)
     signed_in_user = User.objects.get(id=request.session['user_id'])
     context = {

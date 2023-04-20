@@ -33,8 +33,8 @@
 <body>
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/success">
-            <img src="/static/codingbearblack.png" width="80px">
+        <a class="navbar-brand d-flex align-items-center" href="/success">
+            <img src="/static/codingbear.png" width="40px" height="">
             <i class="icon-car"></i>
             Coding Bear
         </a>
@@ -43,7 +43,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto d-flex align-items-center">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/success">Home</a>
                 </li>
@@ -52,6 +52,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/activity">Activity</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#donate">Donate</a>
                 </li>
             </ul>
 
@@ -79,7 +82,8 @@
 
     <section class="bg-dark text-light text-center py-5">
         <div class="container">
-            <h1 class="display-4 mb-4">Welcome to Coding Bear.</h1>
+            <h1 class="display-4 mb-4">Welcome to Coding Bear.</h1> 
+            
             <p class="lead mb-4">Where you can choose your own path for learning to code. Stay a while, hibernate, and level up!</p>
             <a href="#all-courses-heading" class="btn btn-light mr-2">Courses</a>
             <a href="#all-paths-heading" class="btn btn-light">View Paths</a>
@@ -276,17 +280,29 @@
         </div>
     </section>
 
-    <section class="text-center">
+    <!-- <section class="text-center">
         <div class="container">
             <h1 id="all-paths-heading">Paths</h1>
             <p class="lead mb-4">You can learn in whatever order you choose, but here are some of the path's we would recommend!</p>
         </div>
-    </section>
+    </section> -->
+
+    <div class="container text-center py-5">
+        <h1 id="donate" class="text-center">How This Site Works</h1>
+        <p>I built this site to help people learn everything I know about code. This site has no ads, and is powered by users like you subscribing through Patreon</p>
+        <p>For the price of one cup of coffee per month, schedule a 30 Minute Coding Session with me, and get full access to the site forever!</p>
+
+        <a type="button" target="_blank" href="https://patreon.com/codingbear" class="btn btn-rounded btn-primary outline-none pt-2 pb-2 pr-5 pl-5" style="border-radius: 50px;">Buy me a cup of coffee!
+            <img src="/static/codingbear.png" alt="CodingBear" class="btn-icon pl-2" width="35px;">
+        </a>
+
+    </div>
 
 
     <div class="container text-center py-5">
-        <!-- <h1 id="all-paths-heading" class="text-center">Paths</h1> -->
-        <div class="row text-center">
+        <h1 id="all-paths-heading" class="text-center">Paths</h1>
+        <p>You can learn in whatever order you choose, but here are some of the path's we would recommend!</p>
+        <div class="row text-center p-3">
             <!-- First group of images -->
             <div class="col-6">
                 <div class="header">Terminal & Version Control</div>
@@ -666,8 +682,17 @@
 
 
     <div class="container">
-        <h1 class="text-center mt-4 mb-4">Most Used Programming Languages in 2020/2021</h1>
-        <div id="chart"></div>
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="text-center mt-4 mb-4">Most Used Programming Languages in 2023</h1>
+                <p>Click on each bar for more information.</p>
+             <div id="chart"></div>
+
+            </div>
+            
+
+        </div>
+        
     </div>
 
     <!-- <div>
@@ -709,6 +734,21 @@
 
             // Get the target element to scroll to
             const target = document.querySelector('#all-paths-heading');
+
+            // Scroll to the target element smoothly
+            target.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Get the anchor link element
+        const link3 = document.querySelector('a[href="#donate"]');
+
+        // Add a click event listener to the link
+        link3.addEventListener('click', event => {
+            // Prevent the default anchor link behavior
+            event.preventDefault();
+
+            // Get the target element to scroll to
+            const target = document.querySelector('#donate');
 
             // Scroll to the target element smoothly
             target.scrollIntoView({ behavior: 'smooth' });
