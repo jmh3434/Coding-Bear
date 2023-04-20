@@ -1,3 +1,7 @@
+body, html {
+    height: 100%;
+  }
+
 #result {
 	position: relative;
 	text-align: center;
@@ -153,7 +157,9 @@ a:focus {
     background: #EAECEF;;
     color: #292929;
     transition: all 0.3s;
-	min-height: 700px;
+	/* min-height: 203rem; */
+    min-height: 100vh;
+   
 }
 
 #sidebar.active {
@@ -287,4 +293,13 @@ iframe {
 }
 .video-wrapper {
 overflow: hidden;
+}
+
+
+.bg-dark {
+    background-color: black !important;
+}
+
+.btn-dark {
+    background-color: black !important;
 }

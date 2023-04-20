@@ -48,7 +48,7 @@
     
 
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/success">
             Free Coding Academy
         </a>
@@ -99,37 +99,39 @@
                     <ul class="collapse list-unstyled show" id="homeSubmenu">
                         <li>
                             <!-- <a href="/">Home 1</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent('1')">1.1 - What is Swift?</a>
+                            <a class="nav-link" href="#" onclick="injectContent(1)">1.1 - What is Swift?</a>
                         </li>
                         <li>
                             <!-- <a href="#">Home 2</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent('2')">1.2 - Type Inference and Type
+                            <a class="nav-link" href="#" onclick="injectContent(2)">1.2 - Type Inference and Type
                                 Annotations</a>
                         </li>
                         <li>
                             <!-- <a href="#">Home 2</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent('3')">1.3 - Type Inference and Type
+                            <a class="nav-link" href="#" onclick="injectContent(3)">1.3 - Type Inference and Type
                                 Annotations</a>
                         </li>
                     </ul>
                 </li>
                 
                 <li class="active">
+                    
                     <a href="#welcome" data-toggle="collapse" aria-expanded="false" class="collapse">2. The
                         Basics</a>
+                    
                     <ul class="collapse list-unstyled show" id="welcome">
                         <li>
                             <!-- <a href="/">Home 1</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent('1')">2.1 Variables and Constants</a>
+                            <a class="nav-link" href="#" onclick="injectContent(1)">2.1 Variables and Constants</a>
                         </li>
                         <li>
                             <!-- <a href="#">Home 2</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent('2')">2.2 Type Inference and Type
+                            <a class="nav-link" href="#" onclick="injectContent(2)">2.2 Type Inference and Type
                                 Annotations</a>
                         </li>
                         <li>
                             <!-- <a href="#">Home 2</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent('3')">2.3 Type Inference and Type
+                            <a class="nav-link" href="#" onclick="injectContent(3)">2.3 Type Inference and Type
                                 Annotations</a>
                         </li>
                     </ul>
@@ -140,15 +142,15 @@
                     <ul class="collapse list-unstyled show" id="basicOps">
                         <li>
                             <!-- <a href="/">Home 1</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent('1')">3.1 - Arithmetic Operators</a>
+                            <a class="nav-link" href="#" onclick="injectContent(1)">3.1 - Arithmetic Operators</a>
                         </li>
                         <li>
                             <!-- <a href="#">Home 2</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent('2')">3.2 - Logical Operators</a>
+                            <a class="nav-link" href="#" onclick="injectContent(2)">3.2 - Logical Operators</a>
                         </li>
                         <li>
                             <!-- <a href="#">Home 2</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent('3')">3.3 - Type Inference and Type
+                            <a class="nav-link" href="#" onclick="injectContent(3)">3.3 - Type Inference and Type
                                 Annotations</a>
                         </li>
                     </ul>
@@ -158,8 +160,14 @@
                 
             </ul>
 
+            
+
 
         </nav>
+        <button style="background-color: #EAECEF; border: none;" type="button" id="sidebarCollapse">
+            <i class="fas fa-align-left"></i>
+            <!-- <span>Toggle Sidebar</span> -->
+        </button>
 
         <!-- Page Content  -->
 
@@ -167,14 +175,17 @@
 
             <div class="content" id="contentArea">
                 <h1>Welcome!</h1>
+                
                 <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem nemo porro ipsa, iure reiciendis officia. Consequatur temporibus suscipit recusandae laudantium! Est aspernatur modi, ad obcaecati corporis laborum maiores accusantium voluptate.</p>
                 <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem nemo porro ipsa, iure reiciendis officia. Consequatur temporibus suscipit recusandae laudantium! Est aspernatur modi, ad obcaecati corporis laborum maiores accusantium voluptate.</p>
                 
             </div>
 
+            <a class="btn btn-primary" href="#" onclick="injectContentNextPage()">Next Page</a>
+
         </div>
 
-        <a class="nav-link" href="#" onclick="injectContent('1')">Next</a>
+        
 
 
            
@@ -185,6 +196,8 @@
 
     </div>
 
+    
+
     <!-- sidebar -->
 
 
@@ -192,27 +205,32 @@
 
 
     <script>
-        let currentPage = 1;
+
+        var currentPage = 0
+
+
+        function injectContentNextPage() {
+
+            currentPage = currentPage + 1;
+            injectContent(currentPage);
+        }
         
         function injectContent(page) {
 
             const contentArea = document.getElementById('contentArea');
 
             switch (page) {
-                case '1':
+                case 1:
+                    currentPage = 1
                     $.get("{% static 'html/swift-programming/1.html' %}", function (html) { contentArea.innerHTML = html });
                     break;
-                case '2':
+                case 2:
+                    currentPage = 2
                     $.get("{% static 'html/swift-programming/2.html' %}", function (html) { contentArea.innerHTML = html });
                     break;
-                case '3':
+                case 3:
+                    currentPage = 3
                     $.get("{% static 'html/swift-programming/3.html' %}", function (html) { contentArea.innerHTML = html });
-                    break;
-                case 'contact':
-                    contentArea.innerHTML = `
-                            <h1>Contact</h1>
-                            <p>Get in touch with us through this page.</p>
-                        `;
                     break;
                 default:
                     contentArea.innerHTML = `

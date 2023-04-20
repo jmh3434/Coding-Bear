@@ -7,19 +7,32 @@
     <title>Home</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://d3js.org/d3.v6.min.js"></script>
 
-    
+
     {% include 'googlefont.html' %}
-    
+
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css'%}">
+
+    <style>
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+
+
 
 </head>
 
 <body>
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/success">
             <i class="icon-car"></i>
             Free Coding Academy
@@ -34,19 +47,21 @@
                     <a class="nav-link active" aria-current="page" href="/success">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile/{{user.id}}">About Me</a>
+                    <a class="nav-link" href="/profile/{{user.id}}">My Courses</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/activity">Activity</a>
                 </li>
             </ul>
+
             <span class="navbar-text">
-                <a class="navbar-text mr-4" href="/settings/{{user.id}}" role="button"> {{user.first_name}} {{ user.last_name }}</a>
+                <a class="navbar-text mr-4" href="/settings/{{user.id}}" role="button"> {{user.first_name}}
+                    {{user.last_name }}</a>
                 <a class="btn btn-outline-secondary" href="/logout" role="button">Logout</a>
-                
+
             </span>
-            
-            
+
+
         </div>
     </nav>
     <!-- navbar -->
@@ -60,242 +75,664 @@
     </div>
     {% endif %}
 
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container mt-n3 mb-n3">
-            
+
+    <section class="bg-dark text-light text-center py-5">
+        <div class="container">
+            <h1 class="display-4 mb-4">Welcome to Free Coding Academy</h1>
+            <p class="lead mb-4">Where you can choose your own path for learning to code!</p>
+            <a href="#all-courses-heading" class="btn btn-dark mr-2">Courses</a>
+            <a href="#all-paths-heading" class="btn btn-dark">View Paths</a>
+        </div>
+    </section>
+
+    <!-- Course Listings -->
+    <!-- <section class="py-5">
+        <div class="container">
+          <h2 class="text-center mb-5">Popular Courses</h2>
+          <div class="row">
+           
+              <div class="col-md-4 mb-4">
+                <div class="card">
+                  <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">Basics</h5>
+                    <p class="card-text">Learning how to code</p>
+                    <a href="#" class="btn btn-primary">Start</a>
+                  </div>
+                </div>
+              </div>
+              
+
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                  <img src="/static/iceburg.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">Basics</h5>
+                    <p class="card-text">Learning how to code</p>
+                    <a href="#" class="btn btn-primary">Start</a>
+                  </div>
+                </div>
+              </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                  <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">Swift</h5>
+                    <p class="card-text">Learning the Swift Language</p>
+                    <a href="#" class="btn btn-primary">Start</a>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </section> -->
+
+
+
+    <!-- Course Listings -->
+    <section class="py-5">
+        <div class="container">
+            <h2 id="all-courses-heading" class="text-center mb-5">All Courses</h2>
             <div class="row">
-                <div class="col">
-
-                    <h1>Welcome to Free Coding Academy</h1>
-                    <p>Where you can choose your own path for learning to code</p>
-                    <a href="https://patreon.com/freecodingacademy" target="_blank" style="color:black">
-                        <small>
-                            <center><p style="padding:8px;">We rely entirely on donations! If this site helps support you, buy me a coffee on Patreon :)</p></center>
-                        <center> Please consider supporting so that I can continue providing free tutorials and tutoring sessions online!</center>
-                        </small>
-                        
-                       
-                    </a>
-
-                    <a href="https://www.venmo.com/u/jmh3434" class="btn btn-primary">Venmo Me</a>
-
-                    
-
-
-
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
+                            style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Basics</h5>
+                            <p class="card-text">Learning how to code</p>
+                            <a href="/swift" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/iceburg.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Building Code</h5>
+                            <p class="card-text">Learning how to code</p>
+                            <a href="#" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
+                            style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Swift</h5>
+                            <p class="card-text">Learning the Swift Language</p>
+                            <a href="#" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-        
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
+                            style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Basics</h5>
+                            <p class="card-text">Learning how to code</p>
+                            <a href="#" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/macterminal.png" class="card-img-top mx-auto" alt="Course 1"
+                            style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Terminal</h5>
+                            <p class="card-text">Learning how to code</p>
+                            <a href="#" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
+                            style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Swift</h5>
+                            <p class="card-text">Learning the Swift Language</p>
+                            <a href="#" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
+                            style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Basics</h5>
+                            <p class="card-text">Learning how to code</p>
+                            <a href="#" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/iceburg.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Building Code</h5>
+                            <p class="card-text">Learning how to code</p>
+                            <a href="#" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
+                            style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Swift</h5>
+                            <p class="card-text">Learning the Swift Language</p>
+                            <a href="#" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
+                            style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Basics</h5>
+                            <p class="card-text">Learning how to code</p>
+                            <a href="#" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/iceburg.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Building Code</h5>
+                            <p class="card-text">Learning how to code</p>
+                            <a href="#" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
+                            style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Swift</h5>
+                            <p class="card-text">Learning the Swift Language</p>
+                            <a href="#" class="btn btn-primary">Start</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
+
+    <section class="text-center">
+        <div class="container">
+            <h1 id="all-paths-heading">Paths</h1>
+            <p class="lead mb-4">You can learn in whatever order you choose, but here are some of the path's we would recommend!</p>
+        </div>
+    </section>
+
+
+    <div class="container text-center py-5">
+        <!-- <h1 id="all-paths-heading" class="text-center">Paths</h1> -->
+        <div class="row text-center">
+            <!-- First group of images -->
+            <div class="col-6">
+                <div class="header">Terminal & Version Control</div>
+                <div class="description">Navigating computer basics </div>
+                <div class="image-container">
+                    <img src="/static/macterminal.png" alt="Image 1" class="img-fluid" width="100px">
+                    <span class="arrow">&#8594;</span>
+                </div>
+                <div class="image-container">
+                    <img src="/static/github.png" alt="Image 2" class="img-fluid" width="100px">
+                    <!-- <span class="arrow">&#8594;</span> -->
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="header">Learning to Code</div>
+                <div class="description">Learning to program, with no fear </div>
+                <div class="image-container">
+                    <img src="/static/beginningcoding.png" alt="Image 1" class="img-fluid" width="100px">
+                    <span class="arrow">&#8594;</span>
+                </div>
+                <div class="image-container">
+                    <img src="/static/github.png" alt="Image 2" class="img-fluid" width="100px">
+                    <!-- <span class="arrow">&#8594;</span> -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- First group of images -->
+            
+        </div>
+
+        <div class="row">
+            <!-- First group of images -->
+            <div class="col-6">
+                <div class="header">Web Development</div>
+                <div class="description">Learn how to build a website </div>
+                <div class="image-container">
+                    <img src="/static/html.png" alt="Image 1" class="img-fluid" width="100px">
+                    <span class="arrow">&#8594;</span>
+                </div>
+                <div class="image-container">
+                    <img src="/static/css.png" alt="Image 2" class="img-fluid" width="100px">
+                    <span class="arrow">&#8594;</span>
+                </div>
+                <div class="image-container">
+                    <img src="/static/js.png" alt="Image 2" class="img-fluid" width="100px">
+                    <!-- <span class="arrow">&#8594;</span> -->
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="header">iOS Development</div>
+                <div class="description">Build an iOS Application </div>
+                <div class="image-container">
+                    <img src="/static/swift-lang.png" alt="Image 1" class="img-fluid" width="100px">
+                    <span class="arrow">&#8594;</span>
+                </div>
+                <div class="image-container">
+                    <img src="/static/swift.png" alt="Image 2" class="img-fluid" width="100px">
+                    <!-- <span class="arrow">&#8594;</span> -->
+                </div>
+            </div>
+        </div>
+        <div class="row text-center">
+            <!-- First group of images -->
+            <div class="col-6">
+                <div class="header">Full Stack Development with Python</div>
+                <div class="description">Navigating computer basics </div>
+                <div class="image-container">
+                    <img src="/static/python.png" alt="Image 1" class="img-fluid" width="100px">
+                    <span class="arrow">&#8594;</span>
+                </div>
+                <div class="image-container">
+                    <img src="/static/django.png" alt="Image 2" class="img-fluid" width="100px">
+                    <!-- <span class="arrow">&#8594;</span> -->
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="header">Learning to Code</div>
+                <div class="description">Learning to program, with no fear </div>
+                <div class="image-container">
+                    <img src="/static/beginningcoding.png" alt="Image 1" class="img-fluid" width="100px">
+                    <span class="arrow">&#8594;</span>
+                </div>
+                <div class="image-container">
+                    <img src="/static/github.png" alt="Image 2" class="img-fluid" width="100px">
+                    <!-- <span class="arrow">&#8594;</span> -->
+                </div>
+            </div>
+        </div>
+        <!-- Add more rows with headers, descriptions, and images as needed -->
     </div>
+
+
+
+
+    <!-- <div class="container">
+        <h1 class="text-center">All Courses</h1>
+        <div class="row m-2 p-2">
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid"
+                                src="/static/beginningcoding.png" height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Basics</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/iceburg.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Building Code</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid"
+                                src="/static/macterminal.png" height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Terminal</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/github.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">GitHub</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row m-2 p-2">
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/swift-lang.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Swift</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/swift.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Swift UI</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid"
+                                src="/static/macterminal.png" height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Terminal</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/github.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">GitHub</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row m-2 p-2">
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/algorithms.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Algorithms</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid"
+                                src="/static/architecture.png" height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Architecture</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/databases.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Databases</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/django.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Django</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row m-2 p-2">
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/html.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">HTML</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/css.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">CSS</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/js.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">JavaScript</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/python.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Python</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row m-2 p-2">
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/typescript.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">TypeScript</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/java.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Java</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/js.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Swift</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <a href="/swift">
+                        <div>
+                            <img style="margin-bottom: -8%;" class="center-block img-fluid" src="/static/python.png"
+                                height="250" width="250">
+                            <a href="/swift" style="color: black;" class="text-center">
+                                <div style="font-size: 1.5rem; font-weight: 200;">Swift</div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+    </div> -->
 
    
 
+
     <div class="container">
-        <div class="row m-2 p-2">
-            
+        <h1 class="text-center mt-4 mb-4">Most Used Programming Languages in 2020/2021</h1>
+        <div id="chart"></div>
+    </div>
 
-            <!-- <div class="col-sm p-3 m-2" style="border:2px solid #d5d5d5; border-radius: 25px;"> -->
-            <!-- <div class="col-sm p-3 m-2"> -->
-                <!-- <h2>Terminal</h2> -->
+    <!-- <div>
 
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/swift-lang.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Swift</h5></center>
-                    </a>
-                    
-                </div>
-                <div class="col-sm-3">
-                    
-                    
-                    <a href="/swiftui">
-                        <center><img style="width:85%;" class="center-block" src="/static/swift.png"></center>
-                    </a>
-                    <a href="/swiftui" style="color:black">
-                        <center><h5 style="padding:8px;">Swift UI</h5></center>
-                    </a>
-                    
-                </div>
-                <div class="col-sm-3">
-                    
-                    
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/macterminal.jpeg"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Terminal</h5></center>
-                    </a>
-                    
-                </div>
-                <div class="col-sm-3">
-                    
-                    
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/github.jpg"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">GitHub</h5></center>
-                    </a>
-                    
-                </div>
-        
-                
-               
+        <img class="center-block img-fluid" src="/static/pl.svg">
 
-               
-            </div>
-            
-            <div class="row m-2 p-2">
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/algorithms.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Algorithms</h5></center>
-                    </a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/ds.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Data Structures</h5></center>
-                    </a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/databases.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Databases</h5></center>
-                    </a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/architecture.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Architecture</h5></center>
-                    </a>
-                </div>
-            </div>
+    </div> -->
 
-            <div class="row m-2 p-2">
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/html.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">HTML 5</h5></center>
-                    </a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/css.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">CSS</h5></center>
-                    </a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/js.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Javascript</h5></center>
-                    </a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/python.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Python</h5></center>
-                    </a>
-                </div>
-            </div>
-
-            <div class="row m-2 p-2">
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/typescript.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Typescript</h5></center>
-                    </a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/java.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Java</h5></center>
-                    </a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/django.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Django</h5></center>
-                    </a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="/terminal">
-                        <center><img style="width:85%;" class="center-block" src="/static/python.png"></center>
-                    </a>
-                    <a href="/terminal" style="color:black">
-                        <center><h5 style="padding:8px;">Python</h5></center>
-                    </a>
-                </div>
-            </div>
-
-
-            <div class="row m-2 p-2 bg-dark">
-                <div class="col-sm-3 text-light">
-
-                    <p></p>
-                </div>
-            </div>
-
-          
-
-        
-
-            
-            
-            
-            
-            
-            
-
-        </div>
-        
+    <div class="container-fluid">
+        <script src="{% static 'app.js'%}"></script>
 
     </div>
 
 
 
-<!-- Calendly badge widget begin -->
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-<script type="text/javascript">window.onload = function() { Calendly.initBadgeWidget({ url: 'https://calendly.com/jmh3434/code', text: 'Schedule 30 Minute Coding Session', color: '#0069ff', textColor: '#ffffff', branding: undefined }); }</script>
-<!-- Calendly badge widget end -->
+    <script>
+        // Get the anchor link element
+        const link1 = document.querySelector('a[href="#all-courses-heading"]');
+
+        // Add a click event listener to the link
+        link1.addEventListener('click', event => {
+            // Prevent the default anchor link behavior
+            event.preventDefault();
+
+            // Get the target element to scroll to
+            const target = document.querySelector('#all-courses-heading');
+
+            // Scroll to the target element smoothly
+            target.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Get the anchor link element
+        const link2 = document.querySelector('a[href="#all-paths-heading"]');
+
+        // Add a click event listener to the link
+        link2.addEventListener('click', event => {
+            // Prevent the default anchor link behavior
+            event.preventDefault();
+
+            // Get the target element to scroll to
+            const target = document.querySelector('#all-paths-heading');
+
+            // Scroll to the target element smoothly
+            target.scrollIntoView({ behavior: 'smooth' });
+        });
+
+    </script>
 
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
+    <!-- Calendly badge widget begin -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+    <script
+        type="text/javascript">window.onload = function () { Calendly.initBadgeWidget({ url: 'https://calendly.com/jmh3434/code', text: 'Schedule 30 Minute Coding Session', color: '#000000', textColor: '#ffffff', branding: undefined }); }</script>
+    <!-- Calendly badge widget end -->
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 
 
 </body>

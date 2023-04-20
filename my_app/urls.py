@@ -22,6 +22,6 @@ urlpatterns = [
     path('delete_comment/<int:id>',views.delete_comment),
     path('show_quiz',views.show_quiz),
     path('settings/<int:id>',views.settings),
-    path('terminal',views.terminal),
+    path('swift',views.swift),
     path('swiftui',views.swiftui),
 ]

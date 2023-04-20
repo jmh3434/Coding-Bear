@@ -18,8 +18,8 @@
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/success">
-            <i class="bi bi-lightning-charge"></i>
-            Quotable
+            <i class="icon-car"></i>
+            Free Coding Academy
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,7 @@
                     <a class="nav-link" aria-current="page" href="/success">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile/{{signed_in_user.id}}">My Quotes</a>
+                    <a class="nav-link" href="/profile/{{signed_in_user.id}}">My Courses</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/activity">Activity</a>
@@ -57,7 +57,7 @@
                     <div class="container">
 
                         <img src="{{signed_in_user.image_url}}" alt="correct_image"
-                            style="height:100px;width:100px;border-radius:100%;border:1px solid #333;">
+                            style="height:100px;width:100px;border-radius:100%;border:1px solid #333;object-fit: cover;">
                         <p style="margin-bottom: 4px;" class="lead text-muted">{{signed_in_user.first_name}} {{signed_in_user.last_name}}</p>
                         <h2>Update Profile</h2>
                     </div>

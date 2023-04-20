@@ -5,7 +5,7 @@ from . import quotes,images
 import random
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html') #index
 
 def register(request):
     if request.method == "GET":
@@ -163,8 +163,8 @@ def show_quiz(request):
     }
     return render(request, 'quiz.html', context)
 
-def terminal(request):
-    return render(request, 'terminal.html')
+def swift(request):
+    return render(request, 'swift.html')
 
 def swiftui(request):
     return render(request, 'swiftui.html')
