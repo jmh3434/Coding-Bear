@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Code Challenge</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Code Challenge</h1>
+        <p>Print Hello World in Swift</p>
+        <form id="codeForm" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <textarea class="form-control" id="codeInput" name="code" rows="10" placeholder="Write your code here"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <div id="response" class="mt-3"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('codeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const codeInput = document.getElementById('codeInput').value;
+            console.log("CODEINPUT: ",codeInput);
+            const responseDiv = document.getElementById('response');
+            const response = await fetch('/submit_code/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({code: codeInput})
+            });
+            const result = await response.json();
+            if (result.status === 'success') {
+                responseDiv.innerHTML = `<span class="text-success">Correct! Points awarded: ${result.points}</span>`;
+            } else {
+                responseDiv.innerHTML = '<span class="text-danger">Incorrect! Please try again.</span>';
+            }
+        });
+    </script>
+</body>
+</html>

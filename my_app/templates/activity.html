@@ -44,6 +44,15 @@
         </div>
     </nav>
     <div id="wrap">
+
+        {% for movie in movies.all reversed %}
+
+        {{movie}}
+
+        {{ movie.title}}
+
+        {% endfor %}
+
         {% for user_quote in user_quotes.all reversed %}
         <div id='posts' class="">
             <h5><img src="{{user_quote.user.image_url}}" alt="correct_image"

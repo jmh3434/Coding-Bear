@@ -112,7 +112,7 @@ const data = [
       svg.append("g")
         .call(d3.axisLeft(y).ticks(10, ".0%"));
     
-      // Add the bars
+      //
       const bars = svg.selectAll(".bar")
         .data(data)
         .enter().append("rect")
