@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,48 +10,25 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-swift.js"></script>
     {% include 'googlefont.html' %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'quiz.css'%}">
-    <title>Coding Bear</title>
+
+    <title>{% block title %}Welcome{% endblock %}</title>
 
     <script>
-
-// var editor = ace.edit("editor");
-//   editor.setTheme("ace/theme/monokai");
-//   editor.getSession().setMode("ace/mode/swift");
-
-
         $(document).ready(function () {
-
-
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
-
-            // injectContent('3');
-
-
-
-
-
         });
-
-
-
-
-
-
-
-
-
     </script>
 </head>
 
 <body>
-
-
 
 
     <!-- navbar -->
@@ -104,7 +83,7 @@
                     <ul class="collapse list-unstyled show" id="homeSubmenu">
                         <li>
                             <!-- <a href="/">Home 1</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent(1)">1.1 - What is Swift?</a>
+                            <a class="nav-link" href="/swift_html/1">1.1 - What is Swift?</a>
                         </li>
                         <li>
                             <!-- <a href="#">Home 2</a> -->
@@ -179,49 +158,27 @@
 
         <div class="container p-4">
 
-            <div class="content" id="contentArea">
-                <h1>Welcome!</h1>
+            <!-- start new content reuse -->
 
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem nemo porro ipsa, iure reiciendis
-                    officia. Consequatur temporibus suscipit recusandae laudantium! Est aspernatur modi, ad obcaecati
-                    corporis laborum maiores accusantium voluptate.</p>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem nemo porro ipsa, iure reiciendis
-                    officia. Consequatur temporibus suscipit recusandae laudantium! Est aspernatur modi, ad obcaecati
-                    corporis laborum maiores accusantium voluptate.</p>
+            {% block content %}
+
+
+
+            {% endblock %}
+
+            <div class="content" id="contentArea">
+
 
             </div>
 
-            <a class="btn btn-primary" href="#" onclick="injectContentNextPage()">Next Page</a>
+            <a class="btn btn-primary" href="/swift_html/{{next_page}}">Next Page</a>
             <a class="btn btn-primary" href="#" onclick="">Ask a Question</a>
 
 
-            <div class="container mt-5">
-                <h1>Code Challenge</h1>
-                <p>Print "Hello, World!" in Swift</p>
-                <form id="codeForm" method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <div id="editor" style="height: 400px;"></div>
-                        <textarea style="display:none;" class="form-control" id="codeInput" name="code" rows="10" placeholder="Write your code here"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-                <div id="response" class="mt-3"></div>
-            </div>
             
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-swift.js"></script>
-            <script>
-                var editor = ace.edit("editor");
-                editor.setTheme("ace/theme/monokai");
-                editor.getSession().setMode("ace/mode/swift");
-                editor.getSession().setValue('print("Hello, World!")');
             
-                // Update textarea with editor content on form submit
-                document.getElementById("codeForm").addEventListener("submit", function() {
-                    document.getElementById("codeInput").value = editor.getSession().getValue();
-                });
-            </script>
+            <!-- end new content reuse -->
+          
 
             
             
@@ -247,114 +204,6 @@
 
 
 
-
-
-
-
-
-    <script>
-        function getHeader() {
-            const header = document.querySelector('header'); // select the header element
-            const currentHeader = header.querySelector('h1').textContent; // get the text content of the h1 element inside the header
-            const headerInput = document.getElementById('header-input'); // select the input element
-            headerInput.value = currentHeader; // set the value of the input element to the current header text
-        }
-
-        var currentPage = 0
-
-
-        function injectContentNextPage() {
-
-
-            currentPage = currentPage + 1;
-            injectContent(currentPage);
-
-        }
-
-        function injectContent(page) {
-
-            const contentArea = document.getElementById('contentArea');
-
-            switch (page) {
-                case 1:
-                    currentPage = 1
-                    $.get("{% static 'html/swift-programming/1.html' %}", function (html) {
-                        contentArea.innerHTML = html;
-                        const h1Element = document.querySelector('h1');
-                        if (h1Element) {
-                            console.log('Newly injected h1 tag detected:', h1Element.textContent);
-                            // take any necessary action based on the presence of the h1 element
-                        }
-                    });
-
-                    break;
-                case 2:
-                    currentPage = 2
-                    $.get("{% static 'html/swift-programming/2.html' %}", function (html) {
-                        contentArea.innerHTML = html;
-                        const h1Element = document.querySelector('h1');
-                        if (h1Element) {
-                            console.log('Newly injected h1 tag detected:', h1Element.textContent);
-                            // take any necessary action based on the presence of the h1 element
-                        }
-                    });
-
-                    break;
-                case 3:
-                    currentPage = 3
-                    $.get("{% static 'html/swift-programming/3.html' %}", function (html) {
-                        contentArea.innerHTML = html;
-                        const h1Element = document.querySelector('h1');
-                        if (h1Element) {
-                            console.log('Newly injected h1 tag detected:', h1Element.textContent);
-                            // take any necessary action based on the presence of the h1 element
-                        }
-                    });
-
-                    break;
-                default:
-                    contentArea.innerHTML = `
-                            <h1>Error</h1>
-                            <p>Oops! Something went wrong. Please try again.</p`
-            }
-
-        }
-    </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-    document.getElementById('codeForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const codeInput = document.getElementById('codeInput').value;
-        console.log("CODEINPUT: ",codeInput);
-        const responseDiv = document.getElementById('response');
-        const response = await fetch('/submit_code/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify({code: codeInput})
-        });
-        const result = await response.json();
-        if (result.status === 'success') {
-            responseDiv.innerHTML = `<span class="text-success">Correct! Points awarded: ${result.points}</span>`;
-        } else {
-            responseDiv.innerHTML = '<span class="text-danger">Incorrect! Please try again.</span>';
-        }
-    });
-</script>
 
   
 

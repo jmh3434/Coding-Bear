@@ -1,6 +1,10 @@
-<h1 id='what-are-variables-and-constants'>Variables and Constantss</h1>
+{% extends 'swift.html' %}
 
-<iframe width="1412" height="568" src="https://www.youtube.com/embed/CwA1VWP0Ldw" title="Swift Programming Tutorial | FULL COURSE | Absolute Beginner" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{% block title %}My Page Title{% endblock %}
+
+{% block content %}
+<h1>Variables and Constants</h1>
+
 
 <p>Let’s start with a simple example. Check this out:</p>
 <pre><code>var age:Int = 42
@@ -105,3 +109,51 @@ print(name)
 print(type(of: score))</p>
 <p>Awesome! Now you know how to use var and let to declare variables and constants. You also learned what we use variables for, and how type inference works. Oh, and we talked about types too!</p>
 
+<div class="container mt-5">
+    <h1>Code Challenge</h1>
+    <p>Print "Hello, World!" in Swift</p>
+    <form id="codeForm" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <div id="editor" style="height: 400px;"></div>
+            <textarea style="display:none;" class="form-control" id="codeInput" name="code" rows="10" placeholder="Write your code here"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <div id="response" class="mt-3"></div>
+</div>
+<script>
+    var editor = ace.edit("editor");
+                editor.setTheme("ace/theme/monokai");
+                editor.getSession().setMode("ace/mode/swift");
+                editor.getSession().setValue('print("Hello, World!")');
+            
+                // Update textarea with editor content on form submit
+                document.getElementById("codeForm").addEventListener("submit", function() {
+                    document.getElementById("codeInput").value = editor.getSession().getValue();
+                });
+
+    document.getElementById('codeForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const codeInput = document.getElementById('codeInput').value;
+        console.log("CODEINPUT: ",codeInput);
+        const responseDiv = document.getElementById('response');
+        const response = await fetch('/submit_code/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({code: codeInput})
+        });
+        const result = await response.json();
+        if (result.status === 'success') {
+            responseDiv.innerHTML = `<p class="text-success">Correct! Points awarded: ${result.points}<br> Output: "${result.output_code}"</p>`;
+        } else {
+            responseDiv.innerHTML = `<p class="text-danger">Output: "${result.output_code}"<br>Incorrect! Please try again.</p>`;
+        }
+    });
+</script>
+
+
+{% endblock %}

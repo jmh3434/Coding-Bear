@@ -633,11 +633,19 @@ def submit_code(request):
                 if output and output.strip() == "Hello, World!":
                     # Award points based on difficulty
                     points_awarded = 10
-                    return JsonResponse({"status": "success", "points": points_awarded})
+                    return JsonResponse({"status": "success", "points": points_awarded, "output_code":output})
                 else:
-                    return JsonResponse({"status": "error"})
+                    return JsonResponse({"status": "error","output_code":output})
             else:
                 return JsonResponse({"status": "error"})
         return JsonResponse({"status": "error"})
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
+
+
+def swift_html(request,id):
+    context = {
+            'next_page':id+1,
+        }
+    html_file_name = f"swift_html/{id}.html"
+    return render(request,html_file_name,context)
