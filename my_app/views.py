@@ -176,7 +176,7 @@ def show_quiz(request):
     return render(request, 'quiz.html', context)
 
 def swift(request):
-    return render(request, 'code_challenge.html')
+    return render(request, 'swift.html')
 
 def swiftui(request):
     return render(request, 'swiftui.html')
