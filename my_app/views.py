@@ -365,251 +365,15 @@ def settings(request,id):
         return redirect(f'/settings/{signed_in_user.id}')
 
 
-    
-
-
-
-def code_challenge(request):
-    return render(request, 'code_challenge.html')
-
-# @csrf_exempt
-# def submit_code(request):
-#     if request.method == 'POST':
-#         code = request.POST.get('code')
-#         url = "https://api.jdoodle.com/v1/execute"
-#         headers = {
-#             "Content-Type": "application/json"
-#         }
-#         data = {
-#             "clientId": "8f50022604a7e8a49611a06e7cfeb1fb",
-#             "clientSecret": "fa531293a666f7764336ff50a88054aac603c840bd14a6876695f456b731c470",
-#             "script": code,
-#             "language": "swift",
-#             "versionIndex": "4"
-#         }
-
-#         response = requests.post(url, headers=headers, json=data)
-#         result = response.json()
-
-#         print("result: ", result)
-#         print(f"JDoodle API response: {result}")  # Add this line for debugging
-
-#         print("output",result["output"])
-
-#         if result["statusCode"] == 200 and result["output"].strip() == "Hello, World!":
-#             # Award points and save it to the user profile, if necessary
-#             points = 10  # Example: 10 points for correct answer
-#             return JsonResponse({"status": "success", "points": points})
-#         else:
-#             return JsonResponse({"status": "error"})
-
-#     return JsonResponse({"status": "error"})
-
-# @csrf_exempt
-# def submit_code(request):
-#     try:
-#         if request.method == 'POST':
-#             data = json.loads(request.body)
-#             code = data.get('code')
-#             print("code",code)
-#             if code:
-#                 api_key = '5dddccd73cmshc44e35bfca575d1p1dd2bbjsn003c79fbd116'
-#                 url = "https://api.judge0.com/submissions?base64_encoded=false&wait=false"
-#                 headers = {'Content-Type': 'application/json', 'x-api-key': api_key}
-#                 payload = {
-#                     "source_code": code,
-#                     "language_id": 72,  # Swift language ID
-#                     "stdin": "",
-#                 }
-#                 response = requests.post(url, data=json.dumps(payload), headers=headers)
-#                 result = response.json()
-#                 token = result.get("token")
-
-#                 # Poll for results
-#                 time.sleep(5)  # Wait 5 seconds before checking the result
-#                 result_url = f"https://api.judge0.com/submissions/{token}?base64_encoded=false"
-#                 result_response = requests.get(result_url, headers={'x-api-key': api_key})
-#                 result_data = result_response.json()
-
-#                 output = result_data.get("stdout")
-
-#                 print("output",output)
-
-#                 if output and output.strip() == "Hello, World!\n":
-#                     # Award points based on difficulty
-#                     points_awarded = 10
-#                     return JsonResponse({"status": "success", "points": points_awarded})
-#                 else:
-#                     return JsonResponse({"status": "error"})
-#             else:
-#                 return JsonResponse({"status": "error"})
-#         return JsonResponse({"status": "error"})
-#     except Exception as e:
-#         return JsonResponse({"status": "error", "message": str(e)})
-
-# @csrf_exempt
-# def submit_code(request):
-#     try:
-#         if request.method == 'POST':
-#             data = json.loads(request.body)
-#             code = data.get('code')
-#             print("code", code)
-#             if code:
-#                 api_key = '5dddccd73cmshc44e35bfca575d1p1dd2bbjsn003c79fbd116'
-#                 url = "https://api.judge0.com/submissions?base64_encoded=false&wait=false"
-#                 headers = {'Content-Type': 'application/json', 'x-api-key': api_key}
-#                 payload = {
-#                     "source_code": code,
-#                     "language_id": 72,  # Swift language ID
-#                     "stdin": "",
-#                 }
-#                 response = requests.post(url, data=json.dumps(payload), headers=headers)
-#                 result = response.json()
-#                 token = result.get("token")
-#                 print("token", token)
-
-#                 # Poll for results
-#                 time.sleep(5)  # Wait 5 seconds before checking the result
-#                 result_url = f"https://api.judge0.com/submissions/{token}?base64_encoded=false"
-#                 result_response = requests.get(result_url, headers={'x-api-key': api_key})
-#                 result_data = result_response.json()
-#                 print("result_data", result_data)
-
-#                 output = result_data.get("stdout")
-#                 print("output", output)
-
-#                 if output and output.strip() == "Hello, World!\n":
-#                     # Award points based on difficulty
-#                     points_awarded = 10
-#                     return JsonResponse({"status": "success", "points": points_awarded})
-#                 else:
-#                     return JsonResponse({"status": "error"})
-#             else:
-#                 return JsonResponse({"status": "error"})
-#         return JsonResponse({"status": "error"})
-#     except Exception as e:
-#         return JsonResponse({"status": "error", "message": str(e)})
-
-
-
-# @csrf_exempt
-# def submit_code(request):
-#     try:
-#         if request.method == 'POST':
-#             data = json.loads(request.body)
-#             code = data.get('code')
-#             print("code", code)
-#             if code:
-#                 url = "https://emkc.org/api/v2/piston/execute"
-#                 headers = {'Content-Type': 'application/json'}
-#                 payload = {
-#                     "language": "swift",
-#                     "source": code,
-#                 }
-#                 response = requests.post(url, data=json.dumps(payload), headers=headers)
-
-#                 print("response",response)
-#                 result = response.json()
-
-#                 output = result.get("output")
-#                 print("output", output)
-
-#                 if output and output.strip() == "Hello, World!\n":
-#                     # Award points based on difficulty
-#                     points_awarded = 10
-#                     return JsonResponse({"status": "success", "points": points_awarded})
-#                 else:
-#                     return JsonResponse({"status": "error"})
-#             else:
-#                 return JsonResponse({"status": "error"})
-#         return JsonResponse({"status": "error"})
-#     except Exception as e:
-#         return JsonResponse({"status": "error", "message": str(e)})
-
-# @csrf_exempt
-# def submit_code(request):
-#     try:
-#         if request.method == 'POST':
-#             data = json.loads(request.body)
-#             code = data.get('code')
-#             print("code", code)
-#             if code:
-#                 url = "https://emkc.org/api/v2/piston/execute"
-#                 headers = {'Content-Type': 'application/json'}
-#                 payload = {
-#                     "language": "swift",
-#                     "source": 'print("Hello, World!")',  # Hardcoded Swift code
-#                 }
-#                 response = requests.post(url, data=json.dumps(payload), headers=headers)
-#                 print("response status code:", response.status_code)
-#                 print("response content:", response.content)
-
-#                 result = response.json()
-
-#                 output = result.get("output")
-#                 print("output", output)
-
-#                 if output and output.strip() == "Hello, World!\n":
-#                     # Award points based on difficulty
-#                     points_awarded = 10
-#                     return JsonResponse({"status": "success", "points": points_awarded})
-#                 else:
-#                     return JsonResponse({"status": "error"})
-#             else:
-#                 return JsonResponse({"status": "error"})
-#         return JsonResponse({"status": "error"})
-#     except Exception as e:
-#         return JsonResponse({"status": "error", "message": str(e)})
-
-# @csrf_exempt
-# def submit_code(request):
-#     try:
-#         if request.method == 'POST':
-#             data = json.loads(request.body)
-#             code = data.get('code')
-#             print("code", code)
-#             if code:
-#                 url = "https://emkc.org/api/v2/piston/execute"
-#                 headers = {'Content-Type': 'application/json'}
-#                 payload = {
-#                     "language": "swift",
-#                     "version": "5.5.3",
-#                     "files": [
-#                         {
-#                             "name": "main.swift",
-#                             "content": code
-#                         }
-#                     ]
-#                 }
-#                 response = requests.post(url, data=json.dumps(payload), headers=headers)
-#                 print("response status code:", response.status_code)
-#                 print("response content:", response.content)
-
-#                 result = response.json()
-
-#                 output = result.get("output")
-#                 print("output", output)
-
-#                 if output and output.strip() == "Hello, World!\n":
-#                     # Award points based on difficulty
-#                     points_awarded = 10
-#                     return JsonResponse({"status": "success", "points": points_awarded})
-#                 else:
-#                     return JsonResponse({"status": "error"})
-#             else:
-#                 return JsonResponse({"status": "error"})
-#         return JsonResponse({"status": "error"})
-#     except Exception as e:
-#         return JsonResponse({"status": "error", "message": str(e)})
-
-
 @csrf_exempt
-def submit_code(request):
+def submit_code(request,expected_output):
     try:
         if request.method == 'POST':
             data = json.loads(request.body)
             code = data.get('code')
             print("code", code)
+            if f"print({expected_output})" in code:
+                return JsonResponse({"status": "error","output_code":"Don't cheat"})
             if code:
                 api_key = 'YOUR_JDOODLE_API_KEY'
                 url = "https://api.jdoodle.com/v1/execute"
@@ -619,7 +383,7 @@ def submit_code(request):
                     "clientSecret": "fa531293a666f7764336ff50a88054aac603c840bd14a6876695f456b731c470",
                     "script": code,
                     "language": "swift",
-                    "versionIndex": "0",
+                    "versionIndex": "4",
                 }
                 response = requests.post(url, data=json.dumps(payload), headers=headers)
                 print("response status code:", response.status_code)
@@ -628,9 +392,13 @@ def submit_code(request):
                 result = response.json()
 
                 output = result.get("output")
-                print("output", output)
 
-                if output and output.strip() == "Hello, World!":
+
+                newOutput = output.replace('\n', '') # added
+
+                print("newOutput", newOutput)
+
+                if newOutput and newOutput.strip() == expected_output:
                     # Award points based on difficulty
                     points_awarded = 10
                     return JsonResponse({"status": "success", "points": points_awarded, "output_code":output})

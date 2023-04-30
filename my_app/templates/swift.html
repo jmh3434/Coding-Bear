@@ -9,10 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.cdnfonts.com/css/menlo" rel="stylesheet">
+                
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-swift.js"></script>
+    
     {% include 'googlefont.html' %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'quiz.css'%}">
@@ -87,13 +90,12 @@
                         </li>
                         <li>
                             <!-- <a href="#">Home 2</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent(2)">1.2 - Type Inference and Type
+                            <a class="nav-link" href="/swift_html/2">1.2 - Type Inference and Type
                                 Annotations</a>
                         </li>
                         <li>
                             <!-- <a href="#">Home 2</a> -->
-                            <a class="nav-link" href="#" onclick="injectContent(3)">1.3 - Type Inference and Type
-                                Annotations</a>
+                            <a class="nav-link" href="/swift_html/3">1.3 - Loops</a>
                         </li>
                     </ul>
                 </li>
@@ -165,14 +167,23 @@
 
 
             {% endblock %}
+            
+            <form id="codeForm" method="post" style="margin:0px; position: relative;">
+                {% csrf_token %}
+            
+                <!-- <div class="mb-3" style="margin-top: 0px;"> -->
+                <div id="editor" style="height: 400px;"></div>
+                <textarea style="display:none;" class="form-control" id="codeInput" name="code" rows="10"
+                    placeholder="Write your code here"></textarea>
+                <!-- </div> -->
+                <div id="response" style="margin: 0px;"></div>
+                <button type="submit" class="btn btn success mb-3 rounded-0" style="font-family: Menlo !important;">Run
+                    Code</button>
+            </form>
 
-            <div class="content" id="contentArea">
-
-
-            </div>
-
-            <a class="btn btn-primary" href="/swift_html/{{next_page}}">Next Page</a>
-            <a class="btn btn-primary" href="#" onclick="">Ask a Question</a>
+            
+            <a class="" href="/swift_html/{{next_page}}">Next Page</a>
+            <a class="" href="#" onclick="">Ask a Question</a>
 
 
             
@@ -201,10 +212,68 @@
 
     <!-- sidebar -->
 
+  
+
+<script>
+    
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/swift");
+    editor.setOption("showPrintMargin", false);
 
 
+    editor.setTheme("ace/theme/monokai-light");
+    editor.setFontSize("16px"); // Set font size to 16px
+    editor.setOptions({
+        fontFamily: "Menlo, Monaco, 'Courier New', monospace", // Set font family
+        fontWeight: "normal", // Set font weight
+        fontSize: "14px" // Set font size
+    });
 
 
+//     var swiftCode = `func findMax(_ numbers: [Int]) -> Int {
+//     return numbers.max()!
+// }
+// let numbers = [12, 45, 67, 23, 9]
+
+// print(findMax(numbers))`
+    editor.getSession().setValue(swiftCode);
+
+    // Update textarea with editor content on form submit
+    document.getElementById("codeForm").addEventListener("submit", function () {
+        document.getElementById("codeInput").value = editor.getSession().getValue();
+    });
+
+    document.getElementById('codeForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const codeInput = document.getElementById('codeInput').value;
+        console.log("CODEINPUT: ", codeInput);
+        const responseDiv = document.getElementById('response');
+
+
+        // const expectedOutput = '67';
+
+        const response = await fetch('/submit_code/' + encodeURIComponent(expectedOutput), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ code: codeInput })
+        });
+        const result = await response.json();
+        if (result.status === 'success') {
+            responseDiv.innerHTML = `<p>Output: ${result.output_code}<br>Correct!<br>Points Awarded: ${result.points}</p>`;
+        } else {
+            responseDiv.innerHTML = `<p class="text-danger">Output: ${result.output_code}<br>Incorrect! Please try again.</p>`;
+        }
+    });
+
+
+    
+
+   
+</script>
   
 
 

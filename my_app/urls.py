@@ -24,8 +24,7 @@ urlpatterns = [
     path('settings/<int:id>',views.settings),
     path('swift',views.swift),
     path('swiftui',views.swiftui),
-    path('code_challenge/', views.code_challenge, name='code_challenge'),
-    path('submit_code/', views.submit_code, name='submit_code'),
+    path('submit_code/<str:expected_output>', views.submit_code, name='submit_code'),
     path('swift_html/<int:id>',views.swift_html),
 
 
