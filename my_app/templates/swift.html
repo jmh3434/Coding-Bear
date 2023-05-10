@@ -49,14 +49,19 @@
             });
         });
     </script>
+
+
+
+
 </head>
 
 <body>
 
 
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/success">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand d-flex align-items-center" href="/success">
+            <img src="/static/codingbear.png" width="40px" height="">
             Coding Bear
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
@@ -64,22 +69,29 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto d-flex align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/success">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/success">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile/{{user.id}}">My Quotes</a>
+                    <a class="nav-link" href="/profile/{{user.id}}">My Cave</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/activity">Activity</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#donate">Donate</a>
+                </li>
             </ul>
+
             <span class="navbar-text">
-                <a class="navbar-text mr-4" href="/settings/{{user.id}}" role="button"> {{ user.first_name }}
-                    {{user.last_name}}</a>
+                <a class="navbar-text mr-4" href="/settings/{{user.id}}" role="button"> {{user.first_name}}
+                    {{user.last_name }}</a>
                 <a class="btn btn-outline-secondary" href="/logout" role="button">Logout</a>
+
             </span>
+
+
         </div>
     </nav>
     <!-- navbar -->
@@ -92,6 +104,9 @@
 
     <div class="wrapper">
         <!-- Sidebar  -->
+        <!-- Sidebar -->
+
+
 
         <nav id="sidebar">
             <!-- <div class="sidebar-header">
@@ -181,6 +196,7 @@
         <div class="container p-4">
 
             <!-- start new content reuse -->
+            
 
             {% block content %}
 
@@ -194,7 +210,10 @@
             
             
             <!-- end new content reuse -->
-          
+
+            
+            <a class="btn btn-primary" href="/swift_html/{{next_page}}">Next Page</a>
+            <a class="btn btn-primary" href="#" onclick="">Ask a Question</a>
 
             
             

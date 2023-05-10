@@ -414,6 +414,7 @@ def submit_code(request,expected_output):
 
 def swift_html(request,id):
     context = {
+            'current_page':id,
             'next_page':id+1,
         }
     html_file_name = f"swift_html/{id}.html"

@@ -157,8 +157,8 @@ a:focus {
 #sidebar {
     min-width: 250px;
     max-width: 250px;
-    background: #EAECEF;;
-    color: #292929;
+    /* background: #EAECEF;; */
+    /* color: #292929; */
     transition: all 0.3s;
 	/* min-height: 203rem; */
     min-height: 100vh;
@@ -170,8 +170,9 @@ a:focus {
 }
 
 #sidebar .sidebar-header {
-    padding: 20px;
-    background: #EAECEF;
+    /* padding: 20px; */
+    /* background: #EAECEF; */
+    /* background: #007bff; */
 }
 
 #sidebar ul.components {
@@ -180,8 +181,9 @@ a:focus {
 }
 
 #sidebar ul p {
-    color: #EAECEF;
-    padding: 10px;
+    /* color: #2e4260; */
+    /* color: blue;
+    padding: 10px; */
 }
 
 #sidebar ul li a {
@@ -198,8 +200,9 @@ a:focus {
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
-    /* color: #EAECEF;
-    background: #ffffff; */
+    color: #000000; 
+    /* background: #565656; */
+    background: #fafafaff;
 }
 
 a[data-toggle="collapse"] {
@@ -217,7 +220,9 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #EAECEF;
+    background: #fafafaff;
+    /* height: 500px;; */
+    /* height: 100vh; */
 }
 
 ul.CTAs {
@@ -324,7 +329,7 @@ overflow: hidden;
     white-space: pre-wrap;
     word-wrap: break-word;
     /* padding-bottom: 20px; */
-    background-color: #f0f0f0ff;
+    background-color: rgb(255, 255, 255);
 }
 
 #response p {
@@ -338,7 +343,7 @@ overflow: hidden;
 }
 
 #response .text-danger {
-    color: #CC6666;
+    color: #636363;
 }
 
 #codeForm {
