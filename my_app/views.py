@@ -384,6 +384,7 @@ def submit_code(request,expected_output):
                     "script": code,
                     "language": "swift",
                     "versionIndex": "4",
+                    # "output_format": "simple"
                 }
                 response = requests.post(url, data=json.dumps(payload), headers=headers)
                 print("response status code:", response.status_code)

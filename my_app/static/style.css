@@ -189,3 +189,23 @@ img {
   .btn {
 	box-shadow: none !important;
   }
+
+  @media (max-width: 767px) {
+	.arrow {
+	  display: none;
+	}
+  }
+
+  /* scroll content */
+
+  .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row > .col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+  padding: 0;
+}
+

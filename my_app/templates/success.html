@@ -7,6 +7,7 @@
     <title>Home</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <script src="https://d3js.org/d3.v6.min.js"></script>
 
@@ -35,7 +36,6 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand d-flex align-items-center" href="/success">
             <img src="/static/codingbear.png" width="40px" height="">
-            <i class="icon-car"></i>
             Coding Bear
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
@@ -82,9 +82,10 @@
 
     <section class="bg-dark text-light text-center py-5">
         <div class="container">
-            <h1 class="display-4 mb-4">Welcome to Coding Bear.</h1> 
-            
-            <p class="lead mb-4">Where you can choose your own path for learning to code. Stay a while, hibernate, and level up!</p>
+            <h1 class="display-4 mb-4">Welcome to Coding Bear.</h1>
+
+            <p class="lead mb-4">Where you can choose your own path for learning to code. Stay a while, hibernate, and
+                level up!</p>
             <a href="#all-courses-heading" class="btn btn-light mr-2 rounded-0">Courses</a>
             <a href="#all-paths-heading" class="btn btn-light">View Paths</a>
         </div>
@@ -287,22 +288,72 @@
         </div>
     </section> -->
 
-    <div class="container text-center py-5">
-        <h1 id="donate" class="text-center">How This Site Works</h1>
+    <!-- <div class="container-fluid text-center px-4" style="background-color: #cce5ffff;">
+        <div class="row">
+            <div class="col">
+                <h1 id="donate" class="text-center">How This Site Works</h1>
         <p>I built this site to help people learn everything I know about code. This site has no ads, and is powered by users like you subscribing through Patreon</p>
         <p>For the price of one cup of coffee per month, schedule a 30 Minute Coding Session with me, and get full access to the site forever!</p>
 
-        <!-- <a type="button" target="_blank" href="https://patreon.com/codingbear" class="btn btn-rounded btn-primary outline-none pt-2 pb-2 pr-5 pl-5" style="border-radius: 50px;">Buy me a cup of coffee!
-            <img src="/static/codingbear.png" alt="CodingBear" class="btn-icon pl-2" width="35px;">
-        </a> -->
+       
 
         <a type="button" target="_blank" href="https://patreon.com/codingbear" class="btn btn-rounded btn-primary outline-none pt-2 pb-2 pr-5 pl-5" style="border-radius: 50px; font-size: 18px; color: #ffffff;">
             Buy me a cup of coffee!
             <img src="/static/codingbear.png" alt="CodingBear" class="btn-icon pl-2" width="35px;">
         </a>
+
+            </div>
+        </div>
+        
         
 
+    </div> -->
+
+    <div class="container-fluid text-center py-5" style="background-color: #cce5ffff;">
+        <div class="row">
+            <div class="col">
+                <h1 id="donate" class="text-center">How This Site Works</h1>
+                <p class="mt-5">I built this site to help people learn everything I know about code. This site has no
+                    ads, and is powered by users like you subscribing through Patreon. <br> For the price of one cup of
+                    coffee per month, schedule a 30 Minute Coding Session with me, and get full access to the site
+                    forever!</p>
+                <a type="button" target="_blank" href="https://patreon.com/codingbear"
+                    class="btn btn-rounded btn-primary mt-5"
+                    style="border-radius: 50px; font-size: 18px; color: #ffffff;">
+                    Buy me a cup of coffee!
+                    <img src="/static/codingbear.png" alt="CodingBear" class="btn-icon pl-2" width="35px;">
+                </a>
+            </div>
+        </div>
     </div>
+
+
+    <!-- <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6 p-0">
+            <img src="https://via.placeholder.com/800x800" class="w-100" style="max-width: 600px;" alt="">
+          </div>
+          <div class="col-md-6 p-0">
+            <img src="https://via.placeholder.com/800x800" class="w-100" style="max-width: 600px;" alt="">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 p-0">
+            <img src="https://via.placeholder.com/800x800" class="w-100" style="max-width: 600px;" alt="">
+          </div>
+          <div class="col-md-6 p-0">
+            <img src="https://via.placeholder.com/800x800" class="w-100" style="max-width: 600px;" alt="">
+          </div>
+        </div>
+      </div> -->
+      
+      
+      
+
+
+
+
+
 
 
     <div class="container text-center py-5">
@@ -337,7 +388,7 @@
         </div>
         <div class="row">
             <!-- First group of images -->
-            
+
         </div>
 
         <div class="row">
@@ -684,21 +735,22 @@
 
     </div> -->
 
-   
 
 
-    <div class="container">
+
+    <div class="container py-5">
         <div class="row">
             <div class="col text-center">
-                <h1 class="text-center mt-4 mb-4">Most Used Programming Languages in 2023</h1>
-                <p>Click on each bar for more information.</p>
-             <div id="chart"></div>
+                <h1 class="text-center">Most Used Programming Languages in 2023</h1>
+                <small> <i class="bi bi-info-circle"></i> Click on each bar for more information.</small>
+
+                <div id="chart"></div>
 
             </div>
-            
+
 
         </div>
-        
+
     </div>
 
     <!-- <div>

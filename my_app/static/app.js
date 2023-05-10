@@ -44,12 +44,12 @@ const data = [
       .attr("y", d => y(d.usage))
       .attr("width", x.bandwidth())
       .attr("height", d => height - y(d.usage))
-      .attr("fill", "#007bff");
+      .attr("fill", "black");
 
       bars.on("click", function (event, d) {
       // Toggle the color of the clicked bar
       const currentColor = d3.select(this).attr("fill");
-      d3.select(this).attr("fill", currentColor === "black" ? "#007bff" : "black");
+      d3.select(this).attr("fill", currentColor === "#cce5ffff" ? "black" : "#cce5ffff");
 
       // Remove any existing info elements
       svg.selectAll(".info-box").remove();
@@ -121,11 +121,11 @@ const data = [
         .attr("y", d => y(d.usage))
         .attr("width", x.bandwidth())
         .attr("height", d => chartHeight - y(d.usage))
-        .attr("fill", "#007bff");
+        .attr("fill", "black");
     
       bars.on("click", function (event, d) {
         // Change the color of the clicked bar
-        d3.select(this).attr("fill", "black");
+        d3.select(this).attr("fill", "#cce5ffff");
     
         // Remove any existing info elements
         svg.selectAll(".info-box").remove();
