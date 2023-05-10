@@ -103,7 +103,7 @@ iframe {
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
     font-family: 'Poppins', sans-serif;
-    background: #fafafa;
+    /* background: #fafafa; */
 }
 
 p {
@@ -202,7 +202,7 @@ a:focus {
 a[aria-expanded="true"] {
     color: #000000; 
     /* background: #565656; */
-    background: #fafafaff;
+    /* background: #fafafaff; */
 }
 
 a[data-toggle="collapse"] {
@@ -220,7 +220,7 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #fafafaff;
+    /* background: #fafafaff; */
     /* height: 500px;; */
     /* height: 100vh; */
 }
@@ -423,7 +423,7 @@ button:focus {
     right: 10px;
     width: 50px;
     height: 50px;
-    background-color: #007bff;
+    background-color: black;
     color: #fff;
     border: none;
     border-radius: 50%;

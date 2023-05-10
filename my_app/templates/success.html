@@ -36,8 +36,8 @@
 
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand d-flex align-items-center" href="/success">
-            <img src="/static/codingbear.png" width="40px" height="">
-            Coding Bear
+            <!-- <img src="/static/codingbear.png" width="40px" height=""> -->
+            Coding Academy
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,7 @@
                     <a class="nav-link active" aria-current="page" href="/success">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile/{{user.id}}">My Cave</a>
+                    <a class="nav-link" href="/profile/{{user.id}}">My Courses</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/activity">Activity</a>
@@ -73,11 +73,11 @@
             </span> -->
             <span class="navbar-text">
                 <div class="dropdown">
-                    <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button"
-                        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{user.first_name}} {{user.last_name}}
                     </a>
-    
+
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="/settings/{{user.id}}">Settings</a>
                         <a class="dropdown-item" href="/logout">Logout</a>
@@ -103,10 +103,11 @@
     <!-- style="color: #ff5134ff" -->
     <section class="bg text-dark text-center py-5" style="">
         <div class="container">
-            <h1 class="display-4 mb-4 "  >Welcome to Coding Bear
+            <h1 class="display-4 mb-4 ">Welcome to Coding Academy
             </h1>
 
-            <p class="lead mb-4" >Where you can choose your own path for learning to code. The best investment for your coding career
+            <p class="lead mb-4">Where you can choose your own path for learning to code. The best investment for your
+                coding career
             </p>
             <!-- <a href="#all-courses-heading" class="btn btn-light mr-2 rounded-0">Courses</a>
             <a href="#all-paths-heading" class="btn btn-light">View Paths</a> -->
@@ -164,142 +165,173 @@
             <h2 id="all-courses-heading" class="text-center mb-5">All Courses</h2>
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
-                            style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Basics</h5>
-                            <p class="card-text">Learning how to code</p>
-                            <a href="/swift_html/1" class="btn btn-primary">Start</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/iceburg.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Building Code</h5>
-                            <p class="card-text">Learning how to code</p>
-                            <a href="#" class="btn btn-primary">Start</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
-                            style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Swift</h5>
-                            <p class="card-text">Learning the Swift Language</p>
-                            <a href="#" class="btn btn-primary">Start</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
-                            style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Basics</h5>
-                            <p class="card-text">Learning how to code</p>
-                            <a href="#" class="btn btn-primary">Start</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/macterminal.png" class="card-img-top mx-auto" alt="Course 1"
-                            style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Terminal</h5>
-                            <p class="card-text">Learning how to code</p>
-                            <a href="#" class="btn btn-primary">Start</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
-                            style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Swift</h5>
-                            <p class="card-text">Learning the Swift Language</p>
-                            <a href="#" class="btn btn-primary">Start</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
-                            style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Basics</h5>
-                            <p class="card-text">Learning how to code</p>
-                            <a href="#" class="btn btn-primary">Start</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/iceburg.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Building Code</h5>
-                            <p class="card-text">Learning how to code</p>
-                            <a href="#" class="btn btn-primary">Start</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
-                            style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Swift</h5>
-                            <p class="card-text">Learning the Swift Language</p>
-                            <a href="#" class="btn btn-primary">Start</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Basics</h5>
+                                <p class="card-text">Learning how to code</p>
 
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Swift</h5>
+                                <p class="card-text">Learning how to code</p>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/html.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">HTML</h5>
+                                <p class="card-text">Learning how to code</p>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+            </div>
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
-                            style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Basics</h5>
-                            <p class="card-text">Learning how to code</p>
-                            <a href="#" class="btn btn-primary">Start</a>
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Basics</h5>
+                                <p class="card-text">Learning how to code</p>
+
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/iceburg.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Building Code</h5>
-                            <p class="card-text">Learning how to code</p>
-                            <a href="#" class="btn btn-primary">Start</a>
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Swift</h5>
+                                <p class="card-text">Learning how to code</p>
+
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
-                            style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Swift</h5>
-                            <p class="card-text">Learning the Swift Language</p>
-                            <a href="#" class="btn btn-primary">Start</a>
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/html.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">HTML</h5>
+                                <p class="card-text">Learning how to code</p>
+
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
+                
             </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Basics</h5>
+                                <p class="card-text">Learning how to code</p>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Swift</h5>
+                                <p class="card-text">Learning how to code</p>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/html.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">HTML</h5>
+                                <p class="card-text">Learning how to code</p>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Basics</h5>
+                                <p class="card-text">Learning how to code</p>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Swift</h5>
+                                <p class="card-text">Learning how to code</p>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="/static/html.png" class="card-img-top mx-auto" alt="Course 1"
+                                style="width:100px">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">HTML</h5>
+                                <p class="card-text">Learning how to code</p>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+            </div>
+        
         </div>
     </section>
 
@@ -368,9 +400,9 @@
           </div>
         </div>
       </div> -->
-      
-      
-      
+
+
+
 
 
 
