@@ -108,10 +108,10 @@ body {
 
 p {
     /* font-family: 'Poppins', sans-serif; */
-    font-size: 1.1em;
+    /* font-size: 1.1em;
     font-weight: 300;
     line-height: 1.7em;
-    color: #818181;
+    color: #818181; */
 }
 
 a,
@@ -237,27 +237,8 @@ ul.CTAs a {
     margin-bottom: 5px;
 }
 
-a.download {
-    background: #fff;
 
-}
 
-a.article,
-a.article:hover {
-    background: #ffffff !important;
-    color: #fff !important;
-}
-
-/* ---------------------------------------------------
-    CONTENT STYLE
------------------------------------------------------ */
-
-#content {
-    width: 100%;
-    padding: 20px;
-    min-height: 100vh;
-    transition: all 0.3s;
-}
 
 /* ---------------------------------------------------
     MEDIAQUERIES
@@ -276,46 +257,6 @@ a.article:hover {
 }
 
 /* SIDEBAR ADDED */
-
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
-
-iframe {
-    width: 100%;
-    height: 100%;
-}
-
-.video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-}
-
-.video-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-.video-wrapper {
-overflow: hidden;
-}
-
-
-.bg-dark {
-    background-color: black !important;
-}
-
-.btn-dark {
-    background-color: black !important;
-}
-
-
-
-@import url('https://fonts.cdnfonts.com/css/menlo');
     
 #response {
     font-family: Menlo !important;
@@ -356,8 +297,8 @@ button:focus {
 
 
   pre {
-    /* background-color: #f9f9f9;
-    border: 1px solid #e1e1e1;
+
+    /* border: 1px solid #e1e1e1;
     border-radius: 4px;
     display: inline-block;
     font-family: 'Menlo', 'Courier', monospace;

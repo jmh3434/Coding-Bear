@@ -1,9 +1,6 @@
-.btn {
+/* .btn {
 	border-radius: 0;
   }
-.body {
-	/* background-color: black; */
-}
 
 .picture1 {
 	background-image:url('terminalmac.jpeg');
@@ -80,38 +77,10 @@ input::-webkit-calendar-picker-indicator {
 	}
 }
 
-/* snake? */
-
-/* .col-sm-3 {
-    position: relative;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-.col-sm-3:not(:last-child)::after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    border-bottom: 2px solid black;
-    margin: 0 auto;
-    transform: translateY(-50%);
-} */
-
-
-img {
-    /* width: 200px;  */
-    /* height: 200px; */
-    /* object-fit: cover; */
-}
 
 
 
-/* cards */
 
-/* Custom card styling */
 .card {
 	border: none;
 	border-radius: 10px;
@@ -140,14 +109,14 @@ img {
 	padding: 5px;
 	font-size: 12px;
 	max-width: 200;
-	max-height: 200px; /* Add this line */
-	overflow: auto; /* Add this line */
+	max-height: 200px; 
+	overflow: auto; 
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }
 
  
   
-/* styling for paths */
+
 
 .image-container {
 	position: relative;
@@ -196,7 +165,7 @@ img {
 	}
   }
 
-  /* scroll content */
+
 
   .row {
   display: flex;
@@ -209,3 +178,255 @@ img {
   padding: 0;
 }
 
+
+.dark-mode {
+	background-color: #111;
+	color: #fff;
+  }
+  
+  .dark-mode a {
+	color: #fff;
+  } */
+  
+  .btn {
+	border-radius: 0;
+  }
+  
+  .body {
+	/* background-color: black; */
+  }
+  
+  .picture1 {
+	background-image: url('terminalmac.jpeg');
+  }
+  
+  #myDIV {
+	height: 300px;
+	background-color: #ffffff;
+	display: flex;
+	justify-content: space-evenly;
+  }
+  
+  #wrap {
+	margin: 0px auto;
+	width: auto;
+	padding: 0px 25px 25px;
+  }
+  
+  datalist {
+	width: 400px;
+	text-align-last: center;
+  }
+  
+  input::-webkit-calendar-picker-indicator {
+	display: none;
+  }
+  
+  @media (max-width: 480px) {
+	#posts {
+	  background-color: #eaecef;
+	  padding: 12px;
+	  margin-top: 20px;
+	  border-radius: 25px;
+	}
+	.one_post {
+	  background-color: #cbcbcb;
+	  padding: 20px;
+	  margin: 10px;
+	  min-height: 100px;
+	  border-radius: 25px;
+	}
+  }
+  
+  @media (min-width: 481px) and (max-width: 1023px) {
+	#posts {
+	  background-color: #eaecef;
+	  padding: 25px;
+	  margin: 25px;
+	  border-radius: 25px;
+	}
+	.one_post {
+	  background-color: #cbcbcb;
+	  padding: 25px;
+	  margin: 25px;
+	  min-height: 100px;
+	  border-radius: 25px;
+	}
+  }
+  
+  @media (min-width: 1024px) {
+	#posts {
+	  background-color: #eaecef;
+	  padding: 25px;
+	  margin: 25px;
+	  border-radius: 25px;
+	}
+	.one_post {
+	  background-color: #cbcbcb;
+	  padding: 25px;
+	  margin: 25px;
+	  min-height: 100px;
+	  border-radius: 25px;
+	}
+  }
+  
+  img {
+	/* width: 200px;  */
+	/* height: 200px; */
+	/* object-fit: cover; */
+  }
+  
+  .card {
+	border: none;
+	border-radius: 10px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s;
+  }
+  
+  .card:hover {
+	box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+	transform: translateY(-5px);
+  }
+  
+  .card-img-top {
+	border-radius: 10px 10px 0 0;
+  }
+  
+  .card-title {
+	font-weight: bold;
+  }
+  
+  .info-box {
+	background-color: rgba(255, 255, 255, 1.0);
+	border: 1px solid #000000;
+	border-radius: 3px;
+	padding: 5px;
+	font-size: 12px;
+	max-width: 200px;
+	max-height: 200px;
+	overflow: auto;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+	  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+  
+  .image-container {
+	position: relative;
+	display: inline-block;
+	margin: 20px;
+  }
+  
+
+  .arrow {
+	position: absolute;
+	top: 50%;
+	right: -30px;
+	font-size: 24px;
+	transform: translateY(-50%);
+  }
+  
+  .header {
+	font-weight: bold;
+	margin-bottom: 10px;
+  }
+  
+  .description {
+	font-style: italic;
+	margin-bottom: 20px;
+  }
+  
+  .bg-dark {
+	background-color: black !important;
+  }
+  
+  .btn-dark,
+  .btn-primary {
+	background-color: rgb(0, 0, 0) !important;
+	border-color: white;
+  }
+  
+  .btn:focus {
+	outline: none !important;
+  }
+  
+  .btn {
+	box-shadow: none !important;
+  }
+  
+  @media (max-width: 767px) {
+	.arrow {
+	  display: none;
+	}
+  }
+  
+  .row {
+	display: flex;
+	flex-wrap: wrap;
+  }
+  
+  .row > .col-md-6 {
+	flex: 0 0 50%;
+	max-width: 50%;
+	padding: 0;
+  }
+  
+  .dark-mode {
+	background-color: #111;
+	color: #fff;
+  }
+  
+  .dark-mode a {
+	color: #fff;
+  }
+
+  .dark-mode p {
+	color: white;
+  }
+
+  .dark-mode .card p {
+	color: black;
+  }
+
+  .dark-mode .card h5 {
+	color: black;
+  }
+	
+  .dark-mode h1 {
+	color: white;
+  }
+
+  .dark-mode hr {
+	border-color: #787171;
+	border-width: .9px; 
+  }
+
+  /* navbar */
+
+  /* Add this CSS code after the existing CSS code */
+
+/* Navbar styling for dark mode */
+.dark-mode .navbar {
+	background-color: #111; /* Set the background color for the navbar in dark mode */
+  }
+  
+  .dark-mode .navbar-light .navbar-brand {
+	color: #fff; /* Set the text color for the navbar brand in dark mode */
+  }
+  
+  .dark-mode .navbar-light .navbar-nav .nav-link {
+	color: #fff; /* Set the text color for the navbar links in dark mode */
+  }
+  
+  .dark-mode .navbar-light .navbar-toggler {
+	border-color: #fff; /* Set the border color for the navbar toggler in dark mode */
+  }
+  
+  /* Add more styles as needed to customize the navbar in dark mode */
+  .dark-mode .bar {
+	fill: white;
+  }
+  
+  .dark-mode .info-box {
+	background-color: white;
+	color: #333;
+  }
+  
