@@ -352,11 +352,7 @@ button:focus {
     height: 100%;
 }
 
-#runCodeBtn {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-}
+
 
 #runCodeBtn {
     position: absolute;
@@ -368,10 +364,12 @@ button:focus {
     color: #fff;
     border: none;
     border-radius: 50%;
-    font-size: 20px;
+    font-size: 20px !important;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
+
+
