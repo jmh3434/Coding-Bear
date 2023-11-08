@@ -212,7 +212,10 @@
             <!-- end new content reuse -->
 
             
-            <a class="btn btn-primary" href="/swift_html/{{next_page}}">Next Page</a>
+            <!-- <a class="btn btn-primary" href="/swift_html/{{next_page}}">Next Page</a> -->
+            <a class="btn btn-primary" href="/swift_html/{{next_page}}" id="nextPageBtn" disabled>Next Page</a>
+
+
             <a class="btn btn-primary" href="#" onclick="">Ask a Question</a>
 
             
@@ -241,7 +244,14 @@
 
   
 
-
+    <script>
+        function showCorrectFeedback() {
+    // Your logic to handle correct feedback here
+    
+    // Enable the "Next Page" button
+    document.getElementById('nextPageBtn').removeAttribute('disabled');
+}
+    </script>
 
 
 
