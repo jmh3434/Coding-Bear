@@ -36,7 +36,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand d-flex align-items-center" href="/success">
-            <!-- <img src="/static/codingbear.png" width="40px" height=""> -->
+            <img src="/static/codingbear-nobg.png" width="20px" height="" style="filter: brightness(0%) sepia(100%) hue-rotate(180deg);">
             Coding Academy
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
@@ -96,9 +96,9 @@
         <div class="container">
             <h1 class="display-4 mb-4 ">Welcome to Coding Academy
             </h1>
+            <img src="static/codingbear-nobg.png"  width="80px" alt="" style="filter: brightness(0%) sepia(100%) hue-rotate(180deg);">
 
-            <p class="lead mb-4">Where you can choose your own path for learning to code. The best investment for your
-                coding career
+            <p class="lead mb-4"> Where you get rewarded for learning to code!
             </p>
             <!-- <a href="#all-courses-heading" class="btn btn-light mr-2 rounded-0">Courses</a>
             <a href="#all-paths-heading" class="btn btn-light">View Paths</a> -->
@@ -114,6 +114,22 @@
         <div class="container">
             <h2 id="all-courses-heading" class="text-center mb-5">All Courses</h2>
             <div class="row">
+
+                <div class="col-md-4 mb-4">
+                    <div class="card locked">
+                        <img src="/static/html.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">HTML</h5>
+                            <p class="card-text">Learning how to code y9o</p>
+                        </div>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
+                </div>
+                
+
                 <div class="col-md-4 mb-4">
                     <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
                         <div class="card">
@@ -121,7 +137,7 @@
                                 style="width:100px">
                             <div class="card-body text-center">
                                 <h5 class="card-title">Basics</h5>
-                                <p class="card-text">Learning how to code</p>
+                                <p class="card-text">Get Started</p>
 
                             </div>
                         </div>
@@ -289,21 +305,42 @@
     <hr>
 
 
-    <div class="container text-center py-5" style="">
+    <div class="container text-center py-5">
         <div class="row">
-            <div class="col">
-                <h1 id="donate" class="text-center">How This Site Works</h1>
-                <p class="mt-5">I built this site to help people learn about coding and software development. This site has no
-                    ads, and is powered by users like you subscribing through Patreon. For the price of one cup of
-                    coffee per month, schedule a 30 Minute Coding Session with me, and get full access to the site
-                    forever!</p>
-                <a type="button" target="_blank" href="https://patreon.com/codingbear"
-                    class="btn btn-rounded btn-primary mt-5"
-                    style="border-radius: 50px; font-size: 18px; color: #ffffff;">Buy me a cup of coffee!<img src="/static/codingbear.png" alt="CodingBear" class="btn-icon pl-2" width="35px;">
-                </a>
+            <!-- <div class="col-md-6">
+                <h2 class="text-center">Basic Access</h2>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">$2 per month</li>
+                    <li class="list-group-item">Access to new courses</li>
+                    <li class="list-group-item">Full access to site, and ability to ask questions with answers within 24 hours</li>
+                    <li class="list-group-item">Video Explanations</li>
+                    <li class="list-group-item">Access to new courses</li>
+                    <li class="list-group-item">Access to new assignments and exams</li>
+                    <li class="list-group-item">Access to new courses</li>
+
+                   
+                </ul>
+            </div> -->
+            <div class="col-md-12">
+                <h2 class="text-center">Bootcamp Admission</h2>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">$19 per month</li>
+                    <li class="list-group-item">Admission to bootcamp (online or in person (Durham, NC)</li>
+                    <li class="list-group-item">1 classroom session per week online (via Zoom) OR in person with your cohort</li>
+                    <li class="list-group-item">Access to Discord server</li>
+                    <li class="list-group-item">Complimentary office hours with instructor, and pair programming</li>
+                    <li class="list-group-item">Receive CASH for being top 10 on leaderboard</li>
+                    <li class="list-group-item">Code Review</li>
+                </ul>
             </div>
         </div>
+        <a type="button" target="_blank" href="https://patreon.com/codingbear"
+           class="btn btn-primary my-5"
+           style="border-radius: 50px; font-size: 18px; padding: .375rem .75rem; color: #ffffff;">
+           Buy me a cup of coffee!<img src="/static/codingbear.png" alt="CodingBear" class="btn-icon pl-2" width="35px;">
+        </a>
     </div>
+    
 
 
 
@@ -314,25 +351,10 @@
         <p>You can learn in whatever order you choose, but here are some of the paths we would recommend!</p>
         <div class="row text-center p-3">
             <!-- First group of images -->
-            <div class="col-6">
-                <div class="header">Terminal & Version Control</div>
-                <div class="description">Navigating computer basics </div>
-                <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                    <div class="image-container">
-                        <img src="/static/macterminal.png" alt="Image 1" class="img-fluid" width="100px">
-                        <span class="arrow">&#8594;</span>
-                    </div>
-                </a>
-                <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                <div class="image-container">
-                    <img src="/static/github.png" alt="Image 2" class="img-fluid" width="100px">
-                    <!-- <span class="arrow">&#8594;</span> -->
-                </div>
-                </a>
-            </div>
+            
             <div class="col-6">
                 <div class="header">Learning to Code</div>
-                <div class="description">Learning to program, with no fear </div>
+                <div class="description">Learning to code with JavaScript </div>
                 <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
                 <div class="image-container">
                     <img src="/static/beginningcoding.png" alt="Image 1" class="img-fluid" width="100px">
@@ -356,7 +378,7 @@
             <!-- First group of images -->
             <div class="col-6">
                 <div class="header">Web Development</div>
-                <div class="description">Learn how to build a website </div>
+                <div class="description">Learn how to build a website with HTML, CSS, and JavaScript </div>
                 <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
                 <div class="image-container">
                     <img src="/static/html.png" alt="Image 1" class="img-fluid" width="100px">
@@ -378,7 +400,7 @@
             </div>
             <div class="col-6">
                 <div class="header">iOS Development</div>
-                <div class="description">Build an iOS Application </div>
+                <div class="description">Build an iOS Application with Swift and UIKit </div>
                 <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
                 <div class="image-container">
                     <img src="/static/swift-lang.png" alt="Image 1" class="img-fluid" width="100px">
@@ -397,7 +419,7 @@
             <!-- First group of images -->
             <div class="col-6">
                 <div class="header">Full Stack Development with Python</div>
-                <div class="description">Navigating computer basics </div>
+                <div class="description">Learn full stack development</div>
                 <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
                 <div class="image-container">
                     <img src="/static/python.png" alt="Image 1" class="img-fluid" width="100px">
@@ -412,13 +434,13 @@
                 </a>
             </div>
             <div class="col-6">
-                <div class="header">Learning to Code</div>
-                <div class="description">Learning to program, with no fear </div>
+                <div class="header">Terminal & Version Control</div>
+                <div class="description">Learn how to navigate terminal and version control with Git </div>
                 <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                <div class="image-container">
-                    <img src="/static/beginningcoding.png" alt="Image 1" class="img-fluid" width="100px">
-                    <span class="arrow">&#8594;</span>
-                </div>
+                    <div class="image-container">
+                        <img src="/static/macterminal.png" alt="Image 1" class="img-fluid" width="100px">
+                        <span class="arrow">&#8594;</span>
+                    </div>
                 </a>
                 <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
                 <div class="image-container">

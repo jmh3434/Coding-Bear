@@ -430,3 +430,28 @@ input::-webkit-calendar-picker-indicator {
 	color: #333;
   }
   
+  /* lock gpt */
+
+  
+
+  .lock-overlay {
+	position: absolute;
+	top: 0;  /* Aligns the overlay to the top of the card */
+	left: 0; /* Aligns the overlay to the left of the card */
+	display: flex;
+	justify-content: start; /* Aligns the icon to the start (left) */
+	align-items: start; /* Aligns the icon to the start (top) */
+	z-index: 10; /* Ensures the overlay is above other content */
+	border-radius: 0.25rem; /* Adjust to match your card's border-radius */
+	pointer-events: none; /* Prevents the overlay from blocking click events */
+  }
+  
+  .lock-icon {
+	margin: 10px; /* Adjusts the space from the top and left edges */
+	width: 30px; /* Lock icon size */
+	height: 30px; /* Lock icon size */
+	background: url('/static/lock_icon.png') no-repeat center center;
+	background-size: contain; /* Ensures the icon is fully contained within the element's dimensions */
+  }
+  
+  
