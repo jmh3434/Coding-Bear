@@ -36,7 +36,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand d-flex align-items-center" href="/success">
-            <img src="/static/codingbear-nobg.png" width="20px" height="" style="filter: brightness(0%) sepia(100%) hue-rotate(180deg);">
+            <!-- <img src="/static/codingbear-nobg.png" width="20px" height="" style="filter: brightness(0%) sepia(100%) hue-rotate(180deg);"> -->
             Coding Academy
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
@@ -77,10 +77,10 @@
 
     <!-- navbar -->
 
-    <div class="dark-mode-toggle">
+    <!-- <div class="dark-mode-toggle">
         <input type="checkbox" id="dark-mode-switch">
         <label for="dark-mode-switch">Dark Mode</label>
-      </div>
+      </div> -->
 
     {% if messages %}
     <div class="alert alert-primary m-0" role="alert">
@@ -96,9 +96,9 @@
         <div class="container">
             <h1 class="display-4 mb-4 ">Welcome to Coding Academy
             </h1>
-            <img src="static/codingbear-nobg.png"  width="80px" alt="" style="filter: brightness(0%) sepia(100%) hue-rotate(180deg);">
+            <!-- <img src="static/codingbear-nobg.png"  width="80px" alt="" style="filter: brightness(0%) sepia(100%) hue-rotate(180deg);"> -->
 
-            <p class="lead mb-4"> Where you get rewarded for learning to code!
+            <p class="lead mb-4"> Learn to code, from beginner to interview in one year
             </p>
             <!-- <a href="#all-courses-heading" class="btn btn-light mr-2 rounded-0">Courses</a>
             <a href="#all-paths-heading" class="btn btn-light">View Paths</a> -->
@@ -117,10 +117,36 @@
 
                 <div class="col-md-4 mb-4">
                     <div class="card locked">
+                        <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Basics</h5>
+                            <p class="card-text">Learning how to code</p>
+                        </div>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card locked">
                         <img src="/static/html.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
                         <div class="card-body text-center">
                             <h5 class="card-title">HTML</h5>
-                            <p class="card-text">Learning how to code y9o</p>
+                            <p class="card-text">The Backbone of Web Content</p>
+                        </div>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card locked">
+                        <img src="/static/js.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">JavaScript</h5>
+                            <p class="card-text">Update the web dynamically</p>
                         </div>
 
                         <div class="lock-overlay">
@@ -130,170 +156,173 @@
                 </div>
                 
 
+            
+            </div>
+            <div class="row">
                 <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Basics</h5>
-                                <p class="card-text">Get Started</p>
-
-                            </div>
+                    <div class="card locked">
+                        <img src="/static/css.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">CSS</h5>
+                            <p class="card-text">Style your website</p>
                         </div>
-                    </a>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/html.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Swift</h5>
-                                <p class="card-text">Build iOS Apps with Swift</p>
-
-                            </div>
+                    <div class="card locked">
+                        <img src="/static/swift.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">SwiftUI</h5>
+                            <p class="card-text">Update the web dynamically</p>
                         </div>
-                    </a>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/css.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">HTML</h5>
-                                <p class="card-text">Learning how to code</p>
-
-                            </div>
+                    <div class="card locked">
+                        <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Swift</h5>
+                            <p class="card-text">Update the web dynamically</p>
                         </div>
-                    </a>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
                 </div>
                 
             </div>
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/js.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Basics</h5>
-                                <p class="card-text">Learning how to code</p>
-
-                            </div>
+                    <div class="card locked">
+                        <img src="/static/macterminal.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Terminal</h5>
+                            <p class="card-text">Navigating the Computer</p>
                         </div>
-                    </a>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/js.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">JavaScript</h5>
-                                <p class="card-text">Adding Dynamic Code to the web</p>
-
-                            </div>
+                    <div class="card locked">
+                        <img src="/static/github.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">GitHub</h5>
+                            <p class="card-text">Work With a Team with Version Control</p>
                         </div>
-                    </a>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/html.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">HTML</h5>
-                                <p class="card-text">Learning how to code</p>
-
-                            </div>
+                    <div class="card locked">
+                        <img src="/static/java.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Java and Android</h5>
+                            <p class="card-text">Powering Cross-Platform Applications</p>
                         </div>
-                    </a>
-                </div>
-                
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/css.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Basics</h5>
-                                <p class="card-text">Learning how to code</p>
 
-                            </div>
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
                         </div>
-                    </a>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/macterminal.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Swift</h5>
-                                <p class="card-text">Learning how to code</p>
-
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/html.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">HTML</h5>
-                                <p class="card-text">Learning how to code</p>
-
-                            </div>
-                        </div>
-                    </a>
+                    </div>
                 </div>
                 
             </div>
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Basics</h5>
-                                <p class="card-text">Learning how to code</p>
-
-                            </div>
+                    <div class="card locked">
+                        <img src="/static/python.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Python</h5>
+                            <p class="card-text">Speed, Simplicity, and Power</p>
                         </div>
-                    </a>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Swift</h5>
-                                <p class="card-text">Learning how to code</p>
-
-                            </div>
+                    <div class="card locked">
+                        <img src="/static/django.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Django</h5>
+                            <p class="card-text">Update the web dynamically</p>
                         </div>
-                    </a>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <a href="/swift_html/1" style="text-decoration: none; color: inherit;">
-                        <div class="card">
-                            <img src="/static/html.png" class="card-img-top mx-auto" alt="Course 1"
-                                style="width:100px">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">HTML</h5>
-                                <p class="card-text">Learning how to code</p>
-
-                            </div>
+                    <div class="card locked">
+                        <img src="/static/CA_LOGO.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Deployment</h5>
+                            <p class="card-text">Deploy to App Store</p>
                         </div>
-                    </a>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card locked">
+                        <img src="/static/ds.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Interview Success</h5>
+                            <p class="card-text">Coding Interview Prep</p>
+                        </div>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card locked">
+                        <img src="/static/Architecture.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Design Patterns</h5>
+                            <p class="card-text">Update the web dynamically</p>
+                        </div>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card locked">
+                        <img src="/static/iceburg.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Data Structures and Algorithms</h5>
+                            <p class="card-text">Deploy to App Store</p>
+                        </div>
+
+                        <div class="lock-overlay">
+                            <span class="lock-icon"></span>
+                        </div>
+                    </div>
                 </div>
                 
             </div>
@@ -324,12 +353,10 @@
             <div class="col-md-12">
                 <h2 class="text-center">Bootcamp Admission</h2>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">$19 per month</li>
+                    <li class="list-group-item">$99 per month</li>
                     <li class="list-group-item">Admission to bootcamp (online or in person (Durham, NC)</li>
-                    <li class="list-group-item">1 classroom session per week online (via Zoom) OR in person with your cohort</li>
                     <li class="list-group-item">Access to Discord server</li>
                     <li class="list-group-item">Complimentary office hours with instructor, and pair programming</li>
-                    <li class="list-group-item">Receive CASH for being top 10 on leaderboard</li>
                     <li class="list-group-item">Code Review</li>
                 </ul>
             </div>
@@ -337,7 +364,8 @@
         <a type="button" target="_blank" href="https://patreon.com/codingbear"
            class="btn btn-primary my-5"
            style="border-radius: 50px; font-size: 18px; padding: .375rem .75rem; color: #ffffff;">
-           Buy me a cup of coffee!<img src="/static/codingbear.png" alt="CodingBear" class="btn-icon pl-2" width="35px;">
+           Donate
+           <!-- <img src="/static/codingbear.png" alt="Coding Academy" class="btn-icon pl-2" width="35px;"> -->
         </a>
     </div>
     
@@ -348,7 +376,7 @@
 
     <div class="container text-center py-5">
         <h1 id="all-paths-heading" class="text-center">Paths</h1>
-        <p>You can learn in whatever order you choose, but here are some of the paths we would recommend!</p>
+        <p>We'll Learn each Software Stack Together</p>
         <div class="row text-center p-3">
             <!-- First group of images -->
             
@@ -559,7 +587,7 @@
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
     <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
     <script
-        type="text/javascript">window.onload = function () { Calendly.initBadgeWidget({ url: 'https://calendly.com/jmh3434/code', text: 'Schedule 30 Minute Coding Session', color: '#000000', textColor: '#ffffff', branding: undefined }); }</script>
+        type="text/javascript">window.onload = function () { Calendly.initBadgeWidget({ url: 'https://calendly.com/jmh3434/code', text: 'Schedule Meeting with Instructor', color: '#000000', textColor: '#ffffff', branding: undefined }); }</script>
     <!-- Calendly badge widget end -->
 
 
