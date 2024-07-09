@@ -16,7 +16,7 @@ urlpatterns = [
     path('profile/<int:id>',views.profile),
     path('choose_genre',views.choose_genre),
     path('delete_quote/<int:id>',views.delete_quote),
-    path('activity',views.activity),
+    # path('activity',views.activity),
     path('edit/<int:id>',views.edit),
     path('add_comment/<int:id>',views.add_comment),
     path('delete_comment/<int:id>',views.delete_comment),

@@ -274,19 +274,19 @@ def delete_quote(request,id):
     quote.delete()
     return redirect(f"/profile/{user.id}")
 
-def activity(request):
-    user = User.objects.get(id=request.session['user_id'])
-    signed_in_user = User.objects.get(id=request.session['user_id'])
-    context = {
-        'user': user,
-        'signed_in_user':signed_in_user,
-        'users': User.objects.all(),
-        'movies': Movie.objects.all(),
-        'quotes': Quote.objects.order_by('-updated_at'),
-        'user_quotes': UserQuote.objects.all(),
-    }
+# def activity(request):
+#     user = User.objects.get(id=request.session['user_id'])
+#     signed_in_user = User.objects.get(id=request.session['user_id'])
+#     context = {
+#         'user': user,
+#         'signed_in_user':signed_in_user,
+#         'users': User.objects.all(),
+#         'movies': Movie.objects.all(),
+#         'quotes': Quote.objects.order_by('-updated_at'),
+#         'user_quotes': UserQuote.objects.all(),
+#     }
 
-    return render(request,"activity.html",context)
+#     return render(request,"activity.html",context)
 
 
 def edit(request,id):
