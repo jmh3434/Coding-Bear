@@ -193,7 +193,7 @@ input::-webkit-calendar-picker-indicator {
   }
   
   .body {
-	/* background-color: black; */
+	background-color: black; 
   }
   
   .picture1 {
@@ -202,7 +202,7 @@ input::-webkit-calendar-picker-indicator {
   
   #myDIV {
 	height: 300px;
-	background-color: #ffffff;
+	background-color: #000000;
 	display: flex;
 	justify-content: space-evenly;
   }
@@ -224,7 +224,7 @@ input::-webkit-calendar-picker-indicator {
   
   @media (max-width: 480px) {
 	#posts {
-	  background-color: #eaecef;
+	  background-color: #000000;
 	  padding: 12px;
 	  margin-top: 20px;
 	  border-radius: 25px;
@@ -369,67 +369,13 @@ input::-webkit-calendar-picker-indicator {
 	padding: 0;
   }
   
-  .dark-mode {
-	background-color: #111;
-	color: #fff;
-  }
-  
-  .dark-mode a {
-	color: #fff;
-  }
-
-  .dark-mode p {
-	color: white;
-  }
-
-  .dark-mode .card p {
-	color: black;
-  }
-
-  .dark-mode .card h5 {
-	color: black;
-  }
-	
-  .dark-mode h1 {
-	color: white;
-  }
-
-  .dark-mode hr {
-	border-color: #787171;
-	border-width: .9px; 
-  }
 
   /* navbar */
 
   /* Add this CSS code after the existing CSS code */
 
 /* Navbar styling for dark mode */
-.dark-mode .navbar {
-	background-color: #111; /* Set the background color for the navbar in dark mode */
-  }
-  
-  .dark-mode .navbar-light .navbar-brand {
-	color: #fff; /* Set the text color for the navbar brand in dark mode */
-  }
-  
-  .dark-mode .navbar-light .navbar-nav .nav-link {
-	color: #fff; /* Set the text color for the navbar links in dark mode */
-  }
-  
-  .dark-mode .navbar-light .navbar-toggler {
-	border-color: #fff; /* Set the border color for the navbar toggler in dark mode */
-  }
-  
-  /* Add more styles as needed to customize the navbar in dark mode */
-  .dark-mode .bar {
-	fill: white;
-  }
-  
-  .dark-mode .info-box {
-	background-color: white;
-	color: #333;
-  }
-  
+
   /* lock gpt */
 
   
@@ -455,3 +401,68 @@ input::-webkit-calendar-picker-indicator {
   }
   
   
+
+  /* oct 2*/
+
+  .bg-dark {
+    background-color: #000;
+}
+
+.text-light {
+    color: #fff;
+}
+
+.logo img {
+    max-width: 100px; /* Adjust as needed */
+}
+
+h1 {
+    font-family: 'Arial', sans-serif; /* Choose a bold font */
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+p {
+    font-family: 'Arial', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+
+/* oct 4 */
+
+/* Navbar Styling */
+.navbar-nav .nav-link {
+    font-family: 'Arial', sans-serif; /* Or your preferred font */
+    font-size: 16px; /* Adjust font size as necessary */
+    font-weight: 700; /* Bold text */
+    text-transform: uppercase; /* Makes all text uppercase */
+    letter-spacing: 0.1em; /* Adds a bit of space between letters */
+    color: #0070d5; /* Change to your preferred color */
+}
+
+.navbar-brand {
+    font-family: 'Arial', sans-serif; /* Or another similar font */
+    font-size: 18px; /* Adjust size for the brand/logo */
+    text-transform: uppercase; /* Uppercase for the brand name too */
+    letter-spacing: 0.1em;
+    color: #ffffff; /* Adjust to your preferred color */
+}
+
+.navbar-dark .navbar-toggler {
+    border-color: #ffffff; /* White color for the toggler */
+}
+
+.navbar-dark .navbar-toggler-icon {
+    color: #ffffff; /* White color for the toggler icon */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffffff; /* Change hover color if needed */
+}
+.navbar-nav .nav-link, .navbar-brand {
+    font-family: 'Poppins', sans-serif; /* Example with Poppins font */
+}
+
+
+

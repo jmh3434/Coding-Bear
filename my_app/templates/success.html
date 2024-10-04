@@ -9,6 +9,7 @@
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
     <script src="https://d3js.org/d3.v6.min.js"></script>
 
 
@@ -31,49 +32,19 @@
 
 </head>
 
-<body>
+<body class="bg-dark">
 
     
 
     <!-- navbar -->
 
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="/">
-            <img src="{% static 'calogo.png' %}" alt="Logo" width="180" height="72">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/success">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile/{{user.id}}">My Courses</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/activity">Activity</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#donate">Donate</a>
-                </li>
-            </ul>
     
-            <!-- Dark Mode Toggle -->
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="dark-mode-switch" checked>
-                <label class="form-check-label" for="dark-mode-switch">Dark Mode</label>
-            </div>
-        </div>
-    </nav>
 
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand d-flex align-items-center" href="/success">
             <!-- <img src="/static/codingbear-nobg.png" width="20px" height="" style="filter: brightness(0%) sepia(100%) hue-rotate(180deg);"> -->
             <!-- Coding Academy -->
-            <img src="{% static 'calogo.png' %}" alt="Logo" width="180" height="72">
+            <img src="{% static 'calogo2.png' %}" alt="Logo" width="30" height="30" style="transform:rotate(140deg);">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +53,8 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto d-flex align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/success">Home</a>
+                    <!-- <a class="nav-link active" aria-current="page" href="/success">Home</a> -->
+                    <a class="nav-link active" aria-current="page" href="/success" style="color: #0070d5; font-weight: bold;">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/profile/{{user.id}}">My Courses</a>
@@ -107,6 +79,8 @@
             </span>
         </div>
     </nav>
+
+    
     
 
 
@@ -128,27 +102,56 @@
     {% endif %}
 
     <!-- style="color: #ff5134ff" -->
-    <section class="bg text-dark text-center py-5" style="">
+    <!-- <section class="bg text-light text-center py-5 bg-dark">
         <div class="container">
             <h1 class="display-4 mb-4 ">Welcome to Coding Academy
             </h1>
-            <!-- <img src="static/codingbear-nobg.png"  width="80px" alt="" style="filter: brightness(0%) sepia(100%) hue-rotate(180deg);"> -->
+
 
             <p class="lead mb-4"> Learn to code, from beginner to interview in one year
             </p>
-            <!-- <a href="#all-courses-heading" class="btn btn-light mr-2 rounded-0">Courses</a>
-            <a href="#all-paths-heading" class="btn btn-light">View Paths</a> -->
+           
+        </div>
+    </section> -->
+
+    <!-- <hr style="border-top: 1px solid #ccc; background-color: #ccc; height: 1px; margin: 10px 0;"> -->
+
+
+    <section class="hero-section text-light text-center bg-dark py-5" style="min-height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <div class="container">
+            <!-- Centered Logo -->
+            <div class="logo mb-4">
+                <!-- Add your logo here -->
+                <img src="{% static 'calogo2.png' %}" alt="Logo" style="width: 100px; margin-bottom: 20px;transform:rotate(140deg);">
+            </div>
+    
+            <!-- Main Title -->
+            <h1 class="main-title mb-4" style="font-size: 2rem; font-weight: 700; text-transform: uppercase;">
+                Welcome to Coding Academy
+            </h1>
+    
+            <!-- Subheading -->
+            <p class="lead mb-4" style="font-size: 1.25rem; letter-spacing: 0.2em; text-transform: uppercase;">
+                Full Stack. Experienced. Flexible.
+                
+            </p>
+    
+            <!-- Down Arrow (optional, just like in the screenshot) -->
+           
+            <!-- <div class="scroll-down">
+                <a href="#next-section" class="arrow">arrow</a>
+            </div> -->
+
+            
         </div>
     </section>
 
-    <!-- <hr style="border-top: 1px solid #ccc; background-color: #ccc; height: 1px; margin: 10px 0;"> -->
-    <hr>
 
 
     <!-- Course Listings -->
-    <section class="py-5">
+    <section class="py-5 bg-dark">
         <div class="container">
-            <h2 id="all-courses-heading" class="text-center mb-5">All Courses</h2>
+            <h2 id="all-courses-heading" class="text-center mb-5 text-light">All Courses</h2>
             <div class="row">
 
                 <div class="col-md-4 mb-4">
@@ -370,10 +373,10 @@
     </section>
 
    
-    <hr>
+    <!-- <hr> -->
 
 
-    <div class="container text-center py-5">
+    <div class="container text-center py-5 bg-dark  ">
         <div class="row">
             <!-- <div class="col-md-6">
                 <h2 class="text-center">Basic Access</h2>
@@ -389,14 +392,15 @@
                    
                 </ul>
             </div> -->
-            <div class="col-md-12">
-                <h2 class="text-center">Bootcamp Admission</h2>
+            
+            <div class="col-md-12 bg-dark">
+                <h2 class="text-center text-light">Bootcamp Admission</h2>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">$99 per month</li>
-                    <li class="list-group-item">Admission to bootcamp (online or in person (Durham, NC)</li>
-                    <li class="list-group-item">Access to Discord server</li>
-                    <li class="list-group-item">Complimentary office hours with instructor, and pair programming</li>
-                    <li class="list-group-item">Code Review</li>
+                    <li class="list-group-item bg-dark text-light border-light"> $99 per month </li>
+                    <li class="list-group-item bg-dark text-light border-light"> Admission to bootcamp (online or in person (Durham, NC)) </li>
+                    <li class="list-group-item bg-dark text-light border-light"> Access to Discord server </li>
+                    <li class="list-group-item bg-dark text-light border-light"> Complimentary office hours with instructor, and pair programming </li>
+                    <li class="list-group-item bg-dark text-light border-light"> Code Review </li>
                 </ul>
             </div>
         </div>
