@@ -158,10 +158,17 @@ WSGI_APPLICATION = 'my_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3'),  # force string here
     }
 }
 
@@ -203,7 +210,13 @@ USE_TZ = True
 
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+#STATIC_URL = '/static/'
+
+# --- Static files ---
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'   # <-- add this
+# If you also keep a separate “source” assets dir, list it here:
+# STATICFILES_DIRS = [BASE_DIR / 'assets']
 
 
 # FILE UPLOAD 

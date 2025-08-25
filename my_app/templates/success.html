@@ -2,627 +2,574 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-    <script src="https://d3js.org/d3.v6.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coding Academy — Home</title>
 
+  {% load static %}
+  {% include 'googlefont.html' %}
 
-    {% include 'googlefont.html' %}
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet" />
 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css'%}">
-    <link rel="stylesheet" href="{% static 'common.css' %}">
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
+  <!-- Icons (Bootstrap Icons for tiny UI glyphs if needed) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
 
-    <link rel="icon" href="{% static 'logo.svg' %}" type="image/svg" >
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-    <style>
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 24px;
-                margin-top: 20px;
-                margin-bottom: 20px;
-            }
-        }
-    </style>
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'logo.svg' %}" type="image/svg" />
 
+  <!-- Your existing CSS (keep) -->
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link rel="stylesheet" href="{% static 'common.css' %}">
 
+  <style>
+    :root{
+      --bg-0:#0b0c10;      /* page */
+      --bg-1:#11131a;      /* cards */
+      --bg-2:#0e1016;      /* nav/sections */
+      --line:#1b1f28;      /* borders */
+      --text-0:#e7e9ee;    /* primary text */
+      --text-1:#9aa3b2;    /* muted */
+      --brand:#00e5ff;     /* cyan accent */
+      --brand-2:#7c4dff;   /* violet accent (subtle) */
+      --radius:18px;
+      --shadow:0 12px 24px rgba(0,0,0,.35);
+    }
 
+    html,body{height:100%}
+    body{
+      background: var(--bg-0);
+      color: var(--text-0);
+      font-family:'Source Sans 3',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      -webkit-font-smoothing:antialiased;  text-rendering:optimizeLegibility;
+    }
+    h1,h2,h3,h4{font-family:'Montserrat',system-ui;letter-spacing:.01em}
+    code,pre{font-family:'Roboto Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+    /* ===== Subtle dark texture (vignette + grid) ===== */
+    body::before{
+      content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+      background:
+        radial-gradient(80vw 60vh at 50% -10%, rgba(124,77,255,.08), transparent 60%),
+        radial-gradient(70vw 50vh at 100% 10%, rgba(0,229,255,.08), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+    body::after{
+      content:""; position:fixed; inset:0; z-index:-2; pointer-events:none; opacity:.06;
+      background-image:
+        linear-gradient(0deg, transparent 24%, var(--text-1) 25%, var(--text-1) 26%, transparent 27%, transparent 74%, var(--text-1) 75%, var(--text-1) 76%, transparent 77%),
+        linear-gradient(90deg, transparent 24%, var(--text-1) 25%, var(--text-1) 26%, transparent 27%, transparent 74%, var(--text-1) 75%, var(--text-1) 76%, transparent 77%);
+      background-size: 64px 64px;
+    }
+
+    /* ===== Nav ===== */
+    .navbar{ background: var(--bg-2) !important; border-bottom:1px solid var(--line); }
+    .navbar-brand img{ width:32px;height:32px }
+    .nav-link{ text-transform:uppercase; letter-spacing:.12em; font-size:.78rem; color:var(--text-1) !important }
+    .nav-link.active,.nav-link:hover,.nav-link:focus{ color:var(--text-0) !important }
+
+    /* ===== Hero ===== */
+    .hero{ min-height:88vh; display:grid; place-items:center; text-align:center; padding:72px 0 }
+    .badge-beta{ font-size:.72rem; letter-spacing:.18em; color:var(--text-1); border:1px solid var(--line); border-radius:999px; padding:.45rem .8rem; background:rgba(255,255,255,.02) }
+    .hero-title{ font-size:clamp(2.2rem,3.4vw+1rem,4rem); font-weight:900; line-height:1.04; margin:.9rem 0 .5rem }
+    .hero-sub{ font-size:clamp(1rem,.6vw+0.8rem,1.25rem); color:var(--text-1); letter-spacing:.22em; text-transform:uppercase }
+    .btn{ border-radius:999px; padding:.9rem 1.25rem; font-weight:700; letter-spacing:.06em }
+    .btn-brand{ background:linear-gradient(90deg,var(--brand),var(--brand-2)); border:none }
+    .btn-brand:hover{ filter:brightness(1.08) }
+    .btn-ghost{ background:transparent; border:1px solid var(--line); color:var(--text-0) }
+    .btn-ghost:hover{ border-color:var(--brand) }
+
+    /* ===== Sections ===== */
+    .section{ padding:72px 0 }
+    .section-header{ margin-bottom:28px }
+    .underline{ width:72px; height:3px; border-radius:999px; background:linear-gradient(90deg,var(--brand),var(--brand-2)); margin:14px auto 0 }
+
+    /* ===== Cards ===== */
+    .course-card{ background:var(--bg-1); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); transition:transform .25s ease,border-color .25s ease }
+    .course-card:hover{ transform:translateY(-6px); border-color:var(--brand) }
+    .course-card .thumb{ display:grid; place-items:center; padding-top:22px }
+    .course-card img{ width:92px;height:92px; object-fit:contain; filter:saturate(1.05) }
+    .course-card .card-body{ padding:18px 18px 22px }
+    .course-card .card-title{ font-weight:800 }
+    .course-card .card-text{ color:var(--text-1) }
+
+    .lock-badge{ position:absolute; top:12px; left:12px; display:inline-flex; align-items:center; gap:6px; padding:6px 10px; font-size:.74rem; border-radius:999px; border:1px solid var(--line); background:rgba(255,255,255,.02); backdrop-filter: blur(6px); color:var(--text-1) }
+
+    /* ===== Pricing ===== */
+    .pricing{ background: var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line) }
+    .price-card{ background:var(--bg-1); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:28px }
+    .price{ font-size:clamp(1.8rem,2.4vw+1rem,3rem); font-weight:900 }
+    .features li{ padding:10px 0; border-bottom:1px dashed var(--line); color:var(--text-0) }
+    .features li:last-child{ border-bottom:0 }
+
+    /* ===== Footer ===== */
+    footer{ color:var(--text-1); padding:40px 0 }
+
+    /* Utilities */
+    .muted{ color:var(--text-1) }
+    .chip{ border:1px solid var(--line); color:var(--text-1); padding:.35rem .6rem; border-radius:999px; font-size:.75rem }
+
+    /* New: icon circle + checklist for AI section */
+    .icon-circle{
+      width:48px;height:48px;border-radius:50%;
+      display:inline-grid;place-items:center;
+      background:linear-gradient(90deg,var(--brand),var(--brand-2));
+      color:#0b0c10;font-size:1.25rem;box-shadow:var(--shadow)
+    }
+    .checklist{list-style:none;margin:0;padding-left:0}
+    .checklist li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--line)}
+    .checklist li:last-child{border-bottom:0}
+    .checklist i{margin-top:2px}
+
+    @media (max-width:768px){ .hero{ min-height:80vh } }
+  </style>
 </head>
 
-<body class="bg-dark">
-
-    
-
-    <!-- navbar -->
-
-    
-
-    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand d-flex align-items-center" href="/success">
-
-
-            <img src="{% static 'calogo2.png' %}" alt="Logo" width="30" height="30" style="transform:rotate(140deg);">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto d-flex align-items-center">
-                <li class="nav-item">
-
-                    <a class="nav-link active" aria-current="page" href="/success" style="color: #0070d5; font-weight: bold;">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile/{{user.id}}">My Courses</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/activity">Activity</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#donate">Donate</a>
-                </li>
-            </ul>
-    
-            <span class="navbar-text ml-auto">
-                <div class="dropdown">
-                    <img src="{{user.image_url}}" alt="Menu" class="menu-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height:40px;width:40px;border-radius:50%;border:3px solid #333;object-fit: cover;">
-                    
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="/settings/{{user.id}}">Settings</a>
-                        <a class="dropdown-item" href="/logout">Logout</a>
-                    </div>
-                </div>
-            </span>
-        </div>
-    </nav> -->
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand d-flex align-items-center" href="/success">
-            <img src="{% static 'logo.svg' %}" alt="Logo" width="30" height="30">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto d-flex align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/success">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile/{{user.id}}">My Courses</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/activity">Activity</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#donate">Donate</a>
-                </li>
-            </ul>
-            <span class="navbar-text ml-auto">
-                <div class="dropdown">
-                    <img src="{{user.image_url}}" alt="Menu" class="menu-icon" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"
-                        style="height:40px;width:40px;border-radius:50%;border:3px solid #333;object-fit: cover;">
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="/settings/{{user.id}}">Settings</a>
-                        <a class="dropdown-item" href="/logout">Logout</a>
-                    </div>
-                </div>
-            </span>
-        </div>
-    </nav>
-
-    
-    
-
-
-
-    <!-- navbar -->
-
-    <!-- <div class="dark-mode-toggle">
-        <input type="checkbox" id="dark-mode-switch">
-        <label for="dark-mode-switch">Dark Mode</label>
-      </div> -->
-
-    {% if messages %}
-    <div class="alert alert-primary m-0" role="alert">
-        {% for message in messages %}
-        {{message}}
-        <br>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    <!-- style="color: #ff5134ff" -->
-    <!-- <section class="bg text-light text-center py-5 bg-dark">
-        <div class="container">
-            <h1 class="display-4 mb-4 ">Welcome to Coding Academy
-            </h1>
-
-
-            <p class="lead mb-4"> Learn to code, from beginner to interview in one year
-            </p>
-           
-        </div>
-    </section> -->
-
-    <!-- <hr style="border-top: 1px solid #ccc; background-color: #ccc; height: 1px; margin: 10px 0;"> -->
-
-
-    <section class="hero-section text-light text-center bg-dark py-5" style="min-height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-        <div class="container">
-            <!-- Centered Logo -->
-            <div class="logo mb-4">
-                <!-- Add your logo here -->
-                <img src="{% static 'logo.svg' %}" alt="Logo" style="width: 100px; margin-bottom: 20px;">
-            </div>
-    
-            <!-- Main Title -->
-            <h1 class="main-title mb-4" style="font-size: 2rem; font-weight: 700; text-transform: uppercase;">
-                Welcome to Coding Academy. alex bill
-            </h1>
-    
-            <!-- Subheading -->
-            <p class="lead mb-4" style="font-size: 1.25rem; letter-spacing: 0.2em; text-transform: uppercase;">
-                Full Stack. Experienced. Flexible.
-                
-            </p>
-    
-            <!-- Down Arrow (optional, just like in the screenshot) -->
-           
-            <!-- <div class="scroll-down">
-                <a href="#next-section" class="arrow">arrow</a>
-            </div> -->
-
-            
-        </div>
-    </section>
-
-  <!-- Tracks Listings -->
-  <section class="py-5 bg-dark">
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-        <h2 id="all-courses-heading" class="text-center mb-5 text-light">Tracks</h2>
-        <div class="row">
-
-            <div class="col-md-3 mb-3">
-                <div class="card locked">
-                    <img src="/static/programmingbasics.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Programming Basics</h5>
-                        <p class="card-text">Loops, Arrays, Algorithms</p>
-                    </div>
-
-                    <div class="lock-overlay">
-                        <span class="lock-icon"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card locked">
-                    <img src="/static/frontend.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Front End</h5>
-                        <p class="card-text">HTML,CSS, JavaScript</p>
-                    </div>
-
-                    <div class="lock-overlay">
-                        <span class="lock-icon"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card locked">
-                    <img src="/static/backend.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Back End</h5>
-                        <p class="card-text">Server-side, databases, API</p>
-                    </div>
-
-                    <div class="lock-overlay">
-                        <span class="lock-icon"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card locked">
-                    <img src="/static/mobile.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Mobile</h5>
-                        <p class="card-text">Swift, iOS, Java, Android</p>
-                    </div>
-
-                    <div class="lock-overlay">
-                        <span class="lock-icon"></span>
-                    </div>
-                </div>
-            </div>
-            
-            
-
-        
+      <a class="navbar-brand d-flex align-items-center" href="/success">
+        <img src="{% static 'logo.svg' %}" alt="Logo" />
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"><i class="bi bi-list" style="font-size:1.6rem;color:var(--text-0)"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-3 me-auto align-items-lg-center gap-lg-3">
+          <li class="nav-item"><a class="nav-link active" href="/success">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/profile/{{user.id}}">My Courses</a></li>
+          <li class="nav-item"><a class="nav-link" href="/activity">Activity</a></li>
+          <li class="nav-item"><a class="nav-link" href="#ai">AI Approach</a></li>
+          <li class="nav-item"><a class="nav-link" href="#donate">Donate</a></li>
+        </ul>
+        <!-- Avatar dropdown -->
+        <div class="dropdown text-end">
+          <a href="#" class="d-inline-flex align-items-center text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{user.image_url}}" alt="Menu" style="height:40px;width:40px;border-radius:50%;border:2px solid var(--line);object-fit:cover;" />
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end shadow">
+            <li><a class="dropdown-item" href="/settings/{{user.id}}">Settings</a></li>
+            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+          </ul>
         </div>
+      </div>
     </div>
-</section>
+  </nav>
 
-    <!-- Course Listings -->
-    <section class="py-5 bg-dark">
-        <div class="container">
-            <h2 id="all-courses-heading" class="text-center mb-5 text-light">All Courses</h2>
-            <div class="row">
+  <!-- Spacer for fixed-top nav -->
+  <div style="height:72px"></div>
 
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/beginningcoding.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Basics</h5>
-                            <p class="card-text">Learning how to code</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/html.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">HTML</h5>
-                            <p class="card-text">The Backbone of Web Content</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/js.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">JavaScript</h5>
-                            <p class="card-text">Update the web dynamically</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                
-
-            
-            </div>
-
-            <!-- <a href="/swift" class="btn btn-primary">Start</a> -->
-
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/css.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">CSS</h5>
-                            <p class="card-text">Style your website</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/swift.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">SwiftUI</h5>
-                            <p class="card-text">Update the web dynamically</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/swift-lang.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Swift</h5>
-                            <p class="card-text">Update the web dynamically</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/macterminal.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Terminal</h5>
-                            <p class="card-text">Navigating the Computer</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/github.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">GitHub</h5>
-                            <p class="card-text">Work With a Team with Version Control</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/java.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Java and Android</h5>
-                            <p class="card-text">Powering Cross-Platform Applications</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/python.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Python</h5>
-                            <p class="card-text">Speed, Simplicity, and Power</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/django.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Django</h5>
-                            <p class="card-text">Update the web dynamically</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/CA_LOGO.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Deployment</h5>
-                            <p class="card-text">Deploy to App Store</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/ds.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Interview Success</h5>
-                            <p class="card-text">Coding Interview Prep</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/architecture.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Design Patterns</h5>
-                            <p class="card-text">Update the web dynamically</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card locked">
-                        <img src="/static/iceburg.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Data Structures and Algorithms</h5>
-                            <p class="card-text">Deploy to App Store</p>
-                        </div>
-
-                        <div class="lock-overlay">
-                            <span class="lock-icon"></span>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-        
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="container">
+      <div class="d-flex flex-column align-items-center">
+        <img class="mb-3" src="{% static 'logo.svg' %}" alt="Logo" style="width:88px;height:88px" />
+        <span class="badge-beta">A One-Year, Job-Focused Coding Academy</span>
+        <h1 class="hero-title">Dark-Mode. Razor-Clean. Recruiter-Ready.</h1>
+        <p class="hero-sub">Human-first • AI-powered • Portfolio-driven</p>
+        <div class="hero-cta mt-4 d-flex flex-wrap gap-3 justify-content-center">
+          <a href="#tracks" class="btn btn-brand">Explore Tracks</a>
+          <a href="#ai" class="btn btn-ghost">How We Use AI</a>
         </div>
-    </section>
+      </div>
+    </div>
+  </header>
 
-   
-    <!-- <hr> -->
-
-
-    <div class="container text-center py-5 bg-dark  ">
-        <div class="row">
-            <!-- <div class="col-md-6">
-                <h2 class="text-center">Basic Access</h2>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">$2 per month</li>
-                    <li class="list-group-item">Access to new courses</li>
-                    <li class="list-group-item">Full access to site, and ability to ask questions with answers within 24 hours</li>
-                    <li class="list-group-item">Video Explanations</li>
-                    <li class="list-group-item">Access to new courses</li>
-                    <li class="list-group-item">Access to new assignments and exams</li>
-                    <li class="list-group-item">Access to new courses</li>
-
-                   
-                </ul>
-            </div> -->
-            
-            <div class="col-md-12 bg-dark">
-                <h2 class="text-center text-light">Bootcamp Admission</h2>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item bg-dark text-light border-light"> $39 per month </li>
-                    <li class="list-group-item bg-dark text-light border-light"> Admission to bootcamp (online or in person (Durham, NC)) </li>
-                    <li class="list-group-item bg-dark text-light border-light"> Access to Discord server </li>
-                    <li class="list-group-item bg-dark text-light border-light"> Complimentary office hours with instructor, and pair programming </li>
-                    <li class="list-group-item bg-dark text-light border-light"> Code Review </li>
-                </ul>
+  <!-- ===== TRACKS ===== -->
+  <section id="tracks" class="section">
+    <div class="container">
+      <div class="text-center section-header">
+        <h2>Tracks</h2>
+        <div class="underline"></div>
+      </div>
+      <div class="row g-4 mt-2">
+        <!-- Programming Basics -->
+        <div class="col-6 col-md-3">
+          <div class="course-card h-100 position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/programmingbasics.png" alt="Programming Basics"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Programming Basics</h5>
+              <p class="card-text">Loops, Arrays, Algorithms</p>
             </div>
+          </div>
         </div>
-        <a type="button" target="_blank" href="https://patreon.com/codingbear"
-           class="btn btn-primary my-5"
-           style="border-radius: 50px; font-size: 18px; padding: .375rem .75rem; color: #ffffff;">
-           Donate
-           <!-- <img src="/static/codingbear.png" alt="Coding Academy" class="btn-icon pl-2" width="35px;"> -->
-        </a>
+        <!-- Front End -->
+        <div class="col-6 col-md-3">
+          <div class="course-card h-100 position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/frontend.png" alt="Front End"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Front End</h5>
+              <p class="card-text">HTML, CSS, JavaScript</p>
+            </div>
+          </div>
+        </div>
+        <!-- Back End -->
+        <div class="col-6 col-md-3">
+          <div class="course-card h-100 position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/backend.png" alt="Back End"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Back End</h5>
+              <p class="card-text">Server-Side, Databases, APIs</p>
+            </div>
+          </div>
+        </div>
+        <!-- Mobile -->
+        <div class="col-6 col-md-3">
+          <div class="course-card h-100 position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/mobile.png" alt="Mobile"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Mobile</h5>
+              <p class="card-text">Swift, iOS, Java, Android</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
+  </section>
 
+  <!-- ===== ALL COURSES ===== -->
+  <section id="courses" class="section">
+    <div class="container">
+      <div class="text-center section-header">
+        <h2>All Courses</h2>
+        <div class="underline"></div>
+      </div>
 
+      <div class="row g-4 mt-1">
+        <!-- Row 1 -->
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/beginningcoding.png" alt="Basics"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Basics</h5>
+              <p class="card-text">Learning how to code</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/html.png" alt="HTML"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">HTML</h5>
+              <p class="card-text">The Backbone of Web Content</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/js.png" alt="JavaScript"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">JavaScript</h5>
+              <p class="card-text">Update the web dynamically</p>
+            </div>
+          </div>
+        </div>
 
-    <hr>
-    
-    
+        <!-- Row 2 -->
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/css.png" alt="CSS"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">CSS</h5>
+              <p class="card-text">Style your website</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/swift.png" alt="SwiftUI"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">SwiftUI</h5>
+              <p class="card-text">Modern iOS UI</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/swift-lang.png" alt="Swift"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Swift</h5>
+              <p class="card-text">Language foundations</p>
+            </div>
+          </div>
+        </div>
 
-    <!-- <div>
+        <!-- Row 3 -->
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/macterminal.png" alt="Terminal"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Terminal</h5>
+              <p class="card-text">Navigating the Computer</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/github.png" alt="GitHub"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">GitHub</h5>
+              <p class="card-text">Team Version Control</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/java.png" alt="Java & Android"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Java and Android</h5>
+              <p class="card-text">Powering Cross-Platform Apps</p>
+            </div>
+          </div>
+        </div>
 
-        <img class="center-block img-fluid" src="/static/pl.svg">
+        <!-- Row 4 -->
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/python.png" alt="Python"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Python</h5>
+              <p class="card-text">Speed, Simplicity, Power</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/django.png" alt="Django"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Django</h5>
+              <p class="card-text">Production-grade web apps</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/CA_LOGO.png" alt="Deployment"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Deployment</h5>
+              <p class="card-text">Ship to App Store / Cloud</p>
+            </div>
+          </div>
+        </div>
 
-    </div> -->
+        <!-- Row 5 -->
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/ds.png" alt="Interview"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Interview Success</h5>
+              <p class="card-text">Coding Interview Prep</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/architecture.png" alt="Design Patterns"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Design Patterns</h5>
+              <p class="card-text">Think in architectures</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="course-card position-relative">
+            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+            <div class="thumb"><img src="/static/iceburg.png" alt="Data Structures"/></div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Data Structures & Algorithms</h5>
+              <p class="card-text">From Big-O to systems</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <div class="container-fluid">
-        <script src="{% static 'app.js'%}"></script>
+  <!-- ===== AI APPROACH ===== -->
+  <section id="ai" class="section">
+    <div class="container">
+      <div class="text-center section-header">
+        <h2>Human-First, AI-Powered</h2>
+        <p class="muted mt-2">We teach you to think like an engineer—and use AI like a power tool.</p>
+        <div class="underline"></div>
+      </div>
+
+      <div class="row g-4 mt-1">
+        <!-- Card 1 -->
+        <div class="col-12 col-md-4">
+          <div class="course-card h-100">
+            <div class="card-body text-center">
+              <div class="icon-circle mb-3"><i class="bi bi-brain"></i></div>
+              <h5 class="card-title">Think &gt; Generate</h5>
+              <p class="card-text">
+                You start with a plan: requirements, edge cases, and pseudocode.
+                “Why” comments are graded. AI accelerates you—it doesn’t think for you.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="col-12 col-md-4">
+          <div class="course-card h-100">
+            <div class="card-body text-center">
+              <div class="icon-circle mb-3"><i class="bi bi-cpu"></i></div>
+              <h5 class="card-title">Pro AI Workflows</h5>
+              <p class="card-text">
+                Prompt patterns, test-driven chats, critique loops, and pair-programming with AI.
+                Ship faster while keeping quality high and reasoning explicit.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="col-12 col-md-4">
+          <div class="course-card h-100">
+            <div class="card-body text-center">
+              <div class="icon-circle mb-3"><i class="bi bi-shield-check"></i></div>
+              <h5 class="card-title">Proof You Can Code</h5>
+              <p class="card-text">
+                Weekly no-AI labs & closed-internet checkpoints (e.g., quicksort, BFS/DFS, REST CRUD).
+                You’ll be able to deliver without AI—and excel with it.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Honor Code -->
+      <div class="row mt-4">
+        <div class="col-12 col-lg-8 mx-auto">
+          <div class="course-card">
+            <div class="card-body">
+              <h5 class="card-title mb-2"><i class="bi bi-clipboard-check me-2"></i>AI Honor Code</h5>
+              <ul class="checklist">
+                <li><i class="bi bi-check2-circle"></i><span>Write a short plan before you prompt (goals, edge cases, tests).</span></li>
+                <li><i class="bi bi-check2-circle"></i><span>Annotate any AI-assisted code with “why” comments.</span></li>
+                <li><i class="bi bi-check2-circle"></i><span>Use tests to accept or reject AI output; don’t trust, verify.</span></li>
+                <li><i class="bi bi-check2-circle"></i><span>Credit significant AI help in your README.</span></li>
+                <li><i class="bi bi-check2-circle"></i><span>Clear authorship via Git history—we look at <code>git blame</code>.</span></li>
+              </ul>
+              <div class="d-flex gap-2 flex-wrap mt-3">
+                <span class="chip"><i class="bi bi-lightning-charge me-1"></i>Move Fast</span>
+                <span class="chip"><i class="bi bi-search me-1"></i>Think Deeply</span>
+                <span class="chip"><i class="bi bi-diagram-3 me-1"></i>Show Your Reasoning</span>
+                <span class="chip"><i class="bi bi-check2-square me-1"></i>Test Everything</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
+  </section>
 
+  <!-- ===== PRICING / ADMISSION ===== -->
+  <section id="donate" class="section pricing">
+    <div class="container">
+      <div class="row justify-content-center g-4">
+        <div class="col-lg-8">
+          <div class="text-center section-header">
+            <h2>Bootcamp Admission</h2>
+            <p class="muted mt-2">Choose monthly, join anytime. Durham, NC or online.</p>
+            <div class="underline"></div>
+          </div>
+        </div>
+        <div class="col-md-8 col-lg-6">
+          <div class="price-card">
+            <div class="d-flex align-items-baseline justify-content-between flex-wrap gap-2">
+              <div>
+                <div class="price">$39<span class="fs-5 fw-semibold">/mo</span></div>
+                <div class="muted">Cancel anytime · Scholarships available</div>
+              </div>
+              <a class="btn btn-brand" target="_blank" href="https://patreon.com/codingbear">Join / Donate</a>
+            </div>
+            <ul class="features list-unstyled mt-4 mb-0">
+              <li>Admission to bootcamp (online or in-person, Durham NC)</li>
+              <li>Private Discord community</li>
+              <li>Office hours & pair programming</li>
+              <li>Code review on your projects</li>
+              <li>Interview prep & career guidance</li>
+              <li>AI co-pilot training (prompt patterns, critique loops, testing)</li>
+              <li>No-AI assessments to prove fundamentals</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <footer>
+    <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-center gap-3">
+      <div class="d-flex align-items-center gap-2">
+        <img src="{% static 'logo.svg' %}" alt="Logo" style="width:24px;height:24px"/>
+        <span class="muted">© {{ now|date:"Y" }} Coding Academy. Built with Django.</span>
+      </div>
+      <div class="muted">
+        <span class="me-3"><i class="bi bi-shield-lock"></i> Safe, supportive learning</span>
+        <span><i class="bi bi-lightning-charge"></i> Ship projects, get hired</span>
+      </div>
+    </div>
+  </footer>
 
-    <script>
-        // Get the anchor link element
-        const link1 = document.querySelector('a[href="#all-courses-heading"]');
-
-        // Add a click event listener to the link
-        link1.addEventListener('click', event => {
-            // Prevent the default anchor link behavior
-            event.preventDefault();
-
-            // Get the target element to scroll to
-            const target = document.querySelector('#all-courses-heading');
-
-            // Scroll to the target element smoothly
-            target.scrollIntoView({ behavior: 'smooth' });
+  <!-- Calendly badge (unchanged) -->
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+  <script>
+    window.addEventListener('load', function(){
+      if (window.Calendly) {
+        Calendly.initBadgeWidget({
+          url: 'https://calendly.com/jmh3434/code',
+          text: 'Schedule Meeting with Instructor',
+          color: '#000000',
+          textColor: '#ffffff',
+          branding: undefined
         });
+      }
+    });
+  </script>
 
-        // Get the anchor link element
-        const link2 = document.querySelector('a[href="#all-paths-heading"]');
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-        // Add a click event listener to the link
-        link2.addEventListener('click', event => {
-            // Prevent the default anchor link behavior
-            event.preventDefault();
-
-            // Get the target element to scroll to
-            const target = document.querySelector('#all-paths-heading');
-
-            // Scroll to the target element smoothly
-            target.scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // Get the anchor link element
-        const link3 = document.querySelector('a[href="#donate"]');
-
-        // Add a click event listener to the link
-        link3.addEventListener('click', event => {
-            // Prevent the default anchor link behavior
-            event.preventDefault();
-
-            // Get the target element to scroll to
-            const target = document.querySelector('#donate');
-
-            // Scroll to the target element smoothly
-            target.scrollIntoView({ behavior: 'smooth' });
-        });
-
-    </script>
-
-    <script>
-        const darkModeSwitch = document.getElementById('dark-mode-switch');
-        const body = document.body;
-        const isDarkMode = localStorage.getItem('isDarkMode');
-
-        // Check if the user had previously selected dark mode
-        if (isDarkMode === 'true') {
-        body.classList.add('dark-mode');
-        darkModeSwitch.checked = true;
+  <!-- Smooth scroll for anchors -->
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id.length > 1) {
+          e.preventDefault();
+          const el = document.querySelector(id);
+          if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
         }
-
-        darkModeSwitch.addEventListener('change', () => {
-        body.classList.toggle('dark-mode');
-        localStorage.setItem('isDarkMode', darkModeSwitch.checked);
-        });
-
-    </script>
-
-
-    <!-- Calendly badge widget begin -->
-    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-    <script
-        type="text/javascript">window.onload = function () { Calendly.initBadgeWidget({ url: 'https://calendly.com/jmh3434/code', text: 'Schedule Meeting with Instructor', color: '#000000', textColor: '#ffffff', branding: undefined }); }</script>
-    <!-- Calendly badge widget end -->
-
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-
-
+      });
+    });
+  </script>
 </body>
-
 </html>
