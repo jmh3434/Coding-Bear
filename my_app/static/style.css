@@ -1,468 +1,164 @@
-/* .btn {
-	border-radius: 0;
-  }
+    /* General Typography and Layout */
+    body, p, .info-box {
+        font-family: 'SourceSans3', sans-serif;
+    }
 
-.picture1 {
-	background-image:url('terminalmac.jpeg');
- }
+    h1, h2, h3, .header {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
 
- #myDIV {
-	height:300px;
-	background-color: #FFFFFF;
-	display: flex;
-	justify-content: space-evenly;
-  }
- 
-#wrap {
-	margin: 0px auto;
-	width: auto;
-	padding: 0px 25px 25px;
-}
+    code, pre, .description {
+        font-family: 'Roboto Mono', monospace;
+    }
 
-datalist {
-	width: 400px;
-	text-align-last: center;
-}
+    /* Card Styling */
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
 
-input::-webkit-calendar-picker-indicator {
-	display: none;
-}
+    .card:hover {
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+    }
 
-@media(max-width: 480px) {
-	#posts {
-		background-color: #EAECEF;
-		padding: 12px;
-		margin-top: 20px;
-		;
-		border-radius: 25px;
-	}
-	.one_post {
-		background-color: #cbcbcb;
-		padding: 20px;
-		margin: 10px;
-		min-height: 100px;
-		border-radius: 25px;
-	}
-}
+    .card-img-top {
+        border-radius: 10px 10px 0 0;
+    }
 
-@media(min-width: 481px) {
-	#posts {
-		background-color: #EAECEF;
-		padding: 25px;
-		margin: 25px;
-		border-radius: 25px;
-	}
-	.one_post {
-		background-color: #cbcbcb;
-		padding: 25px;
-		margin: 25px;
-		min-height: 100px;
-		border-radius: 25px;
-	}
-}
+    .card-title {
+        font-weight: bold;
+    }
 
-@media(min-width: 1024px) {
-	#posts {
-		background-color: #EAECEF;
-		padding: 25px;
-		margin: 25px;
-		border-radius: 25px;
-	}
-	.one_post {
-		background-color: #cbcbcb;
-		padding: 25px;
-		margin: 25px;
-		min-height: 100px;
-		border-radius: 25px;
-	}
-}
+    /* Button and Background Colors */
+    .bg-dark {
+        background-color: black !important;
+    }
 
+    .btn-dark, .btn-primary {
+        background-color: black !important;
+        border-color: white;
+    }
 
+    .btn, .btn:focus {
+        border-radius: 0;
+        box-shadow: none !important;
+        outline: none !important;
+    }
 
+    /* Info Box */
+    .info-box {
+        background-color: rgba(255, 255, 255, 1.0);
+        border: 1px solid #000;
+        border-radius: 3px;
+        padding: 5px;
+        font-size: 12px;
+        max-width: 200px;
+        max-height: 200px;
+        overflow: auto;
+    }
 
+    /* Image Container */
+    .image-container {
+        position: relative;
+        display: inline-block;
+        margin: 20px;
+    }
 
-.card {
-	border: none;
-	border-radius: 10px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	transition: all 0.3s;
-  }
+    .arrow {
+        position: absolute;
+        top: 50%;
+        right: -30px;
+        font-size: 24px;
+        transform: translateY(-50%);
+    }
 
-  .card:hover {
-	box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-	transform: translateY(-5px);
-  }
+    @media (max-width: 767px) {
+        .arrow {
+            display: none;
+        }
+    }
 
-  .card-img-top {
-	border-radius: 10px 10px 0 0;
-  }
+    /* Responsive Layouts */
+    @media (max-width: 480px) {
+        #posts, .one_post {
+            background-color: #000;
+            padding: 12px;
+            margin-top: 20px;
+            border-radius: 25px;
+        }
+    }
 
-  .card-title {
-	font-weight: bold;
-  }
+    @media (min-width: 481px) and (max-width: 1023px) {
+        #posts, .one_post {
+            background-color: #eaecef;
+            padding: 25px;
+            margin: 25px;
+            border-radius: 25px;
+        }
+    }
 
+    @media (min-width: 1024px) {
+        #posts, .one_post {
+            background-color: #eaecef;
+            padding: 25px;
+            margin: 25px;
+            border-radius: 25px;
+        }
+    }
 
-  .info-box {
-	background-color: rgba(255, 255, 255, 1.0);
-	border: 1px solid #000000;
-	border-radius: 3px;
-	padding: 5px;
-	font-size: 12px;
-	max-width: 200;
-	max-height: 200px; 
-	overflow: auto; 
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  }
+    /* Row Flexbox Layout */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
 
- 
+    .row > .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0;
+    }
+
+    /* Lock Icon Overlay */
+    .lock-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: start;
+        align-items: start;
+        z-index: 10;
+        border-radius: 0.25rem;
+        pointer-events: none;
+    }
+
+    .lock-icon {
+        margin: 10px;
+        width: 30px;
+        height: 30px;
+        background: url('/static/lock_icon.png') no-repeat center center;
+        background-size: contain;
+    }
+
+    /* Text and Logo */
+    .text-light {
+        color: #fff;
+    }
+
+    .logo img {
+        max-width: 100px;
+    }
+
+    /* Navbar Link Styling */
   
 
-
-.image-container {
-	position: relative;
-	display: inline-block;
-	margin: 20px;
-  }
-
-  .arrow {
-	position: absolute;
-	top: 50%;
-	right: -30px;
-	font-size: 24px;
-	transform: translateY(-50%);
-  }
-
-  .header {
-	font-weight: bold;
-	margin-bottom: 10px;
-  }
-
-  .description {
-	font-style: italic;
-	margin-bottom: 20px;
-  }
-
-  .bg-dark {
-	background-color: black !important;
-  }
-   
-  .btn-dark, .btn-primary {
-    background-color: rgb(0, 0, 0) !important;
-	border-color: white;
-	
-  }
-
-  .btn:focus {
-	outline: none !important;
-  }
-  .btn {
-	box-shadow: none !important;
-  }
-
-  @media (max-width: 767px) {
-	.arrow {
-	  display: none;
-	}
-  }
-
-
-
-  .row {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.row > .col-md-6 {
-  flex: 0 0 50%;
-  max-width: 50%;
-  padding: 0;
-}
-
-
-.dark-mode {
-	background-color: #111;
-	color: #fff;
-  }
-  
-  .dark-mode a {
-	color: #fff;
-  } */
-  
-  .btn {
-	border-radius: 0;
-  }
-  
-  .body {
-	background-color: black; 
-  }
-  
-  .picture1 {
-	background-image: url('terminalmac.jpeg');
-  }
-  
-  #myDIV {
-	height: 300px;
-	background-color: #000000;
-	display: flex;
-	justify-content: space-evenly;
-  }
-  
-  #wrap {
-	margin: 0px auto;
-	width: auto;
-	padding: 0px 25px 25px;
-  }
-  
-  datalist {
-	width: 400px;
-	text-align-last: center;
-  }
-  
-  input::-webkit-calendar-picker-indicator {
-	display: none;
-  }
-  
-  @media (max-width: 480px) {
-	#posts {
-	  background-color: #000000;
-	  padding: 12px;
-	  margin-top: 20px;
-	  border-radius: 25px;
-	}
-	.one_post {
-	  background-color: #cbcbcb;
-	  padding: 20px;
-	  margin: 10px;
-	  min-height: 100px;
-	  border-radius: 25px;
-	}
-  }
-  
-  @media (min-width: 481px) and (max-width: 1023px) {
-	#posts {
-	  background-color: #eaecef;
-	  padding: 25px;
-	  margin: 25px;
-	  border-radius: 25px;
-	}
-	.one_post {
-	  background-color: #cbcbcb;
-	  padding: 25px;
-	  margin: 25px;
-	  min-height: 100px;
-	  border-radius: 25px;
-	}
-  }
-  
-  @media (min-width: 1024px) {
-	#posts {
-	  background-color: #eaecef;
-	  padding: 25px;
-	  margin: 25px;
-	  border-radius: 25px;
-	}
-	.one_post {
-	  background-color: #cbcbcb;
-	  padding: 25px;
-	  margin: 25px;
-	  min-height: 100px;
-	  border-radius: 25px;
-	}
-  }
-  
-  img {
-	/* width: 200px;  */
-	/* height: 200px; */
-	/* object-fit: cover; */
-  }
-  
-  .card {
-	border: none;
-	border-radius: 10px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	transition: all 0.3s;
-  }
-  
-  .card:hover {
-	box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-	transform: translateY(-5px);
-  }
-  
-  .card-img-top {
-	border-radius: 10px 10px 0 0;
-  }
-  
-  .card-title {
-	font-weight: bold;
-  }
-  
-  .info-box {
-	background-color: rgba(255, 255, 255, 1.0);
-	border: 1px solid #000000;
-	border-radius: 3px;
-	padding: 5px;
-	font-size: 12px;
-	max-width: 200px;
-	max-height: 200px;
-	overflow: auto;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-	  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  }
-  
-  .image-container {
-	position: relative;
-	display: inline-block;
-	margin: 20px;
-  }
-  
-
-  .arrow {
-	position: absolute;
-	top: 50%;
-	right: -30px;
-	font-size: 24px;
-	transform: translateY(-50%);
-  }
-  
-  .header {
-	font-weight: bold;
-	margin-bottom: 10px;
-  }
-  
-  .description {
-	font-style: italic;
-	margin-bottom: 20px;
-  }
-  
-  .bg-dark {
-	background-color: black !important;
-  }
-  
-  .btn-dark,
-  .btn-primary {
-	background-color: rgb(0, 0, 0) !important;
-	border-color: white;
-  }
-  
-  .btn:focus {
-	outline: none !important;
-  }
-  
-  .btn {
-	box-shadow: none !important;
-  }
-  
-  @media (max-width: 767px) {
-	.arrow {
-	  display: none;
-	}
-  }
-  
-  .row {
-	display: flex;
-	flex-wrap: wrap;
-  }
-  
-  .row > .col-md-6 {
-	flex: 0 0 50%;
-	max-width: 50%;
-	padding: 0;
-  }
-  
-
-  /* navbar */
-
-  /* Add this CSS code after the existing CSS code */
-
-/* Navbar styling for dark mode */
-
-  /* lock gpt */
-
-  
-
-  .lock-overlay {
-	position: absolute;
-	top: 0;  /* Aligns the overlay to the top of the card */
-	left: 0; /* Aligns the overlay to the left of the card */
-	display: flex;
-	justify-content: start; /* Aligns the icon to the start (left) */
-	align-items: start; /* Aligns the icon to the start (top) */
-	z-index: 10; /* Ensures the overlay is above other content */
-	border-radius: 0.25rem; /* Adjust to match your card's border-radius */
-	pointer-events: none; /* Prevents the overlay from blocking click events */
-  }
-  
-  .lock-icon {
-	margin: 10px; /* Adjusts the space from the top and left edges */
-	width: 30px; /* Lock icon size */
-	height: 30px; /* Lock icon size */
-	background: url('/static/lock_icon.png') no-repeat center center;
-	background-size: contain; /* Ensures the icon is fully contained within the element's dimensions */
-  }
-  
-  
-
-  /* oct 2*/
-
-  .bg-dark {
-    background-color: #000;
-}
-
-.text-light {
-    color: #fff;
-}
-
-.logo img {
-    max-width: 100px; /* Adjust as needed */
-}
-
-h1 {
-    font-family: 'Arial', sans-serif; /* Choose a bold font */
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-p {
-    font-family: 'Arial', sans-serif;
-    font-weight: 300;
-    letter-spacing: 0.5px;
-}
-
-
-/* oct 4 */
-
-/* Navbar Styling */
+    /* Navbar Link Styling */
 .navbar-nav .nav-link {
-    font-family: 'Arial', sans-serif; /* Or your preferred font */
-    font-size: 16px; /* Adjust font size as necessary */
-    font-weight: 700; /* Bold text */
-    text-transform: uppercase; /* Makes all text uppercase */
-    letter-spacing: 0.1em; /* Adds a bit of space between letters */
-    color: #0070d5; /* Change to your preferred color */
+    font-size: 0.875rem !important; /* Increased size for better readability */
+    font-weight: 400 !important;    /* Make the font thinner */
 }
-
-.navbar-brand {
-    font-family: 'Arial', sans-serif; /* Or another similar font */
-    font-size: 18px; /* Adjust size for the brand/logo */
-    text-transform: uppercase; /* Uppercase for the brand name too */
-    letter-spacing: 0.1em;
-    color: #ffffff; /* Adjust to your preferred color */
-}
-
-.navbar-dark .navbar-toggler {
-    border-color: #ffffff; /* White color for the toggler */
-}
-
-.navbar-dark .navbar-toggler-icon {
-    color: #ffffff; /* White color for the toggler icon */
-}
-
-.navbar-nav .nav-link:hover {
-    color: #ffffff; /* Change hover color if needed */
-}
-.navbar-nav .nav-link, .navbar-brand {
-    font-family: 'Poppins', sans-serif; /* Example with Poppins font */
-}
-
-
-

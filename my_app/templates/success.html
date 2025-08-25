@@ -17,6 +17,10 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css'%}">
+    <link rel="stylesheet" href="{% static 'common.css' %}">
+
+
+    <link rel="icon" href="{% static 'logo.svg' %}" type="image/svg" >
 
     <style>
         @media (max-width: 768px) {
@@ -40,10 +44,10 @@
 
     
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand d-flex align-items-center" href="/success">
-            <!-- <img src="/static/codingbear-nobg.png" width="20px" height="" style="filter: brightness(0%) sepia(100%) hue-rotate(180deg);"> -->
-            <!-- Coding Academy -->
+
+
             <img src="{% static 'calogo2.png' %}" alt="Logo" width="30" height="30" style="transform:rotate(140deg);">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
@@ -53,7 +57,7 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto d-flex align-items-center">
                 <li class="nav-item">
-                    <!-- <a class="nav-link active" aria-current="page" href="/success">Home</a> -->
+
                     <a class="nav-link active" aria-current="page" href="/success" style="color: #0070d5; font-weight: bold;">Home</a>
                 </li>
                 <li class="nav-item">
@@ -71,6 +75,43 @@
                 <div class="dropdown">
                     <img src="{{user.image_url}}" alt="Menu" class="menu-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height:40px;width:40px;border-radius:50%;border:3px solid #333;object-fit: cover;">
                     
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="/settings/{{user.id}}">Settings</a>
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                </div>
+            </span>
+        </div>
+    </nav> -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand d-flex align-items-center" href="/success">
+            <img src="{% static 'logo.svg' %}" alt="Logo" width="30" height="30">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto d-flex align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/success">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile/{{user.id}}">My Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/activity">Activity</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#donate">Donate</a>
+                </li>
+            </ul>
+            <span class="navbar-text ml-auto">
+                <div class="dropdown">
+                    <img src="{{user.image_url}}" alt="Menu" class="menu-icon" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"
+                        style="height:40px;width:40px;border-radius:50%;border:3px solid #333;object-fit: cover;">
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="/settings/{{user.id}}">Settings</a>
                         <a class="dropdown-item" href="/logout">Logout</a>
@@ -122,12 +163,12 @@
             <!-- Centered Logo -->
             <div class="logo mb-4">
                 <!-- Add your logo here -->
-                <img src="{% static 'calogo2.png' %}" alt="Logo" style="width: 100px; margin-bottom: 20px;transform:rotate(140deg);">
+                <img src="{% static 'logo.svg' %}" alt="Logo" style="width: 100px; margin-bottom: 20px;">
             </div>
     
             <!-- Main Title -->
             <h1 class="main-title mb-4" style="font-size: 2rem; font-weight: 700; text-transform: uppercase;">
-                Welcome to Coding Academy
+                Welcome to Coding Academy.
             </h1>
     
             <!-- Subheading -->
@@ -146,7 +187,71 @@
         </div>
     </section>
 
+  <!-- Tracks Listings -->
+  <section class="py-5 bg-dark">
+    <div class="container">
+        <h2 id="all-courses-heading" class="text-center mb-5 text-light">Tracks</h2>
+        <div class="row">
 
+            <div class="col-md-3 mb-3">
+                <div class="card locked">
+                    <img src="/static/programmingbasics.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Programming Basics</h5>
+                        <p class="card-text">Loops, Arrays, Algorithms</p>
+                    </div>
+
+                    <div class="lock-overlay">
+                        <span class="lock-icon"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card locked">
+                    <img src="/static/frontend.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Front End</h5>
+                        <p class="card-text">HTML,CSS, JavaScript</p>
+                    </div>
+
+                    <div class="lock-overlay">
+                        <span class="lock-icon"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card locked">
+                    <img src="/static/backend.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Back End</h5>
+                        <p class="card-text">Server-side, databases, API</p>
+                    </div>
+
+                    <div class="lock-overlay">
+                        <span class="lock-icon"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card locked">
+                    <img src="/static/mobile.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Mobile</h5>
+                        <p class="card-text">Swift, iOS, Java, Android</p>
+                    </div>
+
+                    <div class="lock-overlay">
+                        <span class="lock-icon"></span>
+                    </div>
+                </div>
+            </div>
+            
+            
+
+        
+        </div>
+    </div>
+</section>
 
     <!-- Course Listings -->
     <section class="py-5 bg-dark">
@@ -198,7 +303,7 @@
             
             </div>
 
-            <a href="/swift" class="btn btn-primary">Start</a>
+            <!-- <a href="/swift" class="btn btn-primary">Start</a> -->
 
             <div class="row">
                 <div class="col-md-4 mb-4">
@@ -342,7 +447,7 @@
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="card locked">
-                        <img src="/static/Architecture.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
+                        <img src="/static/architecture.png" class="card-img-top mx-auto" alt="Course 1" style="width:100px">
                         <div class="card-body text-center">
                             <h5 class="card-title">Design Patterns</h5>
                             <p class="card-text">Update the web dynamically</p>
@@ -396,7 +501,7 @@
             <div class="col-md-12 bg-dark">
                 <h2 class="text-center text-light">Bootcamp Admission</h2>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item bg-dark text-light border-light"> $99 per month </li>
+                    <li class="list-group-item bg-dark text-light border-light"> $39 per month </li>
                     <li class="list-group-item bg-dark text-light border-light"> Admission to bootcamp (online or in person (Durham, NC)) </li>
                     <li class="list-group-item bg-dark text-light border-light"> Access to Discord server </li>
                     <li class="list-group-item bg-dark text-light border-light"> Complimentary office hours with instructor, and pair programming </li>

@@ -1,0 +1,32 @@
+/* Navbar Styling */
+.navbar-nav .nav-link, .navbar-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.navbar-nav .nav-link {
+    color: #0070d5;
+}
+
+.navbar-brand {
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.navbar-dark .navbar-toggler {
+    border-color: #ffffff;
+}
+
+.navbar-dark .navbar-toggler-icon {
+    color: #ffffff;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffffff;
+}
+.active {
+    color: #0070d5 !important; /* Ensures the active tab stays blue */
+}
