@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Tracks - Coding Academy</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+  {% include 'googlefont.html' %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style.css'%}">
+  <style>
+    :root{--bg-0:#0b0c10;--bg-1:#11131a;--bg-2:#0e1016;--line:#1b1f28;--text-0:#e7e9ee;--text-1:#9aa3b2;--brand:#00e5ff;--brand-2:#7c4dff;--success:#00d084;--warning:#ff9500;--radius:12px;--shadow:0 8px 16px rgba(0,0,0,.3)}
+    body{background:var(--bg-0);color:var(--text-0)}
+    .navbar{background:var(--bg-2)!important;border-bottom:1px solid var(--line)}
+    .nav-link{color:var(--text-1)!important}.nav-link:hover,.nav-link.active{color:var(--text-0)!important}
+    .track-card{background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;box-shadow:var(--shadow);transition:transform .25s ease,border-color .25s ease;cursor:pointer}
+    .track-card:hover{transform:translateY(-4px);border-color:var(--brand)}
+    .track-locked{opacity:.7;cursor:not-allowed}.track-locked:hover{transform:none;border-color:var(--line)}
+    .track-enrolled{border-color:var(--success)}
+    .progress{height:8px;border-radius:999px;background:var(--line)}
+    .progress-bar{background:linear-gradient(90deg,var(--brand),var(--brand-2));border-radius:999px}
+    .btn-brand{background:linear-gradient(90deg,var(--brand),var(--brand-2));border:none;color:#fff}
+    .access-badge{display:inline-block;padding:.25rem .75rem;border-radius:999px;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+    .access-free{background:rgba(0,208,132,.2);color:var(--success)}
+    .access-basic{background:rgba(255,149,0,.2);color:var(--warning)}
+    .access-premium{background:rgba(124,77,255,.2);color:var(--brand-2)}
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="/success">Coding Academy</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link" href="/success">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/tracks">Tracks</a></li>
+        <li class="nav-item"><a class="nav-link" href="/challenges">Challenges</a></li>
+        <li class="nav-item"><a class="nav-link" href="/leaderboard">Leaderboard</a></li>
+      </ul>
+      <span class="navbar-text">
+        <a class="navbar-text mr-4" href="/settings/{{user.id}}">{{user.first_name}} {{user.last_name}}</a>
+        <a class="btn btn-outline-secondary" href="/logout">Logout</a>
+      </span>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <div class="row mb-4">
+      <div class="col-12">
+        <h1>Learning Tracks</h1>
+        <p class="text-muted">Choose your path, earn points, and get paid for learning new skills.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      {% for track in tracks %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="track-card {% if not track.is_accessible %}track-locked{% endif %} {% if track.is_enrolled %}track-enrolled{% endif %}"
+             onclick="{% if track.is_accessible %}window.location='/track/{{track.id}}'{% endif %}">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="flex-grow-1">
+              {% if track.image_url %}
+                <img src="{{track.image_url}}" alt="{{track.name}}" style="width:60px;height:60px;object-fit:contain;margin-bottom:1rem;">
+              {% else %}
+                <div class="bg-secondary rounded d-flex align-items-center justify-content-center mb-3" style="width:60px;height:60px;">
+                  <i class="bi bi-code-slash text-white" style="font-size:1.5rem;"></i>
+                </div>
+              {% endif %}
+            </div>
+            <div class="text-right">
+              <span class="access-badge access-{{track.access_level}}">
+                {% if track.access_level == 'free' %}Free{% elif track.access_level == 'basic' %}Basic{% elif track.access_level == 'premium' %}Premium{% endif %}
+              </span>
+              {% if track.is_enrolled %}
+              <div class="mt-1"><small class="text-success">✓ Enrolled</small></div>
+              {% endif %}
+            </div>
+          </div>
+
+          <h5 class="mb-2">{{track.name}}</h5>
+          <p class="text-muted mb-3">{{track.description|truncatewords:15}}</p>
+
+          {% if track.is_enrolled %}
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1"><span>Progress</span><span>{{track.student_progress|floatformat:0}}%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:{{track.student_progress}}%"></div></div>
+          </div>
+          {% endif %}
+
+          <div class="d-flex justify-content-between align-items-center">
+            {% if not track.is_accessible %}
+              <div class="text-warning"><i class="bi bi-lock-fill me-2"></i>Requires Subscription</div>
+            {% elif track.is_enrolled %}
+              <a href="/track/{{track.id}}" class="btn btn-success btn-sm">Continue Learning</a>
+            {% else %}
+              <button class="btn btn-brand btn-sm" onclick="event.stopPropagation(); enrollTrack({{track.id}})">Enroll Now</button>
+            {% endif %}
+            {% if track.one_time_price %}
+              <div class="text-muted">${{track.one_time_price}}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="text-center py-5">
+          <i class="bi bi-collection text-muted" style="font-size:4rem;"></i>
+          <h4 class="text-muted mt-3">No tracks available yet</h4>
+          <p class="text-muted">Check back soon for new learning tracks!</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+    async function enrollTrack(trackId){
+      try{
+        const response = await fetch(`/enroll/${trackId}/`, {
+          method:'POST',
+          headers:{'X-CSRFToken':'{{ csrf_token }}','Content-Type':'application/json'}
+        });
+        const result = await response.json();
+        if(result.success){ location.reload(); } else { alert(result.error || 'Enrollment failed'); }
+      }catch(error){ console.error('Error enrolling:', error); alert('Enrollment failed'); }
+    }
+  </script>
+</body>
+</html>

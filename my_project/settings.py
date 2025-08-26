@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+
+
 MIDDLEWARE = [
     
     'django.middleware.security.SecurityMiddleware',
@@ -223,3 +225,7 @@ STATIC_ROOT = BASE_DIR / 'static'   # <-- add this
 # To upload and serve files, you need to specify where Django stores uploaded files and from what URL Django serves them. MEDIA_ROOT and MEDIA_URL are in settings.py by default but they are empty.
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+# Use BigAutoField by default for all new models
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

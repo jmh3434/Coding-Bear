@@ -1,110 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    {% include 'googlefont.html' %}
-    
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css'%}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+  {% include 'googlefont.html' %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style.css'%}">
+
+  <style>
+    :root{--bg-0:#0b0c10;--bg-1:#11131a;--bg-2:#0e1016;--line:#1b1f28;--text-0:#e7e9ee;--text-1:#9aa3b2;--brand:#00e5ff;--brand-2:#7c4dff;--success:#00d084;--warning:#ff9500;--danger:#ff4757;--radius:12px;--shadow:0 8px 16px rgba(0,0,0,.3)}
+    body{background:var(--bg-0);color:var(--text-0)}
+    .navbar{background:var(--bg-2)!important;border-bottom:1px solid var(--line)}
+    .nav-link{color:var(--text-1)!important}
+    .nav-link:hover,.nav-link.active{color:var(--text-0)!important}
+    .settings-container{max-width:800px;margin:2rem auto}
+    .settings-section{background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);padding:2rem;margin-bottom:2rem;box-shadow:var(--shadow)}
+    .section-title{color:var(--brand);font-weight:700;margin-bottom:1.5rem;padding-bottom:.5rem;border-bottom:1px solid var(--line)}
+    .form-control{background:var(--bg-2);border:1px solid var(--line);color:var(--text-0);border-radius:8px}
+    .form-control:focus{background:var(--bg-2);border-color:var(--brand);color:var(--text-0);box-shadow:0 0 0 .2rem rgba(0,229,255,.25)}
+    .form-control::placeholder{color:var(--text-1)}
+    .form-label{color:var(--text-0);font-weight:600;margin-bottom:.5rem}
+    .btn-brand{background:linear-gradient(90deg,var(--brand),var(--brand-2));border:none;color:#fff;font-weight:600;padding:.75rem 2rem;border-radius:8px}
+    .btn-danger{background:var(--danger);border:none}
+    .stats-card{background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:1rem;text-align:center}
+    .stat-number{font-size:1.5rem;font-weight:900;color:var(--brand)}
+    .stat-label{color:var(--text-1);font-size:.85rem}
+    .payout-status{background:linear-gradient(135deg,var(--success),#00b370);color:#fff;padding:1.5rem;border-radius:var(--radius);text-align:center;margin-bottom:1.5rem}
+    .progress{height:8px;border-radius:999px;background:var(--line)}
+    .progress-bar{background:linear-gradient(90deg,var(--brand),var(--brand-2));border-radius:999px}
+    .input-group-text{background:var(--bg-2);border:1px solid var(--line);color:var(--text-1)}
+    .subscription-info{background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:1.5rem}
+    .subscription-active{border-color:var(--success)}
+    .subscription-expired{border-color:var(--danger)}
+  </style>
 </head>
-
 <body>
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="/success">Coding Academy</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link" href="/success">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="/profile/{{user.id}}">My Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="/tracks">Tracks</a></li>
+        <li class="nav-item"><a class="nav-link" href="/challenges">Challenges</a></li>
+      </ul>
+      <span class="navbar-text">
+        <a class="navbar-text mr-4" href="/settings/{{user.id}}">{{user.first_name}} {{user.last_name}}</a>
+        <a class="btn btn-outline-secondary" href="/logout">Logout</a>
+      </span>
+    </div>
+  </nav>
 
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/success">
-            <i class="icon-car"></i>
-            Coding Academy
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/success">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile/{{signed_in_user.id}}">My Cave</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/activity">Activity</a>
-                </li>
-            </ul>
-            <span class="navbar-text">
-                <a class="navbar-text mr-4" href="/settings/{{signed_in_user.id}}" role="button"> {{ signed_in_user.first_name }}
-                    {{signed_in_user.last_name}}</a>
-                <a class="btn btn-outline-secondary" href="/logout" role="button">Logout</a>
-            </span>
-    
-        </div>
-    </nav>
-
-    <!-- navbar -->
-
-
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="jumbotron pt-4 pb-1 mt-3 text-center">
-
-                    <div class="container">
-
-                        <img src="{{signed_in_user.image_url}}" alt="correct_image"
-                            style="height:100px;width:100px;border-radius:100%;border:1px solid #333;object-fit: cover;">
-                        <p style="margin-bottom: 4px;" class="lead text-muted">{{signed_in_user.first_name}} {{signed_in_user.last_name}}</p>
-                        <h2>Update Profile</h2>
-                    </div>
-                </div>
-                
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <form action="/settings/{{signed_in_user.id}}" method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        Email: <input type="text" name="email" class="form-control" value={{signed_in_user.email}}>
-                    </div>
-                    <div class="form-group">
-                        First Name: <input type="text" name="first_name" class="form-control" value={{signed_in_user.first_name}}>
-                    </div>
-                    <div class="form-group">
-                        Last Name: <input type="text" name="last_name" class="form-control" value={{signed_in_user.last_name}}>
-                    </div>
-                    <div class="form-group">
-                        Image URL: <input type="texdt" name="image" class="form-control" value={{signed_in_user.image_url}}>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </form>
-            </div>
-        </div>
-
-
+  <div class="settings-container">
+    <div class="payout-status">
+      <h4>Your Earnings</h4>
+      <div style="font-size:2rem;font-weight:900;margin:.5rem 0;">${{wallet.total_earnings|floatformat:2}}</div>
+      <div>Total earned • {{wallet.total_points}} points</div>
     </div>
 
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="stats-card">
+          <div class="stat-number">{{wallet.learning_points}}</div>
+          <div class="stat-label">Learning Points</div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="stats-card">
+          <div class="stat-number">{{wallet.challenge_points}}</div>
+          <div class="stat-label">Challenge Points</div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="stats-card">
+          <div class="stat-number">{{wallet.bonus_points}}</div>
+          <div class="stat-label">Bonus Points</div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="stats-card">
+          <div class="stat-number">${{wallet.pending_payout|floatformat:2}}</div>
+          <div class="stat-label">Pending Payout</div>
+        </div>
+      </div>
+    </div>
 
+    <form action="/settings/{{user.id}}" method="post">
+      {% csrf_token %}
 
+      <div class="settings-section">
+        <h3 class="section-title">Profile Settings</h3>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="first_name" class="form-label">First Name</label>
+            <input type="text" name="first_name" id="first_name" class="form-control" value="{{user.first_name}}" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="last_name" class="form-label">Last Name</label>
+            <input type="text" name="last_name" id="last_name" class="form-control" value="{{user.last_name}}" required>
+          </div>
+        </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" id="email" class="form-control" value="{{user.email}}" disabled>
+          <small class="text-muted">Contact support to change your email address</small>
+        </div>
 
+        <div class="mb-4">
+          <label for="image_url" class="form-label">Profile Image URL</label>
+          <input type="url" name="image_url" id="image_url" class="form-control" value="{{user.image_url}}" placeholder="https://example.com/your-image.jpg">
+          <small class="text-muted">Paste a link to your profile picture</small>
+        </div>
+      </div>
 
+      <div class="settings-section">
+        <h3 class="section-title">Payout Settings</h3>
+
+        <div class="mb-3">
+          <label for="payout_email" class="form-label">Payout Email (PayPal)</label>
+          <input type="email" name="payout_email" id="payout_email" class="form-control" value="{{wallet.payout_email}}" placeholder="your-paypal@email.com">
+          <small class="text-muted">We'll send payments to this PayPal email address</small>
+        </div>
+
+        <div class="mb-3">
+          <label for="payout_threshold" class="form-label">Minimum Payout Amount</label>
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+            <input type="number" name="payout_threshold" id="payout_threshold" class="form-control" value="{{wallet.payout_threshold}}" min="5" max="100" step="0.01">
+          </div>
+          <small class="text-muted">Minimum: $5.00, Maximum: $100.00</small>
+        </div>
+
+        <div class="mb-4">
+          <div class="d-flex justify-content-between mb-2">
+            <span>Progress to next payout:</span>
+            <span>${{wallet.total_earnings|floatformat:2}} / ${{wallet.payout_threshold}}</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" style="width: {{payout_progress_percent|default:0}}%"></div>
+          </div>
+          {% if wallet.can_request_payout %}
+            <button type="button" class="btn btn-success mt-2" onclick="requestPayout()">Request Payout</button>
+          {% else %}
+            <small class="text-muted d-block mt-2">
+              {% if remaining_to_payout > 0 %}
+                Earn ${{remaining_to_payout|floatformat:2}} more to request a payout
+              {% endif %}
+            </small>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3 class="section-title">Subscription Status</h3>
+        <div class="subscription-info {% if user.has_active_subscription %}subscription-active{% else %}subscription-expired{% endif %}">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h5>{{user.get_subscription_tier_display}} Plan</h5>
+              {% if user.has_active_subscription %}
+                <p class="text-success mb-0">Active until {{user.subscription_expires|date:"F j, Y"}}</p>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {% if user.subscription_tier == 'free' %}
+                    You're on the free plan. Upgrade to access premium tracks!
+                  {% else %}
+                    Your subscription expired on {{user.subscription_expires|date:"F j, Y"}}
+                  {% endif %}
+                </p>
+              {% endif %}
+            </div>
+            <div class="col-md-4 text-md-right">
+              {% if not user.has_active_subscription %}
+                <button class="btn btn-brand" type="button">Upgrade Plan</button>
+              {% else %}
+                <button class="btn btn-outline-light" type="button">Manage Subscription</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3 class="section-title">Privacy & Security</h3>
+        <div class="mb-3">
+          <button type="button" class="btn btn-warning" onclick="changePassword()">Change Password</button>
+        </div>
+        <div class="mb-3">
+          <button type="button" class="btn btn-outline-light" onclick="downloadData()">Download My Data</button>
+          <small class="text-muted d-block mt-1">Export your learning progress and earnings data</small>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3 class="section-title text-danger">Danger Zone</h3>
+        <div class="alert alert-warning"><strong>Warning:</strong> These actions cannot be undone. Please proceed with caution.</div>
+        <button type="button" class="btn btn-danger" onclick="confirmDeleteAccount()">Delete Account</button>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-brand btn-lg">Save Changes</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <script>
+    function requestPayout(){ alert('Payout request flow will be integrated with your payment processor.'); }
+    function changePassword(){ alert('Password change flow to be implemented.'); }
+    function downloadData(){ alert('Data export coming soon.'); }
+    function confirmDeleteAccount(){
+      if(confirm('Are you ABSOLUTELY sure you want to delete your account? This action cannot be undone.')){
+        const confirmation = prompt('Type DELETE to confirm account deletion:');
+        if(confirmation === 'DELETE'){ alert('Account deletion will be implemented with server-side confirmation.'); }
+      }
+    }
+  </script>
 </body>
-
 </html>
