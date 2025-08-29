@@ -7,6 +7,7 @@ from django.db.models import Q, Sum, F
 from django.utils import timezone
 import json
 from decimal import Decimal
+from django.contrib.auth.decorators import login_required
 
 from .models import (
     User, Track, Course, Section, TrackEnrollment,
@@ -14,6 +15,75 @@ from .models import (
     PointTransaction, PointStructure, CodeChallenge,
     ChallengeSolution, Movie, Quote, Comment
 )
+@login_required
+def activity(request):
+    """
+    Activity dashboard for the signed-in Django auth user, mapped to your app's User via email.
+    """
+    # Map auth.User -> my_app.models.User by email
+    app_user = AppUser.objects.filter(email=request.user.email).first()
+    if not app_user:
+        # If they signed in with a Django account that doesn't exist in your app Users table yet,
+        # send them somewhere friendly or create one automatically if that's your flow.
+        return redirect('dashboard')  # or wherever makes sense in your app
+
+    # Recent activity
+    recent_completions = (
+        SectionCompletion.objects
+        .filter(student=app_user)
+        .select_related('section', 'section__course', 'section__course__track')
+        .order_by('-completed_at')[:10]
+    )
+
+    recent_solutions = (
+        ChallengeSolution.objects
+        .filter(student=app_user)
+        .select_related('challenge')
+        .order_by('-submitted_at')[:10]
+    )
+
+    recent_transactions = (
+        PointTransaction.objects
+        .filter(user=app_user)
+        .order_by('-created_at')[:10]
+    )
+
+    # Enrollments (active)
+    enrollments = (
+        TrackEnrollment.objects
+        .filter(student=app_user, is_active=True)
+        .select_related('track')
+        .order_by('track__order', 'track__name')
+    )
+
+    # Stats
+    wallet = getattr(app_user, 'wallet', None)
+    total_points = wallet.total_points if wallet else 0
+    total_earnings = wallet.total_earnings if wallet else 0
+    can_payout = wallet.can_request_payout if wallet else False
+
+    # Streaks / progress
+    current_streak = app_user.get_current_streak()
+    overall_progress = app_user.get_overall_progress()
+
+    context = {
+        'app_user': app_user,
+        'enrollments': enrollments,
+
+        'recent_completions': recent_completions,
+        'recent_solutions': recent_solutions,
+        'recent_transactions': recent_transactions,
+
+        'wallet': wallet,
+        'total_points': total_points,
+        'total_earnings': total_earnings,
+        'can_payout': can_payout,
+
+        'current_streak': current_streak,
+        'overall_progress': overall_progress,
+        'now': timezone.now(),
+    }
+    return render(request, 'activity.html', context)
 
 
 def _get_or_create_wallet_and_progress(user):
@@ -328,26 +398,48 @@ def complete_section(request, section_id):
     return JsonResponse({'success': True, 'created': created})
 
 
+@login_required
 def challenges(request):
-    if 'user' not in request.session:
-        return redirect('/login')
+    """
+    Render the challenges page with 3 buckets by difficulty.
+    Also passes solved_challenge_ids to mark solved ones.
+    """
+    # Base queryset – only published challenges (adjust if you don't have this field)
+    qs = CodeChallenge.objects.all()
+    if hasattr(CodeChallenge, "is_published"):
+        qs = qs.filter(is_published=True)
 
-    user = User.objects.get(id=request.session['user'])
+    # Optional query param filter (?diff=easy/medium/hard)
+    diff = request.GET.get("diff")
+    if diff in {"easy", "medium", "hard"}:
+        qs = qs.filter(difficulty__iexact=diff)
 
-    easy_challenges = CodeChallenge.objects.filter(difficulty='easy', is_standalone=True, is_active=True)
-    medium_challenges = CodeChallenge.objects.filter(difficulty='medium', is_standalone=True, is_active=True)
-    hard_challenges = CodeChallenge.objects.filter(difficulty='hard', is_standalone=True, is_active=True)
+    # Buckets
+    easy_challenges = qs.filter(difficulty__iexact="easy")
+    medium_challenges = qs.filter(difficulty__iexact="medium")
+    hard_challenges = qs.filter(difficulty__iexact="hard")
 
-    solved_challenge_ids = ChallengeSolution.objects.filter(
-        student=user, is_correct=True
-    ).values_list('challenge_id', flat=True)
+    # Solved set for current user
+
+    solved_qs = ChallengeSolution.objects.filter(student=request.user)
+
+    
+    solved_challenge_ids = list(
+    ChallengeSolution.objects.filter(student=request.user)
+    .values_list('challenge_id', flat=True)
+)
+
+    all_challenges = CodeChallenge.objects.filter(is_active=True)
 
     context = {
-        'user': user,
-        'easy_challenges': easy_challenges,
-        'medium_challenges': medium_challenges,
-        'hard_challenges': hard_challenges,
-        'solved_challenge_ids': list(solved_challenge_ids),
+        'user': request.user,
+        'easy_challenges': CodeChallenge.objects.filter(difficulty='easy', is_active=True),
+        'medium_challenges': CodeChallenge.objects.filter(difficulty='medium', is_active=True),
+        'hard_challenges': CodeChallenge.objects.filter(difficulty='hard', is_active=True),
+        'solved_challenge_ids': solved_challenge_ids,  # from step #2
+        # add these two so your template fallback works:
+        'challenges': all_challenges,
+        'code_challenges': all_challenges,
     }
     return render(request, 'challenges.html', context)
 

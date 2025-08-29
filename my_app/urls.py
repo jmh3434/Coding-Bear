@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.views.generic import RedirectView
 
 urlpatterns = [
     # Public landing page
@@ -9,6 +10,9 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
     path('logout/', views.logout, name='logout'),
+
+    # add this so /accounts/login/ works too
+    path('accounts/login/', RedirectView.as_view(url='/login/', permanent=False)),
 
     # Main pages
     path('success/', views.index, name='dashboard'),
@@ -23,10 +27,12 @@ urlpatterns = [
     path('course/<int:course_id>/', views.course_detail, name='course_detail'),
     path('section/<int:section_id>/', views.section_detail, name='section_detail'),
 
-    # Challenges
-    path('challenges/', views.challenges, name='challenges'),
-    path('challenge/<int:challenge_id>/', views.challenge_detail, name='challenge_detail'),
+    path("challenges/", views.challenges, name="challenges"),
+    path("challenge/<int:challenge_id>/", views.challenge_detail, name="challenge_detail"),  # assumed existing
+    # ...rest of your urls...
     path('challenge/<int:challenge_id>/submit/', views.submit_challenge_solution, name='submit_challenge'),
+
+    
 
     # Actions
     path('enroll/<int:track_id>/', views.enroll_track, name='enroll_track'),

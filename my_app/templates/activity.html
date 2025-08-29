@@ -1,107 +1,246 @@
+{% load static humanize %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    {% include 'googlefont.html' %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css'%}">
-    {% load humanize %}
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Activity • Coding Academy</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="{% static 'common.css' %}">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    :root{
+      --bg-0:#0b0c10; --bg-1:#11131a; --bg-2:#0e1016; --line:#1b1f28;
+      --text-0:#e7e9ee; --text-1:#9aa3b2; --brand:#00e5ff; --brand-2:#7c4dff; --radius:18px;
+    }
+    body{background:var(--bg-0);color:var(--text-0);font-family:'Source Sans 3',system-ui,sans-serif}
+    .navbar{background:var(--bg-2)!important;border-bottom:1px solid var(--line)}
+    .nav-link{letter-spacing:.12em;font-size:.78rem;color:var(--text-1)!important;text-transform:uppercase}
+    .nav-link.active,.nav-link:hover{color:var(--text-0)!important}
+    .page-title{font-family:'Montserrat',system-ui;font-weight:900}
+    .card{background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius)}
+    .muted{color:var(--text-1)}
+    .badge-pill{border-radius:999px;background:linear-gradient(90deg,var(--brand),var(--brand-2));color:#0b0c10;font-weight:800}
+    .avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--line)}
+    .progress{height:8px;background:var(--bg-2);border:1px solid var(--line)}
+    .progress-bar{background:linear-gradient(90deg,var(--brand),var(--brand-2))}
+  </style>
 </head>
-
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/success">
-            <i class="icon-car"></i>
-            Coding Academy
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/success">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile/{{user.id}}">My Cave</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="/activity">Activity</a>
-                </li>
-            </ul>
-            <span class="navbar-text">
-                <a class="navbar-text mr-4" href="/settings/{{user.id}}" role="button">{{ user.first_name }}
-                    {{user.last_name}}</a>
-                <a class="btn btn-outline-secondary" href="/logout" role="button">Logout</a>
-            </span>
+  <!-- NAV -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/"><img src="{% static 'logo.svg' %}" alt="Logo" style="width:32px;height:32px"/></a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <i class="bi bi-list" style="font-size:1.6rem;color:var(--text-0)"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-3 me-auto align-items-lg-center gap-lg-3">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/tracks/">Tracks</a></li>
+          <li class="nav-item"><a class="nav-link" href="/leaderboard/">Leaderboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/activity/">Activity</a></li>
+        </ul>
+        <div class="text-end">
+          <a href="/profile/{{ app_user.id }}" class="btn btn-sm btn-outline-light border-0">
+            <i class="bi bi-person-circle me-1"></i> {{ app_user.full_name|default:request.user.get_username }}
+          </a>
         </div>
-    </nav>
-    <div id="wrap">
-
-        {% for movie in movies.all reversed %}
-
-        {{movie}}
-
-        {{ movie.title}}
-
-        {% endfor %}
-
-        {% for user_quote in user_quotes.all reversed %}
-        <div id='posts' class="">
-            <h5><img src="{{user_quote.user.image_url}}" alt="correct_image"
-                    style="height:auto;width:40px;border-radius:100%;border:1px solid #333;margin-right:2px;">
-                <a href="/profile/{{user_quote.user.id}}">{{user_quote.user.first_name}}
-                    {{user_quote.user.last_name}}</a> favorited a quote
-                {{user_quote.updated_at|naturaltime}}
-            </h5>
-            <p class="text-capitalize"><b>Genre:</b> {{user_quote.quote.movie.genre}}</p>
-            <p>
-                <i>{{user_quote.quote.movie.title}}</i> –
-                "{{user_quote.quote.quote}}" created by
-                <a href="/profile/{{user_quote.quote.poster.id}}">{{user_quote.quote.poster.first_name}}</a>
-            </p>
-            <div>
-                <img src="{{user_quote.quote.movie.image_url}}" alt="correct_image" style="height:100px;">
-            </div>
-            <div class='one_post'>
-                <form action="/add_comment/{{user_quote.quote.id}}" method=POST>
-                    {% csrf_token %}
-                    <div class="input-group mb-3">
-                        <input type="text" name='comment' id="comment" class="form-control input-sm"
-                            placeholder="Add a comment ...">
-                        <div class="input-group-append">
-                            <button id="submit-comment" type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </div>
-                </form>
-                {% for comment in user_quote.quote.quote_comments.all reversed %}
-                <p><a href="/profile/{{comment.poster.id}}">{{comment.poster.first_name}}</a> commented:
-                    "{{comment.comment}}" - {{comment.created_at|naturaltime}}
-                    {% if comment.poster.id == signed_in_user.id %}
-                    <a href="/delete_comment/{{comment.id}}" style="color:rgb(131, 72, 72)"> Delete</a>
-                    {% endif %}
-                </p>
-                {% endfor%}
-            </div>
-        </div>
-        {% endfor %}
+      </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-</body>
+  </nav>
 
+  <div style="height:72px"></div>
+
+  <!-- HEADER -->
+  <section class="py-4">
+    <div class="container d-flex flex-wrap align-items-end justify-content-between gap-3">
+      <div>
+        <h1 class="page-title mb-1">Your Activity</h1>
+        <div class="muted">Recap of your learning, challenges, and earnings</div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        {% if wallet %}
+          <span class="badge badge-pill px-3 py-2">Points: {{ total_points|intcomma }}</span>
+          <span class="badge badge-pill px-3 py-2">Earnings: ${{ total_earnings|floatformat:2 }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- SUMMARY STRIP -->
+  <section class="pb-4">
+    <div class="container">
+      <div class="row g-3">
+        <div class="col-12 col-md-4">
+          <div class="card p-3 h-100">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="muted small">Overall Progress</div>
+                <div class="fs-3 fw-bold">{{ overall_progress|floatformat:0 }}%</div>
+              </div>
+              <i class="bi bi-graph-up-arrow fs-2 muted"></i>
+            </div>
+            <div class="progress mt-2"><div class="progress-bar" role="progressbar" style="width: {{ overall_progress|default:0 }}%"></div></div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="card p-3 h-100">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="muted small">Current Streak</div>
+                <div class="fs-3 fw-bold">{{ current_streak|default:0 }} days</div>
+              </div>
+              <i class="bi bi-flame fs-2 muted"></i>
+            </div>
+            {% if wallet and can_payout %}
+              <div class="mt-2"><span class="badge bg-success">Eligible for Payout</span></div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="card p-3 h-100">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="muted small">Enrolled Tracks</div>
+                <div class="fs-3 fw-bold">{{ enrollments|length }}</div>
+              </div>
+              <i class="bi bi-collection fs-2 muted"></i>
+            </div>
+            <div class="mt-2">
+              {% for e in enrollments|slice:":2" %}
+                <span class="badge bg-secondary me-1">{{ e.track.name }}</span>
+              {% empty %}
+                <span class="muted small">Not enrolled yet</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEEDS -->
+  <section class="pb-5">
+    <div class="container">
+      <div class="row g-4">
+
+        <!-- Section Completions -->
+        <div class="col-12 col-lg-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title mb-3"><i class="bi bi-check2-square me-2"></i>Recent Section Completions</h5>
+              {% if recent_completions %}
+                <div class="list-group list-group-flush">
+                  {% for c in recent_completions %}
+                    <div class="list-group-item bg-transparent text-white d-flex justify-content-between align-items-start">
+                      <div class="me-3">
+                        <div class="fw-semibold">{{ c.section.title }}</div>
+                        <div class="muted small">
+                          {{ c.section.course.name }} • {{ c.section.course.track.name }}
+                        </div>
+                      </div>
+                      <div class="text-end">
+                        <div class="muted small">{{ c.completed_at|naturaltime }}</div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% else %}
+                <div class="muted">No sections completed yet.</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Challenge Solutions -->
+        <div class="col-12 col-lg-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title mb-3"><i class="bi bi-trophy me-2"></i>Recent Challenge Submissions</h5>
+              {% if recent_solutions %}
+                <div class="list-group list-group-flush">
+                  {% for s in recent_solutions %}
+                    <div class="list-group-item bg-transparent text-white d-flex justify-content-between align-items-start">
+                      <div class="me-3">
+                        <div class="fw-semibold">{{ s.challenge.title }}</div>
+                        <div class="muted small">
+                          Difficulty: {{ s.challenge.difficulty|title }} •
+                          {% if s.is_correct %}<span class="text-success">Correct</span>{% else %}<span class="text-warning">Pending/Incorrect</span>{% endif %}
+                          {% if s.execution_time %} • {{ s.execution_time|floatformat:0 }} ms{% endif %}
+                        </div>
+                      </div>
+                      <div class="text-end">
+                        <div class="muted small">{{ s.submitted_at|naturaltime }}</div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% else %}
+                <div class="muted">No challenge submissions yet.</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Transactions -->
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title mb-3"><i class="bi bi-cash-coin me-2"></i>Recent Point Transactions</h5>
+              {% if recent_transactions %}
+                <div class="table-responsive">
+                  <table class="table align-middle">
+                    <thead>
+                      <tr>
+                        <th>When</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th class="text-end">Points</th>
+                        <th class="text-end">Cash</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for t in recent_transactions %}
+                        <tr>
+                          <td class="muted small">{{ t.created_at|naturaltime }}</td>
+                          <td>{{ t.get_transaction_type_display }}</td>
+                          <td class="muted">{{ t.description }}</td>
+                          <td class="text-end">{{ t.points_earned|intcomma }}</td>
+                          <td class="text-end">${{ t.cash_value|floatformat:2 }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              {% else %}
+                <div class="muted">No transactions yet.</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="text-center mt-4">
+        <a href="/tracks/" class="btn btn-brand px-4 py-2"><i class="bi bi-rocket-takeoff me-1"></i> Keep Learning</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-4 border-top" style="border-color:var(--line)!important">
+    <div class="container d-flex justify-content-between flex-wrap gap-2">
+      <div class="d-flex align-items-center gap-2">
+        <img src="{% static 'logo.svg' %}" alt="Logo" style="width:20px;height:20px"/>
+        <span class="muted">© {{ now|date:"Y" }} Coding Academy</span>
+      </div>
+      <div class="muted"><i class="bi bi-lightning-charge"></i> Learn fast. Ship faster.</div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

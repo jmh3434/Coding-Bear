@@ -229,3 +229,12 @@ MEDIA_URL = '/media/'
 
 # Use BigAutoField by default for all new models
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# settings.py
+
+# Where users are redirected if not logged in
+LOGIN_URL = '/login/'
+
+# Where users are redirected after successful login
+LOGIN_REDIRECT_URL = '/success/'
