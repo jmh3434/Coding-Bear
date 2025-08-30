@@ -7,7 +7,6 @@ from django.db.models import Q, Sum, F
 from django.utils import timezone
 import json
 from decimal import Decimal
-from django.contrib.auth.decorators import login_required
 
 from .models import (
     User, Track, Course, Section, TrackEnrollment,
@@ -15,17 +14,23 @@ from .models import (
     PointTransaction, PointStructure, CodeChallenge,
     ChallengeSolution, Movie, Quote, Comment
 )
-@login_required
+
+def _get_or_create_wallet_and_progress(user):
+    wallet, _ = UserWallet.objects.get_or_create(user=user)
+    progress, _ = StudentProgress.objects.get_or_create(student=user)
+    return wallet, progress
+
+
 def activity(request):
-    """
-    Activity dashboard for the signed-in Django auth user, mapped to your app's User via email.
-    """
-    # Map auth.User -> my_app.models.User by email
-    app_user = AppUser.objects.filter(email=request.user.email).first()
-    if not app_user:
-        # If they signed in with a Django account that doesn't exist in your app Users table yet,
-        # send them somewhere friendly or create one automatically if that's your flow.
-        return redirect('dashboard')  # or wherever makes sense in your app
+    """Activity dashboard with proper user context"""
+    if 'user' not in request.session:
+        return redirect('/login/')
+    
+    try:
+        app_user = User.objects.get(id=request.session['user'])
+    except User.DoesNotExist:
+        request.session.flush()
+        return redirect('/login/')
 
     # Recent activity
     recent_completions = (
@@ -48,7 +53,7 @@ def activity(request):
         .order_by('-created_at')[:10]
     )
 
-    # Enrollments (active)
+    # Enrollments
     enrollments = (
         TrackEnrollment.objects
         .filter(student=app_user, is_active=True)
@@ -56,29 +61,27 @@ def activity(request):
         .order_by('track__order', 'track__name')
     )
 
-    # Stats
-    wallet = getattr(app_user, 'wallet', None)
-    total_points = wallet.total_points if wallet else 0
-    total_earnings = wallet.total_earnings if wallet else 0
-    can_payout = wallet.can_request_payout if wallet else False
+    # Wallet and stats
+    wallet, _ = UserWallet.objects.get_or_create(user=app_user)
+    total_points = wallet.total_points
+    total_earnings = wallet.total_earnings
+    can_payout = wallet.can_request_payout
 
-    # Streaks / progress
+    # Progress stats
     current_streak = app_user.get_current_streak()
     overall_progress = app_user.get_overall_progress()
 
     context = {
-        'app_user': app_user,
+        'user': app_user,  # This is the key fix - templates expect 'user'
+        'app_user': app_user,  # Keep for backward compatibility
         'enrollments': enrollments,
-
         'recent_completions': recent_completions,
         'recent_solutions': recent_solutions,
         'recent_transactions': recent_transactions,
-
         'wallet': wallet,
         'total_points': total_points,
         'total_earnings': total_earnings,
         'can_payout': can_payout,
-
         'current_streak': current_streak,
         'overall_progress': overall_progress,
         'now': timezone.now(),
@@ -86,10 +89,45 @@ def activity(request):
     return render(request, 'activity.html', context)
 
 
-def _get_or_create_wallet_and_progress(user):
-    wallet, _ = UserWallet.objects.get_or_create(user=user)
-    progress, _ = StudentProgress.objects.get_or_create(student=user)
-    return wallet, progress
+def leaderboard(request):
+    """Leaderboard with proper user context"""
+    if 'user' not in request.session:
+        return redirect('/login/')
+
+    try:
+        user = User.objects.get(id=request.session['user'])
+    except User.DoesNotExist:
+        request.session.flush()
+        return redirect('/login/')
+
+    # Get top earners - users with wallets
+    top_earners = []
+    for u in User.objects.all():
+        if hasattr(u, 'wallet') and u.wallet:
+            top_earners.append(u)
+    
+    # Sort by earnings
+    top_earners.sort(key=lambda x: x.wallet.total_earnings if x.wallet else 0, reverse=True)
+    top_earners = top_earners[:50]
+
+    # Get users with most points
+    most_points = []
+    for u in User.objects.all():
+        if hasattr(u, 'wallet') and u.wallet:
+            wallet = u.wallet
+            total_points = wallet.learning_points + wallet.challenge_points + wallet.bonus_points
+            most_points.append({'user': u, 'total_points': total_points})
+    
+    most_points.sort(key=lambda x: x['total_points'], reverse=True)
+    most_points = most_points[:50]
+
+    context = {
+        'user': user,  # This is the key - templates expect 'user'
+        'top_earners': top_earners,
+        'most_points': most_points,
+        'now': timezone.now(),
+    }
+    return render(request, 'leaderboard.html', context)
 
 
 def index(request):
@@ -125,7 +163,7 @@ def index(request):
     context = {
         'user': user,
         'tracks': tracks,
-        'has_enrolled_tracks': has_enrolled_tracks,  # 👈 add this
+        'has_enrolled_tracks': has_enrolled_tracks,
         'recent_completions': recent_completions,
         'recent_transactions': recent_transactions,
         'wallet': wallet,
@@ -138,6 +176,13 @@ def index(request):
 
 def login(request):
     if request.method == "GET":
+        # Check if already logged in
+        if 'user' in request.session:
+            try:
+                User.objects.get(id=request.session['user'])
+                return redirect('/success/')
+            except User.DoesNotExist:
+                request.session.flush()
         return render(request, 'index.html')
 
     if request.method == "POST":
@@ -146,16 +191,21 @@ def login(request):
         if User.objects.authenticate(email, password):
             user = User.objects.filter(email=email)[0]
             request.session['user'] = user.id
-            return redirect('/success')
+            messages.success(request, f"Welcome back, {user.first_name}!")
+            return redirect('/success/')
         messages.error(request, "Invalid email or password")
-        return redirect('/login')
-    
-
-
+        return redirect('/login/')
 
 
 def register(request):
     if request.method == "GET":
+        # Check if already logged in
+        if 'user' in request.session:
+            try:
+                User.objects.get(id=request.session['user'])
+                return redirect('/success/')
+            except User.DoesNotExist:
+                request.session.flush()
         return render(request, 'index.html')
 
     if request.method == "POST":
@@ -163,24 +213,25 @@ def register(request):
         if errors:
             for _, value in errors.items():
                 messages.error(request, value)
-            return redirect('/register')
+            return redirect('/register/')
 
         new_user = User.objects.register(request.POST)
         request.session['user'] = new_user.id
         StudentProgress.objects.create(student=new_user)
         create_default_point_structures()
         messages.success(request, "Registration successful! Welcome to Coding Academy!")
-        return redirect('/success')
+        return redirect('/success/')
 
 
 def logout(request):
     request.session.flush()
-    return redirect('/login')
+    messages.success(request, "Successfully logged out!")
+    return redirect('/')
 
 
 def profile(request, user_id):
     if 'user' not in request.session:
-        return redirect('/login')
+        return redirect('/login/')
 
     current_user = User.objects.get(id=request.session['user'])
     profile_user = get_object_or_404(User, id=user_id)
@@ -233,7 +284,7 @@ def profile(request, user_id):
 
 def tracks(request):
     if 'user' not in request.session:
-        return redirect('/login')
+        return redirect('/login/')
 
     user = User.objects.get(id=request.session['user'])
     all_tracks = Track.objects.get_with_progress(user)
@@ -243,14 +294,14 @@ def tracks(request):
 
 def track_detail(request, track_id):
     if 'user' not in request.session:
-        return redirect('/login')
+        return redirect('/login/')
 
     user = User.objects.get(id=request.session['user'])
     track = get_object_or_404(Track, id=track_id)
 
     if not track.is_accessible_to_user(user):
         messages.warning(request, f"This track requires a {track.access_level} subscription.")
-        return redirect('/tracks')
+        return redirect('/tracks/')
 
     is_enrolled = TrackEnrollment.objects.filter(student=user, track=track, is_active=True).exists()
     courses = Course.objects.get_with_progress(user, track=track)
@@ -280,23 +331,23 @@ def track_detail(request, track_id):
 
 def course_detail(request, course_id):
     if 'user' not in request.session:
-        return redirect('/login')
+        return redirect('/login/')
 
     user = User.objects.get(id=request.session['user'])
     course = get_object_or_404(Course, id=course_id)
 
     if not course.track.is_accessible_to_user(user):
         messages.warning(request, "You don't have access to this track.")
-        return redirect('/tracks')
+        return redirect('/tracks/')
 
     if not course.is_unlocked_for_student(user):
         messages.warning(request, "Complete the prerequisite courses first!")
-        return redirect(f'/track/{course.track.id}')
+        return redirect(f'/track/{course.track.id}/')
 
     is_enrolled = TrackEnrollment.objects.filter(student=user, track=course.track, is_active=True).exists()
     if not is_enrolled:
         messages.warning(request, "You must enroll in the track first!")
-        return redirect(f'/track/{course.track.id}')
+        return redirect(f'/track/{course.track.id}/')
 
     sections = Section.objects.get_with_progress(user, course=course)
     course_progress = course.get_student_progress(user)
@@ -314,18 +365,18 @@ def course_detail(request, course_id):
 
 def section_detail(request, section_id):
     if 'user' not in request.session:
-        return redirect('/login')
+        return redirect('/login/')
 
     user = User.objects.get(id=request.session['user'])
     section = get_object_or_404(Section, id=section_id)
 
     if not section.course.track.is_accessible_to_user(user):
         messages.warning(request, "You don't have access to this content.")
-        return redirect('/tracks')
+        return redirect('/tracks/')
 
     if not section.is_unlocked_for_student(user):
         messages.warning(request, "Complete the previous sections first!")
-        return redirect(f'/course/{section.course.id}')
+        return redirect(f'/course/{section.course.id}/')
 
     is_completed = SectionCompletion.objects.filter(student=user, section=section).exists()
     code_challenges = section.code_challenges.all()
@@ -398,18 +449,17 @@ def complete_section(request, section_id):
     return JsonResponse({'success': True, 'created': created})
 
 
-@login_required
 def challenges(request):
-    """
-    Render the challenges page with 3 buckets by difficulty.
-    Also passes solved_challenge_ids to mark solved ones.
-    """
-    # Base queryset – only published challenges (adjust if you don't have this field)
-    qs = CodeChallenge.objects.all()
-    if hasattr(CodeChallenge, "is_published"):
-        qs = qs.filter(is_published=True)
+    """Challenges page with proper session auth"""
+    if 'user' not in request.session:
+        return redirect('/login/')
 
-    # Optional query param filter (?diff=easy/medium/hard)
+    user = User.objects.get(id=request.session['user'])
+
+    # Base queryset
+    qs = CodeChallenge.objects.filter(is_active=True)
+
+    # Optional query param filter
     diff = request.GET.get("diff")
     if diff in {"easy", "medium", "hard"}:
         qs = qs.filter(difficulty__iexact=diff)
@@ -419,34 +469,27 @@ def challenges(request):
     medium_challenges = qs.filter(difficulty__iexact="medium")
     hard_challenges = qs.filter(difficulty__iexact="hard")
 
-    # Solved set for current user
-
-    solved_qs = ChallengeSolution.objects.filter(student=request.user)
-
-    
+    # Solved challenges for current user
     solved_challenge_ids = list(
-    ChallengeSolution.objects.filter(student=request.user)
-    .values_list('challenge_id', flat=True)
-)
-
-    all_challenges = CodeChallenge.objects.filter(is_active=True)
+        ChallengeSolution.objects.filter(student=user, is_correct=True)
+        .values_list('challenge_id', flat=True)
+    )
 
     context = {
-        'user': request.user,
-        'easy_challenges': CodeChallenge.objects.filter(difficulty='easy', is_active=True),
-        'medium_challenges': CodeChallenge.objects.filter(difficulty='medium', is_active=True),
-        'hard_challenges': CodeChallenge.objects.filter(difficulty='hard', is_active=True),
-        'solved_challenge_ids': solved_challenge_ids,  # from step #2
-        # add these two so your template fallback works:
-        'challenges': all_challenges,
-        'code_challenges': all_challenges,
+        'user': user,
+        'easy_challenges': easy_challenges,
+        'medium_challenges': medium_challenges,
+        'hard_challenges': hard_challenges,
+        'solved_challenge_ids': solved_challenge_ids,
+        'challenges': qs,
+        'code_challenges': qs,
     }
     return render(request, 'challenges.html', context)
 
 
 def challenge_detail(request, challenge_id):
     if 'user' not in request.session:
-        return redirect('/login')
+        return redirect('/login/')
 
     user = User.objects.get(id=request.session['user'])
     challenge = get_object_or_404(CodeChallenge, id=challenge_id)
@@ -498,55 +541,14 @@ def submit_challenge_solution(request, challenge_id):
     return JsonResponse({'success': True, 'correct': False})
 
 
-def leaderboard(request):
-    if 'user' not in request.session:
-        return redirect('/login')
-
-    user = User.objects.get(id=request.session['user'])
-
-    top_earners = User.objects.select_related('wallet').order_by('-wallet__total_earnings')[:50]
-
-    top_points = (User.objects.select_related('wallet')
-                  .annotate(total_points=F('wallet__learning_points') +
-                            F('wallet__challenge_points') +
-                            F('wallet__bonus_points'))
-                  .order_by('-total_points')[:50])
-
-    recent_activity = (SectionCompletion.objects.select_related(
-        'student', 'section', 'section__course', 'section__course__track'
-    ).order_by('-completed_at')[:20])
-
-    context = {
-        'user': user,
-        'top_earners': top_earners,
-        'top_points': top_points,
-        'recent_activity': recent_activity,
-    }
-    return render(request, 'leaderboard.html', context)
-
-
-def activity(request):
-    if 'user' not in request.session:
-        return redirect('/login')
-
-    user = User.objects.get(id=request.session['user'])
-    recent_transactions = PointTransaction.objects.select_related('user').order_by('-created_at')[:50]
-    paginator = Paginator(recent_transactions, 20)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    context = {'user': user, 'transactions': page_obj}
-    return render(request, 'activity.html', context)
-
-
 def settings(request, user_id):
     if 'user' not in request.session:
-        return redirect('/login')
+        return redirect('/login/')
 
     current_user = User.objects.get(id=request.session['user'])
     if current_user.id != int(user_id):
         messages.error(request, "You can only edit your own settings.")
-        return redirect(f'/profile/{current_user.id}')
+        return redirect(f'/profile/{current_user.id}/')
 
     wallet, _ = _get_or_create_wallet_and_progress(current_user)
 
@@ -565,7 +567,7 @@ def settings(request, user_id):
         wallet.save()
 
         messages.success(request, "Settings updated successfully!")
-        return redirect(f'/settings/{user_id}')
+        return redirect(f'/settings/{user_id}/')
 
     payout_progress_percent = 0
     remaining_to_payout = Decimal('0.00')
@@ -586,7 +588,6 @@ def settings(request, user_id):
 
 
 # Helper functions
-
 def create_default_point_structures():
     defaults = [
         ('section_lesson', 20, Decimal('0.02')),
@@ -645,26 +646,73 @@ def validate_solution(code, challenge):
     return ("print" in (code or "").lower()) and ("hello world" in (code or "").lower())
 
 
-# Legacy/compat views for Swift pages
+# Legacy views for Swift pages
 def swift_html(request, page_num):
     if 'user' not in request.session:
-        return redirect('/login')
+        return redirect('/login/')
     user = User.objects.get(id=request.session['user'])
     return render(request, 'swift.html', {'user': user, 'page_num': page_num, 'next_page': page_num + 1})
 
 
 @csrf_exempt
-def submit_code(request):
+def submit_code(request, expected_output=None):
+    """Enhanced submit_code that works with URL parameters"""
     if request.method != 'POST':
         return JsonResponse({'status': 'error', 'message': 'Invalid method'})
+    
     try:
         data = json.loads(request.body or '{}')
-        code = data.get('code', '')
-        if "print" in code.lower() and "hello world" in code.lower():
-            return JsonResponse({'status': 'success', 'points': 50})
-        return JsonResponse({'status': 'error', 'message': 'Incorrect solution'})
-    except Exception:
-        return JsonResponse({'status': 'error', 'message': 'Invalid request'})
+        code = data.get('code', '').strip()
+        
+        # If no expected output provided, use default validation
+        if not expected_output:
+            if "print" in code.lower() and "hello world" in code.lower():
+                return JsonResponse({
+                    'status': 'success', 
+                    'points': 50,
+                    'output_code': 'Hello, World!'
+                })
+            return JsonResponse({
+                'status': 'error', 
+                'message': 'Incorrect solution',
+                'output_code': 'No output'
+            })
+        
+        # Simulate code execution and check against expected output
+        import re
+        
+        # Extract print statements from code
+        print_matches = re.findall(r'print\s*\(\s*["\']([^"\']*)["\']', code)
+        
+        if print_matches:
+            actual_output = print_matches[0]
+            
+            if actual_output.strip() == expected_output.strip():
+                return JsonResponse({
+                    'status': 'success',
+                    'points': 50,
+                    'output_code': actual_output
+                })
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Output doesn\'t match expected',
+                    'output_code': actual_output,
+                    'expected': expected_output
+                })
+        else:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'No output detected',
+                'output_code': 'No output'
+            })
+            
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error', 
+            'message': f'Error processing code: {str(e)}',
+            'output_code': 'Error'
+        })
 
 
 def api_user_progress(request, user_id):

@@ -32,27 +32,44 @@
 </head>
 <body>
   <!-- NAV -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="/"><img src="{% static 'logo.svg' %}" alt="Logo" style="width:32px;height:32px"/></a>
-      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-        <i class="bi bi-list" style="font-size:1.6rem;color:var(--text-0)"></i>
-      </button>
-      <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-3 me-auto align-items-lg-center gap-lg-3">
-          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="/tracks/">Tracks</a></li>
-          <li class="nav-item"><a class="nav-link" href="/leaderboard/">Leaderboard</a></li>
-          <li class="nav-item"><a class="nav-link active" href="/activity/">Activity</a></li>
-        </ul>
-        <div class="text-end">
-          <a href="/profile/{{ app_user.id }}" class="btn btn-sm btn-outline-light border-0">
-            <i class="bi bi-person-circle me-1"></i> {{ app_user.full_name|default:request.user.get_username }}
+   <!-- NAV -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="/success/"><img src="{% static 'logo.svg' %}" alt="Logo" style="width:32px;height:32px"/></a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <i class="bi bi-list" style="font-size:1.6rem;color:var(--text-0)"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-3 me-auto align-items-lg-center gap-lg-3">
+        <li class="nav-item"><a class="nav-link" href="/success/">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="/tracks/">Tracks</a></li>
+        <li class="nav-item"><a class="nav-link" href="/challenges/">Challenges</a></li>
+        <li class="nav-item"><a class="nav-link" href="/leaderboard/">Leaderboard</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/activity/">Activity</a></li>
+      </ul>
+      <div class="text-end">
+        {% if user %}
+          <div class="dropdown">
+            <a href="#" class="d-inline-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+              <img src="{{ user.image_url|default:'/static/avatar_placeholder.png' }}" alt="Profile" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--line);object-fit:cover;"/>
+              <span class="ms-2 text-white">{{ user.first_name }} {{ user.last_name }}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+              <li><a class="dropdown-item" href="/profile/{{ user.id }}/">My Profile</a></li>
+              <li><a class="dropdown-item" href="/settings/{{ user.id }}/">Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/logout/">Logout</a></li>
+            </ul>
+          </div>
+        {% else %}
+          <a href="/login/" class="btn btn-sm btn-outline-light border-0">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
           </a>
-        </div>
+        {% endif %}
       </div>
     </div>
-  </nav>
+  </div>
+</nav>
 
   <div style="height:72px"></div>
 
