@@ -112,8 +112,6 @@
 
       {# Show by difficulty buckets if available #}
       {% if easy_challenges or medium_challenges or hard_challenges %}
-        {% for bucket, qs in
-              'Easy'|make_list|slice:":0" %}{% endfor %} {# noop to keep Django happy #}
 
         {% if easy_challenges %}
           <h5 class="mb-2">Easy</h5>
@@ -210,15 +208,15 @@
         {% elif code_challenges %}
           {% with items=code_challenges %}
             {% include "partials/_challenge_list.html" with items=items solved_challenge_ids=solved_challenge_ids %}
-          {% else %}
-            <div class="card p-4">
-              <div class="text-center">
-                <h5 class="mb-1">No challenges yet</h5>
-                <p class="muted mb-3">Check back soon—new problems land weekly.</p>
-                <a href="/tracks" class="btn btn-brand">Explore Tracks</a>
-              </div>
-            </div>
           {% endwith %}
+        {% else %}
+          <div class="card p-4">
+            <div class="text-center">
+              <h5 class="mb-1">No challenges yet</h5>
+              <p class="muted mb-3">Check back soon—new problems land weekly.</p>
+              <a href="/tracks" class="btn btn-brand">Explore Tracks</a>
+            </div>
+          </div>
         {% endif %}
       {% endif %}
 
