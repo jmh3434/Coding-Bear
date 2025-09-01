@@ -1,6 +1,6 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
 from django.views.generic import RedirectView
+from . import views
 
 urlpatterns = [
     # Public landing page
@@ -15,11 +15,16 @@ urlpatterns = [
     path('accounts/login/', RedirectView.as_view(url='/login/', permanent=False)),
 
     # Main pages
-    path('success/', views.index, name='dashboard'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    # Back-compat for old link
+    path('success/', RedirectView.as_view(url='/dashboard/', permanent=False)),
 
     # User profiles and settings
     path('profile/<int:user_id>/', views.profile, name='profile'),
     path('settings/<int:user_id>/', views.settings, name='settings'),
+
+    # My Courses
+    path('my-courses/', views.my_courses, name='my_courses'),
 
     # Learning paths
     path('tracks/', views.tracks, name='tracks'),

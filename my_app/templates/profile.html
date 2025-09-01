@@ -1,58 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    {% include 'googlefont.html' %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'common.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ profile_user.full_name }} - Profile</title>
+  {% load static humanize %}
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #f1f5f9;
+      --accent: #06b6d4;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .navbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      color: var(--text-primary) !important;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      color: var(--text-secondary) !important;
+      margin: 0 0.5rem;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--primary) !important;
+    }
+
+    .profile-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: white;
+      padding: 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .profile-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+
+    .stats-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--border);
+      text-align: center;
+      height: 100%;
+    }
+
+    .stats-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stats-label {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .content-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .track-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .track-item:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .track-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: contain;
+      margin-right: 1rem;
+    }
+
+    .progress-bar-custom {
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 3px;
+      overflow: hidden;
+      margin: 0.5rem 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items-start;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .activity-success {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .activity-warning {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    .btn {
+      border-radius: 8px;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-primary {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      background: transparent;
+    }
+
+    .btn-outline-primary:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .badge {
+      font-weight: 600;
+      padding: 0.375rem 0.75rem;
+      border-radius: 6px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+    }
+
+    .section {
+      padding: 2rem 0;
+    }
+
+    .earnings-highlight {
+      background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .payout-available {
+      background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+    }
+  </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/success">Coding Academy</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="/success">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/activity">Activity</a></li>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <i class="bi bi-code-square me-2"></i>
+        Coding Academy
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/success/">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/my-courses/">My Courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/tracks/">Tracks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/leaderboard/">Leaderboard</a>
+          </li>
+        </ul>
+        
+        <div class="d-flex align-items-center gap-3">
+          <div class="dropdown">
+            <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+              <img src="{{ user.image_url|default:'/static/avatar_placeholder.png' }}" class="user-avatar me-2" alt="Profile">
+              <span>{{ user.first_name }}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/profile/{{ user.id }}/">My Profile</a></li>
+              <li><a class="dropdown-item" href="/settings/{{ user.id }}/">Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/logout/">Logout</a></li>
             </ul>
-            <span class="navbar-text">
-                <a class="navbar-text mr-4" href="/settings/{{user.id}}" role="button">{{ user.first_name }} {{ user.last_name }}</a>
-                <a class="btn btn-outline-secondary" href="/logout" role="button">Logout</a>
-            </span>
+          </div>
         </div>
-    </nav>
-    <!-- Navbar End -->
-
-    <div class="container mt-4">
-        <h2>{{ user.first_name }} {{ user.last_name }}'s Profile</h2>
-        <p>Email: {{ user.email }}</p>
-        <p>Enrolled Tracks:</p>
-        <ul>
-            {% for track in enrolled_tracks %}
-                <li>{{ track.name }}</li>
-            {% empty %}
-                <li>No tracks enrolled yet.</li>
-            {% endfor %}
-        </ul>
-
-        <h3 class="mt-4">My Quotes</h3>
-        <ul class="list-group">
-            {% for quote in user_quotes %}
-                <li class="list-group-item">{{ quote.text }}</li>
-            {% empty %}
-                <li class="list-group-item">No quotes added yet.</li>
-            {% endfor %}
-        </ul>
+      </div>
     </div>
+  </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="container">
+      <div class="profile-content">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <div class="d-flex align-items-center flex-wrap">
+              <img src="{{ profile_user.image_url|default:'/static/avatar_placeholder.png' }}" 
+                   alt="{{ profile_user.full_name }}" class="profile-avatar me-4">
+              <div>
+                <h1 class="display-6 fw-bold mb-2">{{ profile_user.full_name }}</h1>
+                <p class="lead mb-3">{{ profile_user.email }}</p>
+                <div class="d-flex gap-3 flex-wrap">
+                  <span class="badge bg-light text-dark">
+                    <i class="bi bi-calendar-event me-1"></i>
+                    Joined {{ profile_user.date_joined|date:"M Y" }}
+                  </span>
+                  {% if progress_summary.current_streak > 0 %}
+                    <span class="badge bg-warning text-dark">
+                      <i class="bi bi-fire me-1"></i>
+                      {{ progress_summary.current_streak }} day streak
+                    </span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+            {% if is_own_profile %}
+              <a href="/settings/{{ profile_user.id }}/" class="btn btn-outline-light">
+                <i class="bi bi-gear me-2"></i>
+                Edit Profile
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Content -->
+  <div class="section">
+    <div class="container">
+      <!-- Earnings Highlight -->
+      {% if is_own_profile %}
+        <div class="earnings-highlight {% if wallet.can_request_payout %}payout-available{% endif %}">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h3 class="mb-1">${{ wallet.total_earnings|floatformat:2 }}</h3>
+              <p class="mb-0">Total Earnings • {{ wallet.total_points|intcomma }} Points</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+              {% if wallet.can_request_payout %}
+                <button class="btn btn-light">
+                  <i class="bi bi-cash-coin me-2"></i>
+                  Request Payout
+                </button>
+              {% else %}
+                <small class="opacity-75">
+                  ${{ remaining_to_payout|floatformat:2 }} until payout
+                </small>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Stats Cards -->
+      <div class="row g-4 mb-4">
+        <div class="col-sm-6 col-lg-3">
+          <div class="stats-card">
+            <div class="stats-number">{{ total_completions|intcomma }}</div>
+            <div class="stats-label">Sections Completed</div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stats-card">
+            <div class="stats-number">{{ enrolled_tracks|length }}</div>
+            <div class="stats-label">Tracks Enrolled</div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stats-card">
+            <div class="stats-number">{{ challenges_solved }}</div>
+            <div class="stats-label">Challenges Solved</div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stats-card">
+            <div class="stats-number">{{ progress_summary.longest_streak }}</div>
+            <div class="stats-label">Best Streak</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Enrolled Tracks -->
+        <div class="col-lg-8">
+          <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 class="fw-bold mb-0">Learning Progress</h4>
+              <span class="text-muted">{{ enrolled_tracks|length }} track{{ enrolled_tracks|length|pluralize }}</span>
+            </div>
+            
+            {% if enrolled_tracks %}
+              {% for track in enrolled_tracks %}
+                <a href="/track/{{ track.id }}/" class="track-item d-block">
+                  {% if track.image_url %}
+                    <img src="{{ track.image_url }}" alt="{{ track.name }}" class="track-icon">
+                  {% else %}
+                    <div class="track-icon bg-primary d-flex align-items-center justify-content-center">
+                      <i class="bi bi-code-slash text-white"></i>
+                    </div>
+                  {% endif %}
+                  
+                  <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                      <h6 class="fw-bold mb-0">{{ track.name }}</h6>
+                      <span class="text-muted small">{{ track.progress|floatformat:0 }}%</span>
+                    </div>
+                    <p class="text-muted small mb-2">{{ track.description|truncatewords:12 }}</p>
+                    <div class="progress-bar-custom">
+                      <div class="progress-fill" style="width: {{ track.progress }}%"></div>
+                    </div>
+                  </div>
+                </a>
+              {% endfor %}
+            {% else %}
+              <div class="text-center py-4">
+                <i class="bi bi-book text-muted" style="font-size: 3rem; opacity: 0.5;"></i>
+                <h6 class="text-muted mt-3">No enrolled tracks</h6>
+                <p class="text-muted">Start learning by enrolling in a track!</p>
+                <a href="/tracks/" class="btn btn-primary">Browse Tracks</a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="col-lg-4">
+          <div class="content-card">
+            <h5 class="fw-bold mb-3">Recent Activity</h5>
+            
+            {% if recent_completions %}
+              {% for completion in recent_completions|slice:":6" %}
+                <div class="activity-item">
+                  <div class="activity-icon activity-success">
+                    <i class="bi bi-check2"></i>
+                  </div>
+                  <div class="flex-grow-1">
+                    <h6 class="mb-1">{{ completion.section.title }}</h6>
+                    <p class="text-muted small mb-1">{{ completion.section.course.name }}</p>
+                    <p class="text-muted small mb-0">{{ completion.completed_at|timesince }} ago</p>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="text-center py-3">
+                <i class="bi bi-activity text-muted" style="font-size: 2rem; opacity: 0.5;"></i>
+                <p class="text-muted mt-2 mb-0">No recent activity</p>
+              </div>
+            {% endif %}
+            
+            {% if is_own_profile %}
+              <div class="text-center mt-3">
+                <a href="/activity/" class="btn btn-outline-primary">
+                  View All Activity
+                  <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Point Breakdown (for own profile) -->
+          {% if is_own_profile %}
+            <div class="content-card">
+              <h6 class="fw-bold mb-3">Point Breakdown</h6>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Learning:</span>
+                <span class="fw-semibold">{{ wallet.learning_points|intcomma }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Challenges:</span>
+                <span class="fw-semibold">{{ wallet.challenge_points|intcomma }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Bonuses:</span>
+                <span class="fw-semibold">{{ wallet.bonus_points|intcomma }}</span>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between">
+                <span class="fw-bold">Total:</span>
+                <span class="fw-bold text-primary">{{ wallet.total_points|intcomma }}</span>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

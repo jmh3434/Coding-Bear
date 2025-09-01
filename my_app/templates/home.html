@@ -1,575 +1,672 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Coding Academy — Home</title>
+  <title>Coding Academy — Learn. Build. Earn.</title>
 
   {% load static %}
-  {% include 'googlefont.html' %}
-
+  
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
   <!-- Bootstrap 5.3 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-  <!-- Icons (Bootstrap Icons for tiny UI glyphs if needed) -->
+  <!-- Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
 
-  <!-- Animate.css -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
-  <!-- Favicon -->
-  <link rel="icon" href="{% static 'logo.svg' %}" type="image/svg" />
-
-  <!-- Your existing CSS (keep) -->
-  <link rel="stylesheet" href="{% static 'style.css' %}">
-  <link rel="stylesheet" href="{% static 'common.css' %}">
-
   <style>
-    :root{
-      --bg-0:#0b0c10;      /* page */
-      --bg-1:#11131a;      /* cards */
-      --bg-2:#0e1016;      /* nav/sections */
-      --line:#1b1f28;      /* borders */
-      --text-0:#e7e9ee;    /* primary text */
-      --text-1:#9aa3b2;    /* muted */
-      --brand:#00e5ff;     /* cyan accent */
-      --brand-2:#7c4dff;   /* violet accent (subtle) */
-      --radius:18px;
-      --shadow:0 12px 24px rgba(0,0,0,.35);
+    :root {
+      /* Colors inspired by letsdev.de */
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #f1f5f9;
+      --accent: #06b6d4;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-dark: #0f172a;
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
     }
 
-    html,body{height:100%}
-    body{
-      background: var(--bg-0);
-      color: var(--text-0);
-      font-family:'Source Sans 3',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-      -webkit-font-smoothing:antialiased;  text-rendering:optimizeLegibility;
-    }
-    h1,h2,h3,h4{font-family:'Montserrat',system-ui;letter-spacing:.01em}
-    code,pre{font-family:'Roboto Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-
-    /* ===== Subtle dark texture (vignette + grid) ===== */
-    body::before{
-      content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
-      background:
-        radial-gradient(80vw 60vh at 50% -10%, rgba(124,77,255,.08), transparent 60%),
-        radial-gradient(70vw 50vh at 100% 10%, rgba(0,229,255,.08), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
-    }
-    body::after{
-      content:""; position:fixed; inset:0; z-index:-2; pointer-events:none; opacity:.06;
-      background-image:
-        linear-gradient(0deg, transparent 24%, var(--text-1) 25%, var(--text-1) 26%, transparent 27%, transparent 74%, var(--text-1) 75%, var(--text-1) 76%, transparent 77%),
-        linear-gradient(90deg, transparent 24%, var(--text-1) 25%, var(--text-1) 26%, transparent 27%, transparent 74%, var(--text-1) 75%, var(--text-1) 76%, transparent 77%);
-      background-size: 64px 64px;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* ===== Nav ===== */
-    .navbar{ background: var(--bg-2) !important; border-bottom:1px solid var(--line); }
-    .navbar-brand img{ width:32px;height:32px }
-    .nav-link{ text-transform:uppercase; letter-spacing:.12em; font-size:.78rem; color:var(--text-1) !important }
-    .nav-link.active,.nav-link:hover,.nav-link:focus{ color:var(--text-0) !important }
-
-    /* ===== Hero ===== */
-    .hero{ min-height:88vh; display:grid; place-items:center; text-align:center; padding:72px 0 }
-    .badge-beta{ font-size:.72rem; letter-spacing:.18em; color:var(--text-1); border:1px solid var(--line); border-radius:999px; padding:.45rem .8rem; background:rgba(255,255,255,.02) }
-    .hero-title{ font-size:clamp(2.2rem,3.4vw+1rem,4rem); font-weight:900; line-height:1.04; margin:.9rem 0 .5rem }
-    .hero-sub{ font-size:clamp(1rem,.6vw+0.8rem,1.25rem); color:var(--text-1); letter-spacing:.22em; text-transform:uppercase }
-    .btn{ border-radius:999px; padding:.9rem 1.25rem; font-weight:700; letter-spacing:.06em }
-    .btn-brand{ background:linear-gradient(90deg,var(--brand),var(--brand-2)); border:none }
-    .btn-brand:hover{ filter:brightness(1.08) }
-    .btn-ghost{ background:transparent; border:1px solid var(--line); color:var(--text-0) }
-    .btn-ghost:hover{ border-color:var(--brand) }
-
-    /* ===== Sections ===== */
-    .section{ padding:72px 0 }
-    .section-header{ margin-bottom:28px }
-    .underline{ width:72px; height:3px; border-radius:999px; background:linear-gradient(90deg,var(--brand),var(--brand-2)); margin:14px auto 0 }
-
-    /* ===== Cards ===== */
-    .course-card{ background:var(--bg-1); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); transition:transform .25s ease,border-color .25s ease }
-    .course-card:hover{ transform:translateY(-6px); border-color:var(--brand) }
-    .course-card .thumb{ display:grid; place-items:center; padding-top:22px }
-    .course-card img{ width:92px;height:92px; object-fit:contain; filter:saturate(1.05) }
-    .course-card .card-body{ padding:18px 18px 22px }
-    .course-card .card-title{ font-weight:800 }
-    .course-card .card-text{ color:var(--text-1) }
-
-    .lock-badge{ position:absolute; top:12px; left:12px; display:inline-flex; align-items:center; gap:6px; padding:6px 10px; font-size:.74rem; border-radius:999px; border:1px solid var(--line); background:rgba(255,255,255,.02); backdrop-filter: blur(6px); color:var(--text-1) }
-
-    /* ===== Pricing ===== */
-    .pricing{ background: var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line) }
-    .price-card{ background:var(--bg-1); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:28px }
-    .price{ font-size:clamp(1.8rem,2.4vw+1rem,3rem); font-weight:900 }
-    .features li{ padding:10px 0; border-bottom:1px dashed var(--line); color:var(--text-0) }
-    .features li:last-child{ border-bottom:0 }
-
-    /* ===== Footer ===== */
-    footer{ color:var(--text-1); padding:40px 0 }
-
-    /* Utilities */
-    .muted{ color:var(--text-1) }
-    .chip{ border:1px solid var(--line); color:var(--text-1); padding:.35rem .6rem; border-radius:999px; font-size:.75rem }
-
-    /* New: icon circle + checklist for AI section */
-    .icon-circle{
-      width:48px;height:48px;border-radius:50%;
-      display:inline-grid;place-items:center;
-      background:linear-gradient(90deg,var(--brand),var(--brand-2));
-      color:#0b0c10;font-size:1.25rem;box-shadow:var(--shadow)
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      overflow-x: hidden;
     }
-    .checklist{list-style:none;margin:0;padding-left:0}
-    .checklist li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--line)}
-    .checklist li:last-child{border-bottom:0}
-    .checklist i{margin-top:2px}
 
-    @media (max-width:768px){ .hero{ min-height:80vh } }
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Navigation */
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-light);
+      transition: all 0.3s ease;
+      padding: 1rem 0;
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--text-primary) !important;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      color: var(--text-secondary) !important;
+      margin: 0 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--primary) !important;
+    }
+
+    .btn {
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 0.75rem 1.5rem;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-outline-primary {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      background: transparent;
+    }
+
+    .btn-outline-primary:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 120px 0 80px;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236366f1' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.3;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 600px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: block;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Features Section */
+    .features {
+      padding: 100px 0;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-light);
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Tracks Section */
+    .tracks {
+      padding: 100px 0;
+      background: var(--bg-secondary);
+    }
+
+    .track-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-light);
+      transition: all 0.3s ease;
+      height: 100%;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .track-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .track-icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1.5rem;
+      border-radius: 16px;
+      object-fit: contain;
+    }
+
+    .track-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 1rem;
+    }
+
+    .badge-free {
+      background: rgba(34, 197, 94, 0.1);
+      color: #16a34a;
+    }
+
+    .badge-premium {
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+    }
+
+    /* CTA Section */
+    .cta {
+      padding: 100px 0;
+      background: var(--bg-dark);
+      color: white;
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta p {
+      font-size: 1.25rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 60px 0 30px;
+      background: #0f172a;
+      color: #94a3b8;
+    }
+
+    .footer-brand {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 80px 0 60px;
+      }
+      
+      .hero-stats {
+        justify-content: center;
+        gap: 1.5rem;
+      }
+      
+      .features, .tracks, .cta {
+        padding: 60px 0;
+      }
+    }
+
+    /* User Avatar */
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+    }
+
+    .dropdown-toggle::after {
+      display: none;
+    }
   </style>
 </head>
-
 <body>
-  <!-- ===== NAVBAR ===== -->
+  <!-- Navigation -->
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="/success">
-        <img src="{% static 'logo.svg' %}" alt="Logo" />
+      <a class="navbar-brand" href="/">
+        <i class="bi bi-code-square me-2"></i>
+        Coding Academy
       </a>
-      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"><i class="bi bi-list" style="font-size:1.6rem;color:var(--text-0)"></i></span>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-3 me-auto align-items-lg-center gap-lg-3">
-          <li class="nav-item"><a class="nav-link active" href="/success">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="/profile/{{user.id}}">My Courses</a></li>
-          <li class="nav-item"><a class="nav-link" href="/activity">Activity</a></li>
-          <li class="nav-item"><a class="nav-link" href="#ai">AI Approach</a></li>
-          <li class="nav-item"><a class="nav-link" href="#donate">Donate</a></li>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#features">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#tracks">Tracks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#pricing">Pricing</a>
+          </li>
         </ul>
-        <!-- Avatar dropdown -->
-        <div class="dropdown text-end">
-          <a href="#" class="d-inline-flex align-items-center text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{user.image_url}}" alt="Menu" style="height:40px;width:40px;border-radius:50%;border:2px solid var(--line);object-fit:cover;" />
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end shadow">
-            <li><a class="dropdown-item" href="/settings/{{user.id}}">Settings</a></li>
-            <li><a class="dropdown-item" href="/logout">Logout</a></li>
-          </ul>
+        
+        <div class="d-flex align-items-center gap-3">
+          {% if user %}
+            <a href="/success/" class="btn btn-outline-primary">Dashboard</a>
+            <div class="dropdown">
+              <a href="#" class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+                <img src="{{ user.image_url|default:'/static/avatar_placeholder.png' }}" class="user-avatar" alt="Profile">
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/profile/{{ user.id }}/">Profile</a></li>
+                <li><a class="dropdown-item" href="/settings/{{ user.id }}/">Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/logout/">Logout</a></li>
+              </ul>
+            </div>
+          {% else %}
+            <a href="/login/" class="nav-link">Login</a>
+            <a href="/register/" class="btn btn-primary">Get Started</a>
+          {% endif %}
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- Spacer for fixed-top nav -->
-  <div style="height:72px"></div>
-
-  <!-- ===== HERO ===== -->
-  <header class="hero">
+  <!-- Hero Section -->
+  <section class="hero">
     <div class="container">
-      <div class="d-flex flex-column align-items-center">
-        <img class="mb-3" src="{% static 'logo.svg' %}" alt="Logo" style="width:88px;height:88px" />
-        <span class="badge-beta">A One-Year, Job-Focused Coding Academy</span>
-        <h1 class="hero-title">Dark-Mode. Razor-Clean. Recruiter-Ready.</h1>
-        <p class="hero-sub">Human-first • AI-powered • Portfolio-driven</p>
-        <div class="hero-cta mt-4 d-flex flex-wrap gap-3 justify-content-center">
-          <a href="#tracks" class="btn btn-brand">Explore Tracks</a>
-          <a href="#ai" class="btn btn-ghost">How We Use AI</a>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- ===== TRACKS ===== -->
-  <section id="tracks" class="section">
-    <div class="container">
-      <div class="text-center section-header">
-        <h2>Tracks</h2>
-        <div class="underline"></div>
-      </div>
-      <div class="row g-4 mt-2">
-        <!-- Programming Basics -->
-        <div class="col-6 col-md-3">
-          <div class="course-card h-100 position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/programmingbasics.png" alt="Programming Basics"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Programming Basics</h5>
-              <p class="card-text">Loops, Arrays, Algorithms</p>
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="hero-content">
+            <h1>
+              Learn to Code.<br>
+              <span class="text-gradient">Build Real Projects.</span><br>
+              Get Paid.
+            </h1>
+            <p>
+              Master programming through hands-on projects, earn points for every milestone, 
+              and get real cash payouts. The future of coding education is here.
+            </p>
+            <div class="d-flex flex-wrap gap-3">
+              {% if user %}
+                <a href="/success/" class="btn btn-primary btn-lg">
+                  <i class="bi bi-arrow-right me-2"></i>
+                  Continue Learning
+                </a>
+              {% else %}
+                <a href="/register/" class="btn btn-primary btn-lg">
+                  <i class="bi bi-play-circle me-2"></i>
+                  Start Learning
+                </a>
+                <a href="/login/" class="btn btn-outline-primary btn-lg">Sign In</a>
+              {% endif %}
             </div>
-          </div>
-        </div>
-        <!-- Front End -->
-        <div class="col-6 col-md-3">
-          <div class="course-card h-100 position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/frontend.png" alt="Front End"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Front End</h5>
-              <p class="card-text">HTML, CSS, JavaScript</p>
-            </div>
-          </div>
-        </div>
-        <!-- Back End -->
-        <div class="col-6 col-md-3">
-          <div class="course-card h-100 position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/backend.png" alt="Back End"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Back End</h5>
-              <p class="card-text">Server-Side, Databases, APIs</p>
-            </div>
-          </div>
-        </div>
-        <!-- Mobile -->
-        <div class="col-6 col-md-3">
-          <div class="course-card h-100 position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/mobile.png" alt="Mobile"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Mobile</h5>
-              <p class="card-text">Swift, iOS, Java, Android</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== ALL COURSES ===== -->
-  <section id="courses" class="section">
-    <div class="container">
-      <div class="text-center section-header">
-        <h2>All Courses</h2>
-        <div class="underline"></div>
-      </div>
-
-      <div class="row g-4 mt-1">
-        <!-- Row 1 -->
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <!-- <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span> -->
-            <div class="thumb"><img src="/static/beginningcoding.png" alt="Basics"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Basics</h5>
-              <p class="card-text">Learning how to code</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/html.png" alt="HTML"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">HTML</h5>
-              <p class="card-text">The Backbone of Web Content</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/js.png" alt="JavaScript"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">JavaScript</h5>
-              <p class="card-text">Update the web dynamically</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 2 -->
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/css.png" alt="CSS"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">CSS</h5>
-              <p class="card-text">Style your website</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/swift.png" alt="SwiftUI"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">SwiftUI</h5>
-              <p class="card-text">Modern iOS UI</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/swift-lang.png" alt="Swift"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Swift</h5>
-              <p class="card-text">Language foundations</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 3 -->
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/macterminal.png" alt="Terminal"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Terminal</h5>
-              <p class="card-text">Navigating the Computer</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/github.png" alt="GitHub"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">GitHub</h5>
-              <p class="card-text">Team Version Control</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/java.png" alt="Java & Android"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Java and Android</h5>
-              <p class="card-text">Powering Cross-Platform Apps</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 4 -->
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/python.png" alt="Python"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Python</h5>
-              <p class="card-text">Speed, Simplicity, Power</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/django.png" alt="Django"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Django</h5>
-              <p class="card-text">Production-grade web apps</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/CA_LOGO.png" alt="Deployment"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Deployment</h5>
-              <p class="card-text">Ship to App Store / Cloud</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 5 -->
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/ds.png" alt="Interview"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Interview Success</h5>
-              <p class="card-text">Coding Interview Prep</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/architecture.png" alt="Design Patterns"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Design Patterns</h5>
-              <p class="card-text">Think in architectures</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="course-card position-relative">
-            <span class="lock-badge"><i class="bi bi-lock-fill"></i> Locked</span>
-            <div class="thumb"><img src="/static/iceburg.png" alt="Data Structures"/></div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Data Structures & Algorithms</h5>
-              <p class="card-text">From Big-O to systems</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== AI APPROACH ===== -->
-  <section id="ai" class="section">
-    <div class="container">
-      <div class="text-center section-header">
-        <h2>Human-First, AI-Powered</h2>
-        <p class="muted mt-2">We teach you to think like an engineer—and use AI like a power tool.</p>
-        <div class="underline"></div>
-      </div>
-
-      <div class="row g-4 mt-1">
-        <!-- Card 1 -->
-        <div class="col-12 col-md-4">
-          <div class="course-card h-100">
-            <div class="card-body text-center">
-              <div class="icon-circle mb-3"><i class="bi bi-brain"></i></div>
-              <h5 class="card-title">Think &gt; Generate</h5>
-              <p class="card-text">
-                You start with a plan: requirements, edge cases, and pseudocode.
-                “Why” comments are graded. AI accelerates you—it doesn’t think for you.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="col-12 col-md-4">
-          <div class="course-card h-100">
-            <div class="card-body text-center">
-              <div class="icon-circle mb-3"><i class="bi bi-cpu"></i></div>
-              <h5 class="card-title">Pro AI Workflows</h5>
-              <p class="card-text">
-                Prompt patterns, test-driven chats, critique loops, and pair-programming with AI.
-                Ship faster while keeping quality high and reasoning explicit.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="col-12 col-md-4">
-          <div class="course-card h-100">
-            <div class="card-body text-center">
-              <div class="icon-circle mb-3"><i class="bi bi-shield-check"></i></div>
-              <h5 class="card-title">Proof You Can Code</h5>
-              <p class="card-text">
-                Weekly no-AI labs & closed-internet checkpoints (e.g., quicksort, BFS/DFS, REST CRUD).
-                You’ll be able to deliver without AI—and excel with it.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Honor Code -->
-      <div class="row mt-4">
-        <div class="col-12 col-lg-8 mx-auto">
-          <div class="course-card">
-            <div class="card-body">
-              <h5 class="card-title mb-2"><i class="bi bi-clipboard-check me-2"></i>AI Honor Code</h5>
-              <ul class="checklist">
-                <li><i class="bi bi-check2-circle"></i><span>Write a short plan before you prompt (goals, edge cases, tests).</span></li>
-                <li><i class="bi bi-check2-circle"></i><span>Annotate any AI-assisted code with “why” comments.</span></li>
-                <li><i class="bi bi-check2-circle"></i><span>Use tests to accept or reject AI output; don’t trust, verify.</span></li>
-                <li><i class="bi bi-check2-circle"></i><span>Credit significant AI help in your README.</span></li>
-                <li><i class="bi bi-check2-circle"></i><span>Clear authorship via Git history—we look at <code>git blame</code>.</span></li>
-              </ul>
-              <div class="d-flex gap-2 flex-wrap mt-3">
-                <span class="chip"><i class="bi bi-lightning-charge me-1"></i>Move Fast</span>
-                <span class="chip"><i class="bi bi-search me-1"></i>Think Deeply</span>
-                <span class="chip"><i class="bi bi-diagram-3 me-1"></i>Show Your Reasoning</span>
-                <span class="chip"><i class="bi bi-check2-square me-1"></i>Test Everything</span>
+            
+            <div class="hero-stats">
+              <div class="stat-item">
+                <span class="stat-number">500+</span>
+                <span class="stat-label">Students</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">12</span>
+                <span class="stat-label">Tracks</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">$25k+</span>
+                <span class="stat-label">Paid Out</span>
               </div>
             </div>
           </div>
         </div>
+        <div class="col-lg-6">
+          <div class="text-center">
+            <img src="{% static 'hero-illustration.svg' %}" alt="Coding Academy" class="img-fluid" style="max-height: 500px;">
+          </div>
+        </div>
       </div>
-
     </div>
   </section>
 
-  <!-- ===== PRICING / ADMISSION ===== -->
-  <section id="donate" class="section pricing">
+  <!-- Features Section -->
+  <section class="features" id="features">
     <div class="container">
-      <div class="row justify-content-center g-4">
+      <div class="row justify-content-center text-center mb-5">
         <div class="col-lg-8">
-          <div class="text-center section-header">
-            <h2>Bootcamp Admission</h2>
-            <p class="muted mt-2">Choose monthly, join anytime. Durham, NC or online.</p>
-            <div class="underline"></div>
+          <h2 class="display-4 fw-bold">Why Choose Coding Academy?</h2>
+          <p class="lead text-secondary">We've revolutionized coding education with a learn-to-earn model that rewards your progress.</p>
+        </div>
+      </div>
+      
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="bi bi-cash-coin"></i>
+            </div>
+            <h3>Earn While You Learn</h3>
+            <p>Get paid real money for completing sections, solving challenges, and finishing tracks. Turn your learning journey into income.</p>
           </div>
         </div>
-        <div class="col-md-8 col-lg-6">
-          <div class="price-card">
-            <div class="d-flex align-items-baseline justify-content-between flex-wrap gap-2">
-              <div>
-                <div class="price">$39<span class="fs-5 fw-semibold">/mo</span></div>
-                <div class="muted">Cancel anytime · Scholarships available</div>
-              </div>
-              <a class="btn btn-brand" target="_blank" href="https://patreon.com/codingbear">Join / Donate</a>
+        
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="bi bi-trophy"></i>
             </div>
-            <ul class="features list-unstyled mt-4 mb-0">
-              <li>Admission to bootcamp (online or in-person, Durham NC)</li>
-              <li>Private Discord community</li>
-              <li>Office hours & pair programming</li>
-              <li>Code review on your projects</li>
-              <li>Interview prep & career guidance</li>
-              <li>AI co-pilot training (prompt patterns, critique loops, testing)</li>
-              <li>No-AI assessments to prove fundamentals</li>
-            </ul>
+            <h3>Project-Based Learning</h3>
+            <p>Build real-world applications, not just theoretical knowledge. Create a portfolio that impresses employers.</p>
+          </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="bi bi-people"></i>
+            </div>
+            <h3>Community Support</h3>
+            <p>Join a thriving community of learners, get help from instructors, and collaborate on exciting projects.</p>
+          </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="bi bi-lightning-charge"></i>
+            </div>
+            <h3>AI-Powered Learning</h3>
+            <p>Leverage cutting-edge AI tools while building solid fundamentals. Learn to be productive with modern development workflows.</p>
+          </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="bi bi-graph-up"></i>
+            </div>
+            <h3>Track Your Progress</h3>
+            <p>Detailed analytics show your learning journey, strengths, and areas for improvement with beautiful dashboards.</p>
+          </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="bi bi-briefcase"></i>
+            </div>
+            <h3>Job-Ready Skills</h3>
+            <p>Learn the technologies companies actually use. Our curriculum is designed with industry professionals.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <footer>
-    <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-center gap-3">
-      <div class="d-flex align-items-center gap-2">
-        <img src="{% static 'logo.svg' %}" alt="Logo" style="width:24px;height:24px"/>
-        <span class="muted">© {{ now|date:"Y" }} Coding Academy. Built with Django.</span>
+  <!-- Tracks Section -->
+  <section class="tracks" id="tracks">
+    <div class="container">
+      <div class="row justify-content-center text-center mb-5">
+        <div class="col-lg-8">
+          <h2 class="display-4 fw-bold">Learning Tracks</h2>
+          <p class="lead text-secondary">Choose your path and start building your future in tech.</p>
+        </div>
       </div>
-      <div class="muted">
-        <span class="me-3"><i class="bi bi-shield-lock"></i> Safe, supportive learning</span>
-        <span><i class="bi bi-lightning-charge"></i> Ship projects, get hired</span>
+      
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <a href="/tracks/" class="track-card d-block">
+            <span class="track-badge badge-free">Free</span>
+            <img src="{% static 'icons/web-dev.svg' %}" alt="Web Development" class="track-icon">
+            <h3>Web Development</h3>
+            <p>Master HTML, CSS, JavaScript, and modern frameworks. Build responsive, interactive websites from scratch.</p>
+            <div class="d-flex align-items-center mt-3">
+              <span class="text-primary fw-semibold">12 Courses</span>
+              <span class="ms-auto text-success">
+                <i class="bi bi-arrow-right"></i>
+              </span>
+            </div>
+          </a>
+        </div>
+        
+        <div class="col-md-6 col-lg-4">
+          <a href="/tracks/" class="track-card d-block">
+            <span class="track-badge badge-premium">Premium</span>
+            <img src="{% static 'icons/mobile-dev.svg' %}" alt="Mobile Development" class="track-icon">
+            <h3>Mobile Development</h3>
+            <p>Create iOS and Android apps with Swift, Kotlin, and React Native. From concept to App Store.</p>
+            <div class="d-flex align-items-center mt-3">
+              <span class="text-primary fw-semibold">8 Courses</span>
+              <span class="ms-auto text-success">
+                <i class="bi bi-arrow-right"></i>
+              </span>
+            </div>
+          </a>
+        </div>
+        
+        <div class="col-md-6 col-lg-4">
+          <a href="/tracks/" class="track-card d-block">
+            <span class="track-badge badge-premium">Premium</span>
+            <img src="{% static 'icons/backend.svg' %}" alt="Backend Development" class="track-icon">
+            <h3>Backend Development</h3>
+            <p>Build scalable APIs, databases, and server infrastructure. Master Python, Node.js, and cloud deployment.</p>
+            <div class="d-flex align-items-center mt-3">
+              <span class="text-primary fw-semibold">10 Courses</span>
+              <span class="ms-auto text-success">
+                <i class="bi bi-arrow-right"></i>
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <div class="text-center mt-5">
+        <a href="/tracks/" class="btn btn-primary btn-lg">
+          View All Tracks
+          <i class="bi bi-arrow-right ms-2"></i>
+        </a>
       </div>
     </div>
-  </footer>
+  </section>
 
-  <!-- Calendly badge (unchanged) -->
-  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-  <script>
-    window.addEventListener('load', function(){
-      if (window.Calendly) {
-        Calendly.initBadgeWidget({
-          url: 'https://calendly.com/jmh3434/code',
-          text: 'Schedule Meeting with Instructor',
-          color: '#000000',
-          textColor: '#ffffff',
-          branding: undefined
-        });
-      }
-    });
-  </script>
+  <!-- CTA Section -->
+  <section class="cta" id="pricing">
+    <div class="container">
+      <h2>Ready to Start Your Journey?</h2>
+      <p>Join thousands of students already earning while they learn.</p>
+      {% if not user %}
+        <a href="/register/" class="btn btn-primary btn-lg me-3">
+          <i class="bi bi-rocket-takeoff me-2"></i>
+          Get Started Free
+        </a>
+        <a href="/login/" class="btn btn-outline-light btn-lg">Sign In</a>
+      {% else %}
+        <a href="/success/" class="btn btn-primary btn-lg">
+          <i class="bi bi-arrow-right me-2"></i>
+          Continue Learning
+        </a>
+      {% endif %}
+    </div>
+  </section>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Smooth scroll for anchors -->
-  <script>
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const id = a.getAttribute('href');
-        if (id.length > 1) {
-          e.preventDefault();
-          const el = document.querySelector(id);
-          if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
-        }
-      });
-    });
-  </script>
-</body>
-</html>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <div class="footer-brand">Coding Academy</div>
+          <p>Empowering the next generation of developers through hands-on, rewarding education.</p>
+        </div>
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="text-white mb-3">Learn</h6>
+          <ul class="footer-links">
+            <li><a href="/tracks/">All Tracks</a></li>
+            <li><a href="/challenges/">Challenges</a></li>
+            <li><a href="/leaderboard/">Leaderboard</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="text-white mb-3">Company</h6>
+          <ul class="footer-links">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/contact/">Contact</a></li>
+            <li><a href="/careers/">Careers</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="text-white mb-3">Support</h6>
+          <ul class="footer-links">
+            <li><a href="/help/">Help Center</a></li>
+            <li><a href="/privacy/">Privacy</a></li>
+            <li><a href="/terms/">Terms</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="text-white mb-3">Connect</h6>
+          <ul class="footer-links">
+            <li><a href="#"><i class="bi bi-twitter me-2"></i>Twitter</a></li>
+            <li><a href="#"><i class="bi bi-github me-2"></i>GitHub</a></li>
+            <li><a href="#"><i class="bi bi-discord me-2"></i>Discord</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr class="my-4" style="border-color: #334155;">
+      <div class="text-center">
+        <p>&copy; {{ now|date:"Y" }} Coding Academy. All rights reserved.</p>
+      </div>    

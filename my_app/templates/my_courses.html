@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Courses - Coding Academy</title>
+  {% load static humanize %}
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #f1f5f9;
+      --accent: #06b6d4;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .navbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      color: var(--text-primary) !important;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      color: var(--text-secondary) !important;
+      margin: 0 0.5rem;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--primary) !important;
+    }
+
+    .page-header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+
+    .stats-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .stats-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stats-label {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .track-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      height: 100%;
+    }
+
+    .track-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .track-progress {
+      height: 8px;
+      background: var(--secondary);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .track-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .track-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+
+    .section {
+      padding: 3rem 0;
+    }
+
+    .activity-item {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      margin-bottom: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .activity-item:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn {
+      border-radius: 8px;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .badge {
+      font-weight: 600;
+      padding: 0.375rem 0.75rem;
+      border-radius: 6px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <i class="bi bi-code-square me-2"></i>
+        Coding Academy
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/success/">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/my-courses/">My Courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/tracks/">All Tracks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/challenges/">Challenges</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/leaderboard/">Leaderboard</a>
+          </li>
+        </ul>
+        
+        <div class="d-flex align-items-center gap-3">
+          <div class="dropdown">
+            <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+              <img src="{{ user.image_url|default:'/static/avatar_placeholder.png' }}" class="user-avatar me-2" alt="Profile">
+              <span>{{ user.first_name }}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/profile/{{ user.id }}/">Profile</a></li>
+              <li><a class="dropdown-item" href="/settings/{{ user.id }}/">Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/logout/">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h1 class="display-6 fw-bold mb-2">My Learning Journey</h1>
+          <p class="lead text-muted mb-0">Track your progress and continue building your skills</p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <a href="/tracks/" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-2"></i>
+            Browse More Tracks
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="section">
+    <div class="container">
+      <div class="row g-4 mb-5">
+        <div class="col-sm-6 col-lg-3">
+          <div class="stats-card">
+            <div class="stats-number">${{ total_earnings|floatformat:2 }}</div>
+            <div class="stats-label">Total Earned</div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stats-card">
+            <div class="stats-number">{{ total_points|intcomma }}</div>
+            <div class="stats-label">Points Earned</div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stats-card">
+            <div class="stats-number">{{ progress.current_streak }}</div>
+            <div class="stats-label">Day Streak</div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stats-card">
+            <div class="stats-number">{{ enrolled_tracks|length }}</div>
+            <div class="stats-label">Active Tracks</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Enrolled Tracks -->
+        <div class="col-lg-8">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold">My Tracks</h3>
+            {% if wallet.can_request_payout %}
+              <span class="badge bg-success fs-6">
+                <i class="bi bi-cash-coin me-1"></i>
+                Payout Available
+              </span>
+            {% endif %}
+          </div>
+          
+          {% if enrolled_tracks %}
+            <div class="row g-4">
+              {% for track in enrolled_tracks %}
+                <div class="col-md-6">
+                  <a href="/track/{{ track.id }}/" class="track-card d-block">
+                    {% if track.image_url %}
+                      <img src="{{ track.image_url }}" alt="{{ track.name }}" class="track-icon">
+                    {% else %}
+                      <div class="track-icon bg-primary d-flex align-items-center justify-content-center">
+                        <i class="bi bi-code-slash text-white fs-4"></i>
+                      </div>
+                    {% endif %}
+                    
+                    <h5 class="fw-bold mb-2">{{ track.name }}</h5>
+                    <p class="text-muted mb-3">{{ track.description|truncatewords:12 }}</p>
+                    
+                    <div class="track-progress">
+                      <div class="track-progress-bar" style="width: {{ track.student_progress }}%"></div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="text-muted small">{{ track.student_progress|floatformat:0 }}% Complete</span>
+                      <span class="text-primary">
+                        <i class="bi bi-arrow-right"></i>
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="empty-state">
+              <i class="bi bi-book"></i>
+              <h4>No Enrolled Tracks</h4>
+              <p>Start your learning journey by enrolling in a track!</p>
+              <a href="/tracks/" class="btn btn-primary">Browse Tracks</a>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="col-lg-4">
+          <h4 class="fw-bold mb-4">Recent Activity</h4>
+          
+          {% if recent_completions %}
+            <div class="activity-feed">
+              {% for completion in recent_completions %}
+                <div class="activity-item">
+                  <div class="d-flex align-items-start">
+                    <div class="me-3">
+                      <div class="bg-success rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-check2 text-white"></i>
+                      </div>
+                    </div>
+                    <div class="flex-grow-1">
+                      <h6 class="mb-1">{{ completion.section.title }}</h6>
+                      <p class="text-muted small mb-1">{{ completion.section.course.name }}</p>
+                      <p class="text-muted small mb-0">{{ completion.completed_at|timesince }} ago</p>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="empty-state">
+              <i class="bi bi-activity"></i>
+              <h6>No Recent Activity</h6>
+              <p class="small">Complete sections to see your progress here!</p>
+            </div>
+          {% endif %}
+
+          <div class="mt-4">
+            <a href="/activity/" class="btn btn-outline-primary w-100">
+              View All Activity
+              <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

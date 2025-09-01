@@ -162,3 +162,10 @@
     font-size: 0.875rem !important; /* Increased size for better readability */
     font-weight: 400 !important;    /* Make the font thinner */
 }
+
+.avatar { 
+    width: 36px !important; 
+    height: 36px !important; 
+    border-radius: 50% !important; 
+    object-fit: cover !important; 
+}

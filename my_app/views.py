@@ -1,9 +1,10 @@
+# my_app/views.py - COMPLETE OVERHAUL
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
-from django.db.models import Q, Sum, F
+from django.db.models import Q, Sum, F, Count
 from django.utils import timezone
 import json
 from decimal import Decimal
@@ -15,82 +16,188 @@ from .models import (
     ChallengeSolution, Movie, Quote, Comment
 )
 
+def _ensure_user_logged_in(request):
+    """Helper to check if user is logged in"""
+    if 'user' not in request.session:
+        return None
+    try:
+        return User.objects.get(id=request.session['user'])
+    except User.DoesNotExist:
+        request.session.flush()
+        return None
+
 def _get_or_create_wallet_and_progress(user):
+    """Helper to get or create user wallet and progress"""
     wallet, _ = UserWallet.objects.get_or_create(user=user)
     progress, _ = StudentProgress.objects.get_or_create(student=user)
     return wallet, progress
 
+# ===== PUBLIC PAGES =====
 
-def activity(request):
-    """Activity dashboard with proper user context"""
-    if 'user' not in request.session:
-        return redirect('/login/')
+def home(request):
+    """Public landing page"""
+    user = _ensure_user_logged_in(request)
+    if user:
+        return redirect('/dashboard/')
     
-    try:
-        app_user = User.objects.get(id=request.session['user'])
-    except User.DoesNotExist:
-        request.session.flush()
+    context = {
+        'total_students': User.objects.count(),
+        'total_challenges': CodeChallenge.objects.filter(is_active=True).count(),
+        'total_tracks': Track.objects.filter(is_active=True).count(),
+    }
+    return render(request, 'home.html', context)
+
+def login(request):
+    """Login page"""
+    if request.method == "GET":
+        # Redirect if already logged in
+        user = _ensure_user_logged_in(request)
+        if user:
+            return redirect('/dashboard/')
+        return render(request, 'index.html')
+
+    if request.method == "POST":
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '')
+        
+        if not email or not password:
+            messages.error(request, "Please provide both email and password")
+            return redirect('/login/')
+            
+        if User.objects.authenticate(email, password):
+            user = User.objects.filter(email=email).first()
+            request.session['user'] = user.id
+            messages.success(request, f"Welcome back, {user.first_name}!")
+            return redirect('/dashboard/')
+        else:
+            messages.error(request, "Invalid email or password")
+            return redirect('/login/')
+
+def register(request):
+    """Registration page"""
+    if request.method == "GET":
+        user = _ensure_user_logged_in(request)
+        if user:
+            return redirect('/dashboard/')
+        return render(request, 'index.html')
+
+    if request.method == "POST":
+        errors = User.objects.validate(request.POST)
+        if errors:
+            for _, value in errors.items():
+                messages.error(request, value)
+            return redirect('/')
+
+        new_user = User.objects.register(request.POST)
+        request.session['user'] = new_user.id
+        
+        # Create user wallet and progress
+        _get_or_create_wallet_and_progress(new_user)
+        
+        messages.success(request, "Welcome to Coding Academy! Start learning and earning!")
+        return redirect('/dashboard/')
+
+def logout(request):
+    """Logout"""
+    request.session.flush()
+    messages.success(request, "Successfully logged out!")
+    return redirect('/')
+
+# ===== MAIN DASHBOARD =====
+
+def dashboard(request):
+    """Main dashboard - renamed from index for clarity"""
+    user = _ensure_user_logged_in(request)
+    if not user:
         return redirect('/login/')
 
-    # Recent activity
-    recent_completions = (
-        SectionCompletion.objects
-        .filter(student=app_user)
-        .select_related('section', 'section__course', 'section__course__track')
-        .order_by('-completed_at')[:10]
-    )
+    # Get user data
+    wallet, progress = _get_or_create_wallet_and_progress(user)
+    
+    # Get enrolled tracks with progress
+    enrolled_tracks = []
+    enrollments = TrackEnrollment.objects.filter(student=user, is_active=True).select_related('track')
+    for enrollment in enrollments:
+        track = enrollment.track
+        track.progress = track.get_student_progress(user)
+        enrolled_tracks.append(track)
 
-    recent_solutions = (
-        ChallengeSolution.objects
-        .filter(student=app_user)
-        .select_related('challenge')
-        .order_by('-submitted_at')[:10]
-    )
+    # Get available tracks (not enrolled)
+    enrolled_track_ids = [t.id for t in enrolled_tracks]
+    available_tracks = Track.objects.filter(is_active=True).exclude(id__in=enrolled_track_ids)
+    
+    # Filter by access level
+    accessible_tracks = []
+    for track in available_tracks:
+        if track.is_accessible_to_user(user):
+            accessible_tracks.append(track)
 
-    recent_transactions = (
-        PointTransaction.objects
-        .filter(user=app_user)
-        .order_by('-created_at')[:10]
-    )
+    # Get recent activity
+    recent_completions = SectionCompletion.objects.filter(
+        student=user
+    ).select_related('section', 'section__course', 'section__course__track').order_by('-completed_at')[:3]
 
-    # Enrollments
-    enrollments = (
-        TrackEnrollment.objects
-        .filter(student=app_user, is_active=True)
-        .select_related('track')
-        .order_by('track__order', 'track__name')
-    )
+    recent_transactions = PointTransaction.objects.filter(
+        user=user
+    ).order_by('-created_at')[:5]
 
-    # Wallet and stats
-    wallet, _ = UserWallet.objects.get_or_create(user=app_user)
-    total_points = wallet.total_points
-    total_earnings = wallet.total_earnings
-    can_payout = wallet.can_request_payout
+    # Get quick challenges
+    solved_challenge_ids = ChallengeSolution.objects.filter(
+        student=user, is_correct=True
+    ).values_list('challenge_id', flat=True)
+    
+    available_challenges = CodeChallenge.objects.filter(
+        is_standalone=True, is_active=True
+    ).exclude(id__in=solved_challenge_ids)[:3]
 
-    # Progress stats
-    current_streak = app_user.get_current_streak()
-    overall_progress = app_user.get_overall_progress()
+    # Update streak
+    progress.update_streak()
 
     context = {
-        'user': app_user,  # This is the key fix - templates expect 'user'
-        'app_user': app_user,  # Keep for backward compatibility
-        'enrollments': enrollments,
-        'recent_completions': recent_completions,
-        'recent_solutions': recent_solutions,
-        'recent_transactions': recent_transactions,
+        'user': user,
         'wallet': wallet,
-        'total_points': total_points,
-        'total_earnings': total_earnings,
-        'can_payout': can_payout,
-        'current_streak': current_streak,
-        'overall_progress': overall_progress,
-        'now': timezone.now(),
+        'progress_summary': progress,
+        'enrolled_tracks': enrolled_tracks,
+        'available_tracks': accessible_tracks,
+        'recent_completions': recent_completions,
+        'recent_transactions': recent_transactions,
+        'available_challenges': available_challenges,
+        'has_enrolled_tracks': len(enrolled_tracks) > 0,
+        'overall_progress': user.get_overall_progress(),
     }
-    return render(request, 'activity.html', context)
+    return render(request, 'success.html', context)
 
+# ===== LEARNING PAGES =====
 
-def leaderboard(request):
-    """Leaderboard with proper user context"""
+def tracks(request):
+    """All available tracks"""
+    user = _ensure_user_logged_in(request)
+    if not user:
+        return redirect('/login/')
+
+    all_tracks = Track.objects.filter(is_active=True).order_by('order', 'name')
+    
+    # Add enrollment and access info
+    for track in all_tracks:
+        track.is_enrolled = TrackEnrollment.objects.filter(
+            student=user, track=track, is_active=True
+        ).exists()
+        track.is_accessible = track.is_accessible_to_user(user)
+        if track.is_enrolled:
+            track.progress = track.get_student_progress(user)
+        else:
+            track.progress = 0
+
+    context = {
+        'user': user,
+        'tracks': all_tracks,
+    }
+    return render(request, 'tracks.html', context)
+
+# Add this view to your views.py file
+
+def my_courses(request):
+    """My courses page showing enrolled tracks and progress"""
     if 'user' not in request.session:
         return redirect('/login/')
 
@@ -100,222 +207,105 @@ def leaderboard(request):
         request.session.flush()
         return redirect('/login/')
 
-    # Get top earners - users with wallets
-    top_earners = []
-    for u in User.objects.all():
-        if hasattr(u, 'wallet') and u.wallet:
-            top_earners.append(u)
+    # Get enrolled tracks with progress
+    enrolled_tracks = []
+    enrollments = TrackEnrollment.objects.filter(
+        student=user, is_active=True
+    ).select_related('track').order_by('track__order', 'track__name')
     
-    # Sort by earnings
-    top_earners.sort(key=lambda x: x.wallet.total_earnings if x.wallet else 0, reverse=True)
-    top_earners = top_earners[:50]
+    for enrollment in enrollments:
+        track = enrollment.track
+        track.student_progress = track.get_student_progress(user)
+        track.is_accessible = track.is_accessible_to_user(user)
+        enrolled_tracks.append(track)
 
-    # Get users with most points
-    most_points = []
-    for u in User.objects.all():
-        if hasattr(u, 'wallet') and u.wallet:
-            wallet = u.wallet
-            total_points = wallet.learning_points + wallet.challenge_points + wallet.bonus_points
-            most_points.append({'user': u, 'total_points': total_points})
+    # Get wallet and progress info
+    wallet, progress = _get_or_create_wallet_and_progress(user)
     
-    most_points.sort(key=lambda x: x['total_points'], reverse=True)
-    most_points = most_points[:50]
-
-    context = {
-        'user': user,  # This is the key - templates expect 'user'
-        'top_earners': top_earners,
-        'most_points': most_points,
-        'now': timezone.now(),
-    }
-    return render(request, 'leaderboard.html', context)
-
-
-def index(request):
-    if 'user' not in request.session:
-        return redirect('/login')
-
-    user = User.objects.get(id=request.session['user'])
-    tracks = Track.objects.get_with_progress(user)
-
-    # ✅ compute once in Python (safe + readable)
-    has_enrolled_tracks = any(getattr(t, 'is_enrolled', False) for t in tracks)
-
+    # Recent activity
     recent_completions = SectionCompletion.objects.filter(
         student=user
-    ).order_by('-completed_at')[:5].select_related('section', 'section__course')
-
-    recent_transactions = PointTransaction.objects.filter(
-        user=user
-    ).order_by('-created_at')[:5]
-
-    wallet, _ = UserWallet.objects.get_or_create(user=user)
-    progress_summary, _ = StudentProgress.objects.get_or_create(student=user)
-    progress_summary.update_streak()
-
-    available_challenges = CodeChallenge.objects.filter(
-        is_standalone=True, is_active=True
-    ).exclude(
-        id__in=ChallengeSolution.objects.filter(
-            student=user, is_correct=True
-        ).values_list('challenge_id', flat=True)
-    )
+    ).select_related('section', 'section__course', 'section__course__track').order_by('-completed_at')[:5]
 
     context = {
         'user': user,
-        'tracks': tracks,
-        'has_enrolled_tracks': has_enrolled_tracks,
-        'recent_completions': recent_completions,
-        'recent_transactions': recent_transactions,
+        'enrolled_tracks': enrolled_tracks,
         'wallet': wallet,
-        'progress_summary': progress_summary,
-        'available_challenges': available_challenges[:3],
-        'overall_progress': user.get_overall_progress(),
+        'progress': progress,
+        'recent_completions': recent_completions,
+        'total_earnings': wallet.total_earnings,
+        'total_points': wallet.total_points,
     }
-    return render(request, 'success.html', context)
+    return render(request, 'my_courses.html', context)
 
-
-def login(request):
-    if request.method == "GET":
-        # Check if already logged in
-        if 'user' in request.session:
-            try:
-                User.objects.get(id=request.session['user'])
-                return redirect('/success/')
-            except User.DoesNotExist:
-                request.session.flush()
-        return render(request, 'index.html')
-
-    if request.method == "POST":
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        if User.objects.authenticate(email, password):
-            user = User.objects.filter(email=email)[0]
-            request.session['user'] = user.id
-            messages.success(request, f"Welcome back, {user.first_name}!")
-            return redirect('/success/')
-        messages.error(request, "Invalid email or password")
-        return redirect('/login/')
-
-
-def register(request):
-    if request.method == "GET":
-        # Check if already logged in
-        if 'user' in request.session:
-            try:
-                User.objects.get(id=request.session['user'])
-                return redirect('/success/')
-            except User.DoesNotExist:
-                request.session.flush()
-        return render(request, 'index.html')
-
-    if request.method == "POST":
-        errors = User.objects.validate(request.POST)
-        if errors:
-            for _, value in errors.items():
-                messages.error(request, value)
-            return redirect('/register/')
-
-        new_user = User.objects.register(request.POST)
-        request.session['user'] = new_user.id
-        StudentProgress.objects.create(student=new_user)
-        create_default_point_structures()
-        messages.success(request, "Registration successful! Welcome to Coding Academy!")
-        return redirect('/success/')
-
-
-def logout(request):
-    request.session.flush()
-    messages.success(request, "Successfully logged out!")
-    return redirect('/')
-
-
-def profile(request, user_id):
-    if 'user' not in request.session:
-        return redirect('/login/')
-
-    current_user = User.objects.get(id=request.session['user'])
-    profile_user = get_object_or_404(User, id=user_id)
-
-    wallet, progress_summary = _get_or_create_wallet_and_progress(profile_user)
-
-    enrolled_tracks = []
-    for enrollment in TrackEnrollment.objects.filter(student=profile_user, is_active=True).select_related('track'):
-        track = enrollment.track
-        track.progress = track.get_student_progress(profile_user)
-        enrolled_tracks.append(track)
-
-    recent_completions = (SectionCompletion.objects
-                          .filter(student=profile_user)
-                          .order_by('-completed_at')[:10]
-                          .select_related('section', 'section__course'))
-
-    recent_transactions = (PointTransaction.objects
-                           .filter(user=profile_user)
-                           .order_by('-created_at')[:10])
-
-    challenges_solved = ChallengeSolution.objects.filter(student=profile_user, is_correct=True).count()
-
-    payout_progress_percent = 0
-    remaining_to_payout = Decimal('0.00')
-    if wallet.payout_threshold and wallet.payout_threshold > 0:
-        payout_progress_percent = min(
-            100,
-            int((wallet.total_earnings / wallet.payout_threshold) * 100)
-        )
-        remaining_to_payout = max(wallet.payout_threshold - wallet.total_earnings, Decimal('0.00'))
 
     context = {
-        'user': current_user,
-        'profile_user': profile_user,
+        'user': user,
+        'enrolled_tracks': enrolled_tracks,
         'wallet': wallet,
-        'progress_summary': progress_summary,
+        'progress': progress,
+        'recent_completions': recent_completions,
+        'total_earnings': wallet.total_earnings,
+        'total_points': wallet.total_points,
+    }
+    return render(request, 'my_courses.html', context)
+
+    # Get recent completions
+    recent_completions = SectionCompletion.objects.filter(
+        student=user
+    ).select_related('section', 'section__course', 'section__course__track').order_by('-completed_at')[:10]
+
+    # Get stats
+    wallet, progress = _get_or_create_wallet_and_progress(user)
+    total_sections_completed = SectionCompletion.objects.filter(student=user).count()
+    total_sections_available = Section.objects.filter(
+        course__track__in=[t.id for t in enrolled_tracks], is_active=True
+    ).count()
+
+    context = {
+        'user': user,
         'enrolled_tracks': enrolled_tracks,
         'recent_completions': recent_completions,
-        'recent_transactions': recent_transactions,
-        'challenges_solved': challenges_solved,
-        'total_challenges': CodeChallenge.objects.filter(is_active=True).count(),
-        'is_own_profile': current_user.id == profile_user.id,
-        'payout_progress_percent': payout_progress_percent,
-        'remaining_to_payout': remaining_to_payout,
-        'total_completions': progress_summary.total_sections_completed,
+        'wallet': wallet,
+        'progress_summary': progress,
+        'total_sections_completed': total_sections_completed,
+        'total_sections_available': total_sections_available,
+        'completion_percentage': (total_sections_completed / total_sections_available * 100) if total_sections_available > 0 else 0,
     }
-    return render(request, 'profile.html', context)
-
-
-def tracks(request):
-    if 'user' not in request.session:
-        return redirect('/login/')
-
-    user = User.objects.get(id=request.session['user'])
-    all_tracks = Track.objects.get_with_progress(user)
-    context = {'user': user, 'tracks': all_tracks}
-    return render(request, 'tracks.html', context)
-
+    return render(request, 'my_courses.html', context)
 
 def track_detail(request, track_id):
-    if 'user' not in request.session:
+    """Individual track page"""
+    user = _ensure_user_logged_in(request)
+    if not user:
         return redirect('/login/')
 
-    user = User.objects.get(id=request.session['user'])
-    track = get_object_or_404(Track, id=track_id)
-
+    track = get_object_or_404(Track, id=track_id, is_active=True)
+    
+    # Check access
     if not track.is_accessible_to_user(user):
-        messages.warning(request, f"This track requires a {track.access_level} subscription.")
+        messages.warning(request, f"This track requires a {track.get_access_level_display()} subscription.")
         return redirect('/tracks/')
 
-    is_enrolled = TrackEnrollment.objects.filter(student=user, track=track, is_active=True).exists()
-    courses = Course.objects.get_with_progress(user, track=track)
-    track_progress = track.get_student_progress(user)
+    # Check enrollment
+    is_enrolled = TrackEnrollment.objects.filter(
+        student=user, track=track, is_active=True
+    ).exists()
+    
+    # Get courses
+    courses = Course.objects.filter(track=track, is_active=True).order_by('order')
+    for course in courses:
+        course.progress = course.get_student_progress(user)
+        course.is_unlocked = course.is_unlocked_for_student(user)
+        course.sections_count = course.sections.filter(is_active=True).count()
 
-    track_leaders = (User.objects
-                     .filter(point_transactions__related_track_id=track_id,
-                             point_transactions__transaction_type='section_complete')
-                     .annotate(
-                         track_points=Sum('point_transactions__points_earned',
-                                          filter=Q(point_transactions__related_section_id__in=Section.objects
-                                                   .filter(course__track=track).values_list('id', flat=True)))
-                     )
-                     .order_by('-track_points')[:10])
+    # Get track progress
+    track_progress = track.get_student_progress(user) if is_enrolled else 0
+
+    # Get recent completions in this track
+    recent_completions = SectionCompletion.objects.filter(
+        student=user, section__course__track=track
+    ).select_related('section', 'section__course').order_by('-completed_at')[:5]
 
     context = {
         'user': user,
@@ -323,33 +313,47 @@ def track_detail(request, track_id):
         'courses': courses,
         'is_enrolled': is_enrolled,
         'track_progress': track_progress,
-        'track_leaders': track_leaders,
-        'total_possible_points': track.get_total_possible_points(),
+        'recent_completions': recent_completions,
+        'total_courses': courses.count(),
+        'completed_courses': sum(1 for c in courses if c.progress >= 100),
     }
     return render(request, 'track_detail.html', context)
 
-
 def course_detail(request, course_id):
-    if 'user' not in request.session:
+    """Individual course page"""
+    user = _ensure_user_logged_in(request)
+    if not user:
         return redirect('/login/')
 
-    user = User.objects.get(id=request.session['user'])
-    course = get_object_or_404(Course, id=course_id)
-
+    course = get_object_or_404(Course, id=course_id, is_active=True)
+    
+    # Check access and enrollment
     if not course.track.is_accessible_to_user(user):
         messages.warning(request, "You don't have access to this track.")
         return redirect('/tracks/')
 
-    if not course.is_unlocked_for_student(user):
-        messages.warning(request, "Complete the prerequisite courses first!")
-        return redirect(f'/track/{course.track.id}/')
-
-    is_enrolled = TrackEnrollment.objects.filter(student=user, track=course.track, is_active=True).exists()
+    is_enrolled = TrackEnrollment.objects.filter(
+        student=user, track=course.track, is_active=True
+    ).exists()
+    
     if not is_enrolled:
         messages.warning(request, "You must enroll in the track first!")
         return redirect(f'/track/{course.track.id}/')
 
-    sections = Section.objects.get_with_progress(user, course=course)
+    # Check prerequisites
+    if not course.is_unlocked_for_student(user):
+        messages.warning(request, "Complete the prerequisite courses first!")
+        return redirect(f'/track/{course.track.id}/')
+
+    # Get sections
+    sections = Section.objects.filter(course=course, is_active=True).order_by('order')
+    for section in sections:
+        section.is_completed = SectionCompletion.objects.filter(
+            student=user, section=section
+        ).exists()
+        section.is_unlocked = section.is_unlocked_for_student(user)
+
+    # Get course progress
     course_progress = course.get_student_progress(user)
     next_section = course.get_next_incomplete_section(user)
 
@@ -359,117 +363,79 @@ def course_detail(request, course_id):
         'sections': sections,
         'course_progress': course_progress,
         'next_section': next_section,
+        'total_sections': sections.count(),
+        'completed_sections': sum(1 for s in sections if s.is_completed),
     }
     return render(request, 'course_detail.html', context)
 
-
 def section_detail(request, section_id):
-    if 'user' not in request.session:
+    """Individual section/lesson page"""
+    user = _ensure_user_logged_in(request)
+    if not user:
         return redirect('/login/')
 
-    user = User.objects.get(id=request.session['user'])
-    section = get_object_or_404(Section, id=section_id)
-
+    section = get_object_or_404(Section, id=section_id, is_active=True)
+    
+    # Check access
     if not section.course.track.is_accessible_to_user(user):
         messages.warning(request, "You don't have access to this content.")
         return redirect('/tracks/')
 
+    # Check if section is unlocked
     if not section.is_unlocked_for_student(user):
         messages.warning(request, "Complete the previous sections first!")
         return redirect(f'/course/{section.course.id}/')
 
-    is_completed = SectionCompletion.objects.filter(student=user, section=section).exists()
-    code_challenges = section.code_challenges.all()
-    point_value = section.get_point_value()
+    # Check completion
+    is_completed = SectionCompletion.objects.filter(
+        student=user, section=section
+    ).exists()
+
+    # Get section challenges
+    challenges = section.code_challenges.filter(is_active=True)
+    
+    # Get next and previous sections
+    next_section = Section.objects.filter(
+        course=section.course, order__gt=section.order, is_active=True
+    ).order_by('order').first()
+    
+    prev_section = Section.objects.filter(
+        course=section.course, order__lt=section.order, is_active=True
+    ).order_by('-order').first()
 
     context = {
         'user': user,
         'section': section,
         'is_completed': is_completed,
-        'code_challenges': code_challenges,
-        'point_value': point_value,
+        'challenges': challenges,
+        'next_section': next_section,
+        'prev_section': prev_section,
+        'point_value': section.get_point_value(),
     }
     return render(request, 'section_detail.html', context)
 
-
-@csrf_exempt
-def enroll_track(request, track_id):
-    if 'user' not in request.session:
-        return JsonResponse({'success': False, 'error': 'Not logged in'})
-
-    if request.method != 'POST':
-        return JsonResponse({'success': False, 'error': 'Invalid method'})
-
-    user = User.objects.get(id=request.session['user'])
-    track = get_object_or_404(Track, id=track_id)
-
-    if not track.is_accessible_to_user(user):
-        return JsonResponse({'success': False, 'error': f'Requires {track.access_level} subscription'})
-
-    enrollment, created = TrackEnrollment.objects.get_or_create(
-        student=user, track=track, defaults={'is_active': True}
-    )
-    if not created:
-        enrollment.is_active = True
-        enrollment.save()
-
-    messages.success(request, f"Successfully enrolled in {track.name}!")
-    return JsonResponse({'success': True})
-
-
-@csrf_exempt
-def complete_section(request, section_id):
-    if 'user' not in request.session:
-        return JsonResponse({'success': False, 'error': 'Not logged in'})
-
-    if request.method != 'POST':
-        return JsonResponse({'success': False, 'error': 'Invalid method'})
-
-    user = User.objects.get(id=request.session['user'])
-    section = get_object_or_404(Section, id=section_id)
-
-    if not section.is_unlocked_for_student(user):
-        return JsonResponse({'success': False, 'error': 'Section is locked'})
-
-    completion, created = SectionCompletion.objects.get_or_create(
-        student=user, section=section, defaults={'score': request.POST.get('score')}
-    )
-
-    if created:
-        progress, _ = StudentProgress.objects.get_or_create(student=user)
-        progress.total_sections_completed += 1
-        progress.last_activity = timezone.now()
-        progress.update_streak()
-
-        track_completion_check(user, section.course.track)
-        messages.success(request, f"Completed: {section.title}! Earned {section.get_point_value()} points!")
-    else:
-        messages.info(request, "Section already completed.")
-
-    return JsonResponse({'success': True, 'created': created})
-
+# ===== CHALLENGES =====
 
 def challenges(request):
-    """Challenges page with proper session auth"""
-    if 'user' not in request.session:
+    """Coding challenges page"""
+    user = _ensure_user_logged_in(request)
+    if not user:
         return redirect('/login/')
 
-    user = User.objects.get(id=request.session['user'])
+    # Get all challenges
+    all_challenges = CodeChallenge.objects.filter(is_active=True)
+    
+    # Filter by difficulty if requested
+    difficulty_filter = request.GET.get('difficulty')
+    if difficulty_filter in ['easy', 'medium', 'hard']:
+        all_challenges = all_challenges.filter(difficulty=difficulty_filter)
 
-    # Base queryset
-    qs = CodeChallenge.objects.filter(is_active=True)
+    # Separate by difficulty
+    easy_challenges = all_challenges.filter(difficulty='easy')
+    medium_challenges = all_challenges.filter(difficulty='medium') 
+    hard_challenges = all_challenges.filter(difficulty='hard')
 
-    # Optional query param filter
-    diff = request.GET.get("diff")
-    if diff in {"easy", "medium", "hard"}:
-        qs = qs.filter(difficulty__iexact=diff)
-
-    # Buckets
-    easy_challenges = qs.filter(difficulty__iexact="easy")
-    medium_challenges = qs.filter(difficulty__iexact="medium")
-    hard_challenges = qs.filter(difficulty__iexact="hard")
-
-    # Solved challenges for current user
+    # Get solved challenges
     solved_challenge_ids = list(
         ChallengeSolution.objects.filter(student=user, is_correct=True)
         .values_list('challenge_id', flat=True)
@@ -481,23 +447,26 @@ def challenges(request):
         'medium_challenges': medium_challenges,
         'hard_challenges': hard_challenges,
         'solved_challenge_ids': solved_challenge_ids,
-        'challenges': qs,
-        'code_challenges': qs,
+        'total_challenges': all_challenges.count(),
+        'total_solved': len(solved_challenge_ids),
+        'difficulty_filter': difficulty_filter,
     }
     return render(request, 'challenges.html', context)
 
-
 def challenge_detail(request, challenge_id):
-    if 'user' not in request.session:
+    """Individual challenge page"""
+    user = _ensure_user_logged_in(request)
+    if not user:
         return redirect('/login/')
 
-    user = User.objects.get(id=request.session['user'])
-    challenge = get_object_or_404(CodeChallenge, id=challenge_id)
-
+    challenge = get_object_or_404(CodeChallenge, id=challenge_id, is_active=True)
+    
+    # Get existing solution
     existing_solution = ChallengeSolution.objects.filter(
         student=user, challenge=challenge
     ).first()
 
+    # Get point value
     points, cash_value = challenge.get_point_value()
 
     context = {
@@ -506,46 +475,64 @@ def challenge_detail(request, challenge_id):
         'existing_solution': existing_solution,
         'point_value': points,
         'cash_value': cash_value,
+        'is_solved': existing_solution and existing_solution.is_correct,
     }
     return render(request, 'challenge_detail.html', context)
 
+# ===== USER PAGES =====
 
-@csrf_exempt
-def submit_challenge_solution(request, challenge_id):
-    if 'user' not in request.session:
-        return JsonResponse({'success': False, 'error': 'Not logged in'})
-
-    if request.method != 'POST':
-        return JsonResponse({'success': False, 'error': 'Invalid method'})
-
-    user = User.objects.get(id=request.session['user'])
-    challenge = get_object_or_404(CodeChallenge, id=challenge_id)
-
-    data = json.loads(request.body or '{}')
-    solution_code = data.get('code', '')
-
-    is_correct = validate_solution(solution_code, challenge)
-
-    solution, created = ChallengeSolution.objects.get_or_create(
-        student=user, challenge=challenge,
-        defaults={'solution_code': solution_code, 'is_correct': is_correct}
-    )
-    if not created:
-        solution.solution_code = solution_code
-        solution.is_correct = is_correct
-        solution.save()
-
-    if is_correct:
-        points, cash_value = challenge.get_point_value()
-        return JsonResponse({'success': True, 'correct': True, 'points': points, 'cash_value': float(cash_value)})
-    return JsonResponse({'success': True, 'correct': False})
-
-
-def settings(request, user_id):
-    if 'user' not in request.session:
+def profile(request, user_id):
+    """User profile page"""
+    current_user = _ensure_user_logged_in(request)
+    if not current_user:
         return redirect('/login/')
 
-    current_user = User.objects.get(id=request.session['user'])
+    profile_user = get_object_or_404(User, id=user_id)
+    wallet, progress = _get_or_create_wallet_and_progress(profile_user)
+
+    # Get enrolled tracks with progress
+    enrolled_tracks = []
+    for enrollment in TrackEnrollment.objects.filter(student=profile_user, is_active=True).select_related('track'):
+        track = enrollment.track
+        track.progress = track.get_student_progress(profile_user)
+        enrolled_tracks.append(track)
+
+    # Get recent activity
+    recent_completions = SectionCompletion.objects.filter(
+        student=profile_user
+    ).select_related('section', 'section__course').order_by('-completed_at')[:10]
+
+    recent_transactions = PointTransaction.objects.filter(
+        user=profile_user
+    ).order_by('-created_at')[:10]
+
+    # Get challenge stats
+    challenges_solved = ChallengeSolution.objects.filter(
+        student=profile_user, is_correct=True
+    ).count()
+    
+    total_challenges = CodeChallenge.objects.filter(is_active=True).count()
+
+    context = {
+        'user': current_user,
+        'profile_user': profile_user,
+        'wallet': wallet,
+        'progress_summary': progress,
+        'enrolled_tracks': enrolled_tracks,
+        'recent_completions': recent_completions,
+        'recent_transactions': recent_transactions,
+        'challenges_solved': challenges_solved,
+        'total_challenges': total_challenges,
+        'is_own_profile': current_user.id == profile_user.id,
+    }
+    return render(request, 'profile.html', context)
+
+def settings(request, user_id):
+    """User settings page"""
+    current_user = _ensure_user_logged_in(request)
+    if not current_user:
+        return redirect('/login/')
+        
     if current_user.id != int(user_id):
         messages.error(request, "You can only edit your own settings.")
         return redirect(f'/profile/{current_user.id}/')
@@ -553,110 +540,268 @@ def settings(request, user_id):
     wallet, _ = _get_or_create_wallet_and_progress(current_user)
 
     if request.method == 'POST':
+        # Update user info
         current_user.first_name = request.POST.get('first_name', current_user.first_name)
         current_user.last_name = request.POST.get('last_name', current_user.last_name)
         current_user.image_url = request.POST.get('image_url', current_user.image_url)
         current_user.save()
 
+        # Update wallet settings
         wallet.payout_email = request.POST.get('payout_email', wallet.payout_email)
-        threshold_raw = request.POST.get('payout_threshold', wallet.payout_threshold)
         try:
-            wallet.payout_threshold = Decimal(threshold_raw)
-        except Exception:
+            wallet.payout_threshold = Decimal(request.POST.get('payout_threshold', wallet.payout_threshold))
+        except (ValueError, TypeError):
             pass
         wallet.save()
 
         messages.success(request, "Settings updated successfully!")
         return redirect(f'/settings/{user_id}/')
 
-    payout_progress_percent = 0
-    remaining_to_payout = Decimal('0.00')
-    if wallet.payout_threshold and wallet.payout_threshold > 0:
-        payout_progress_percent = min(
-            100,
-            int((wallet.total_earnings / wallet.payout_threshold) * 100)
-        )
-        remaining_to_payout = max(wallet.payout_threshold - wallet.total_earnings, Decimal('0.00'))
-
     context = {
         'user': current_user,
         'wallet': wallet,
-        'payout_progress_percent': payout_progress_percent,
-        'remaining_to_payout': remaining_to_payout,
     }
     return render(request, 'settings.html', context)
 
-
-# Helper functions
-def create_default_point_structures():
-    defaults = [
-        ('section_lesson', 20, Decimal('0.02')),
-        ('section_exercise', 30, Decimal('0.03')),
-        ('section_quiz', 40, Decimal('0.04')),
-        ('section_project', 100, Decimal('0.10')),
-        ('coding_challenge_easy', 50, Decimal('0.05')),
-        ('coding_challenge_medium', 150, Decimal('0.15')),
-        ('coding_challenge_hard', 300, Decimal('0.30')),
-        ('track_completion', 1000, Decimal('1.00')),
-        ('daily_streak', 10, Decimal('0.01')),
-        ('referral_bonus', 500, Decimal('0.50')),
-    ]
-    for content_type, points, cash_per_point in defaults:
-        PointStructure.objects.get_or_create(
-            content_type=content_type,
-            defaults={'base_points': points, 'cash_value_per_point': cash_per_point}
-        )
-
-
-def track_completion_check(user, track):
-    total_sections = Section.objects.filter(course__track=track).count()
-    completed_sections = SectionCompletion.objects.filter(
-        student=user, section__course__track=track
-    ).count()
-
-    if total_sections > 0 and completed_sections >= total_sections:
-        already_awarded = PointTransaction.objects.filter(
-            user=user, transaction_type='track_complete', related_track_id=track.id
-        ).exists()
-        if not already_awarded:
-            try:
-                ps = PointStructure.objects.get(content_type='track_completion')
-                points = ps.base_points
-                cash_value = ps.total_cash_value
-            except PointStructure.DoesNotExist:
-                points = 1000
-                cash_value = Decimal('10.00')
-
-            wallet = user.wallet
-            wallet.bonus_points += points
-            wallet.total_earnings += cash_value
-            wallet.save()
-
-            PointTransaction.objects.create(
-                user=user,
-                transaction_type='track_complete',
-                points_earned=points,
-                cash_value=cash_value,
-                related_track_id=track.id,
-                description=f"Track Completed: {track.name}"
-            )
-
-
-def validate_solution(code, challenge):
-    return ("print" in (code or "").lower()) and ("hello world" in (code or "").lower())
-
-
-# Legacy views for Swift pages
-def swift_html(request, page_num):
-    if 'user' not in request.session:
+def activity(request):
+    """User activity page"""
+    user = _ensure_user_logged_in(request)
+    if not user:
         return redirect('/login/')
-    user = User.objects.get(id=request.session['user'])
-    return render(request, 'swift.html', {'user': user, 'page_num': page_num, 'next_page': page_num + 1})
 
+    # Get activity data
+    recent_completions = SectionCompletion.objects.filter(
+        student=user
+    ).select_related('section', 'section__course', 'section__course__track').order_by('-completed_at')[:20]
+
+    recent_solutions = ChallengeSolution.objects.filter(
+        student=user
+    ).select_related('challenge').order_by('-submitted_at')[:20]
+
+    recent_transactions = PointTransaction.objects.filter(
+        user=user
+    ).order_by('-created_at')[:20]
+
+    # Get enrollments
+    enrollments = TrackEnrollment.objects.filter(
+        student=user, is_active=True
+    ).select_related('track')
+
+    # Get stats
+    wallet, progress = _get_or_create_wallet_and_progress(user)
+
+    context = {
+        'user': user,
+        'recent_completions': recent_completions,
+        'recent_solutions': recent_solutions,
+        'recent_transactions': recent_transactions,
+        'enrollments': enrollments,
+        'wallet': wallet,
+        'total_points': wallet.total_points,
+        'total_earnings': wallet.total_earnings,
+        'can_payout': wallet.can_request_payout,
+        'current_streak': progress.current_streak,
+        'overall_progress': user.get_overall_progress(),
+        'now': timezone.now(),
+    }
+    return render(request, 'activity.html', context)
+
+def leaderboard(request):
+    """Leaderboard page"""
+    user = _ensure_user_logged_in(request)
+    if not user:
+        return redirect('/login/')
+
+    # Get top earners
+    top_earners = []
+    users_with_wallets = User.objects.filter(wallet__isnull=False).select_related('wallet')
+    for u in users_with_wallets:
+        if u.wallet and u.wallet.total_earnings > 0:
+            top_earners.append(u)
+    
+    top_earners.sort(key=lambda x: x.wallet.total_earnings, reverse=True)
+    top_earners = top_earners[:50]
+
+    # Get users with most points
+    most_points = []
+    for u in users_with_wallets:
+        if u.wallet:
+            total_points = u.wallet.learning_points + u.wallet.challenge_points + u.wallet.bonus_points
+            if total_points > 0:
+                most_points.append({'user': u, 'total_points': total_points})
+    
+    most_points.sort(key=lambda x: x['total_points'], reverse=True)
+    most_points = most_points[:50]
+
+    context = {
+        'user': user,
+        'top_earners': top_earners,
+        'most_points': most_points,
+        'now': timezone.now(),
+    }
+    return render(request, 'leaderboard.html', context)
+
+# ===== ACTIONS =====
+
+@csrf_exempt
+def enroll_track(request, track_id):
+    """Enroll in a track"""
+    user = _ensure_user_logged_in(request)
+    if not user:
+        return JsonResponse({'success': False, 'error': 'Not logged in'})
+
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Invalid method'})
+
+    track = get_object_or_404(Track, id=track_id)
+    
+    # Check access
+    if not track.is_accessible_to_user(user):
+        return JsonResponse({
+            'success': False, 
+            'error': f'This track requires a {track.get_access_level_display()} subscription'
+        })
+
+    # Create enrollment
+    enrollment, created = TrackEnrollment.objects.get_or_create(
+        student=user, track=track,
+        defaults={'is_active': True}
+    )
+    
+    if not created and not enrollment.is_active:
+        enrollment.is_active = True
+        enrollment.save()
+
+    return JsonResponse({'success': True, 'message': f'Successfully enrolled in {track.name}!'})
+
+@csrf_exempt  
+def complete_section(request, section_id):
+    """Mark section as completed"""
+    user = _ensure_user_logged_in(request)
+    if not user:
+        return JsonResponse({'success': False, 'error': 'Not logged in'})
+
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Invalid method'})
+
+    section = get_object_or_404(Section, id=section_id)
+    
+    # Check if section is unlocked
+    if not section.is_unlocked_for_student(user):
+        return JsonResponse({'success': False, 'error': 'Section is locked'})
+
+    # Create completion
+    completion, created = SectionCompletion.objects.get_or_create(
+        student=user, section=section,
+        defaults={'score': request.POST.get('score')}
+    )
+
+    if created:
+        # Update progress
+        progress, _ = StudentProgress.objects.get_or_create(student=user)
+        progress.total_sections_completed += 1
+        progress.last_activity = timezone.now()
+        progress.update_streak()
+
+        return JsonResponse({
+            'success': True, 
+            'created': True,
+            'message': f'Section completed! Earned {section.get_point_value()} points!'
+        })
+    else:
+        return JsonResponse({
+            'success': True, 
+            'created': False,
+            'message': 'Section already completed'
+        })
+
+@csrf_exempt
+def submit_challenge_solution(request, challenge_id):
+    """Submit solution for coding challenge"""
+    user = _ensure_user_logged_in(request)
+    if not user:
+        return JsonResponse({'success': False, 'error': 'Not logged in'})
+
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Invalid method'})
+
+    challenge = get_object_or_404(CodeChallenge, id=challenge_id)
+    
+    try:
+        data = json.loads(request.body)
+        solution_code = data.get('code', '')
+    except json.JSONDecodeError:
+        solution_code = request.POST.get('code', '')
+
+    # Simple validation (you can make this more sophisticated)
+    is_correct = validate_challenge_solution(solution_code, challenge)
+
+    # Save solution
+    solution, created = ChallengeSolution.objects.get_or_create(
+        student=user, challenge=challenge,
+        defaults={
+            'solution_code': solution_code, 
+            'is_correct': is_correct
+        }
+    )
+    
+    if not created:
+        solution.solution_code = solution_code
+        solution.is_correct = is_correct
+        solution.save()
+
+    if is_correct:
+        points, cash_value = challenge.get_point_value()
+        return JsonResponse({
+            'success': True,
+            'correct': True,
+            'points': points,
+            'cash_value': float(cash_value),
+            'message': f'Correct! Earned {points} points (${cash_value})!'
+        })
+    else:
+        return JsonResponse({
+            'success': True,
+            'correct': False,
+            'message': 'Not quite right. Try again!'
+        })
+
+def validate_challenge_solution(code, challenge):
+    """Simple challenge validation - you can make this more sophisticated"""
+    code_lower = code.lower().strip()
+    
+    if "hello" in challenge.title.lower():
+        return "hello" in code_lower and "world" in code_lower
+    elif "sum" in challenge.title.lower():
+        return "return" in code_lower and ("a + b" in code_lower or "a+b" in code_lower)
+    elif "maximum" in challenge.title.lower() or "max" in challenge.title.lower():
+        return "max(" in code_lower or "maximum" in code_lower
+    elif "vowel" in challenge.title.lower():
+        return "vowel" in code_lower and ("count" in code_lower or "sum" in code_lower)
+    elif "fibonacci" in challenge.title.lower():
+        return "fibonacci" in code_lower or ("fib" in code_lower and "append" in code_lower)
+    elif "palindrome" in challenge.title.lower():
+        return "palindrome" in code_lower or ("::-1" in code_lower or "reverse" in code_lower)
+    else:
+        # Default validation - just check if it's not empty
+        return len(code.strip()) > 10
+
+# ===== LEGACY VIEWS (keep for compatibility) =====
+
+def swift_html(request, page_num):
+    """Legacy Swift pages"""
+    user = _ensure_user_logged_in(request)
+    if not user:
+        return redirect('/login/')
+    return render(request, 'swift.html', {
+        'user': user, 
+        'page_num': page_num, 
+        'next_page': page_num + 1
+    })
 
 @csrf_exempt
 def submit_code(request, expected_output=None):
-    """Enhanced submit_code that works with URL parameters"""
+    """Legacy code submission"""
     if request.method != 'POST':
         return JsonResponse({'status': 'error', 'message': 'Invalid method'})
     
@@ -664,7 +809,6 @@ def submit_code(request, expected_output=None):
         data = json.loads(request.body or '{}')
         code = data.get('code', '').strip()
         
-        # If no expected output provided, use default validation
         if not expected_output:
             if "print" in code.lower() and "hello world" in code.lower():
                 return JsonResponse({
@@ -678,15 +822,12 @@ def submit_code(request, expected_output=None):
                 'output_code': 'No output'
             })
         
-        # Simulate code execution and check against expected output
+        # Extract print statements
         import re
-        
-        # Extract print statements from code
         print_matches = re.findall(r'print\s*\(\s*["\']([^"\']*)["\']', code)
         
         if print_matches:
             actual_output = print_matches[0]
-            
             if actual_output.strip() == expected_output.strip():
                 return JsonResponse({
                     'status': 'success',
@@ -714,19 +855,25 @@ def submit_code(request, expected_output=None):
             'output_code': 'Error'
         })
 
-
 def api_user_progress(request, user_id):
-    if 'user' not in request.session:
+    """API endpoint for user progress"""
+    current_user = _ensure_user_logged_in(request)
+    if not current_user:
         return JsonResponse({'error': 'Not authenticated'}, status=401)
 
     try:
         user = User.objects.get(id=user_id)
-        wallet = user.wallet
+        wallet, _ = _get_or_create_wallet_and_progress(user)
+        
         enrolled_tracks = []
         for enrollment in TrackEnrollment.objects.filter(student=user, is_active=True):
             track = enrollment.track
             progress = track.get_student_progress(user)
-            enrolled_tracks.append({'id': track.id, 'name': track.name, 'progress': progress})
+            enrolled_tracks.append({
+                'id': track.id, 
+                'name': track.name, 
+                'progress': progress
+            })
 
         return JsonResponse({
             'user_id': user.id,
@@ -738,14 +885,6 @@ def api_user_progress(request, user_id):
         })
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
-    
 
-def home(request):
-    """Public landing page (marketing + overview)."""
-    user = None
-    if 'user' in request.session:
-        try:
-            user = User.objects.get(id=request.session['user'])
-        except User.DoesNotExist:
-            user = None
-    return render(request, 'home.html', {'user': user})
+
+
